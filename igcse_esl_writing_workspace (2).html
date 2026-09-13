@@ -1,0 +1,2827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cambridge IGCSE ESL Exercise 6 - Article Writing & Assessment Portal</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            indigo: {
+              50: '#F0F2F8', 100: '#DDE3EF', 200: '#B9C5DF', 300: '#8FA0C4',
+              400: '#5F72A0', 500: '#3F5280', 600: '#2C3E63', 700: '#22314F',
+              800: '#1A2740', 900: '#141D30', 950: '#0C111D'
+            },
+            slate: {
+              50: '#FAF7F0', 100: '#F2EDE1', 200: '#E4DCC9', 300: '#D2C6AC',
+              400: '#A79A81', 500: '#8B7E68', 600: '#6B6252', 700: '#4F473B',
+              800: '#382F26', 900: '#241D17', 950: '#171310'
+            },
+            examred: {
+              50: '#FBEEEC', 100: '#F3D2CC', 300: '#D97D6E', 500: '#B23A2E',
+              600: '#9A2F24', 700: '#7A2119'
+            }
+          },
+          fontFamily: {
+            sans: ['"IBM Plex Sans"', 'sans-serif'],
+            serif: ['Merriweather', 'serif'],
+            mono: ['"IBM Plex Mono"', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- PDF.js for PDF task extraction -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    if (typeof pdfjsLib !== 'undefined') {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'IBM Plex Sans', sans-serif;
+      background-color: #FAF7F0;
+      color: #382F26;
+    }
+    .font-handwriting { font-family: 'Caveat', cursive; }
+    .font-serif { font-family: 'Merriweather', serif; }
+
+    .exam-rule {
+      height: 3px;
+      background: linear-gradient(to right, #2C3E63 0%, #2C3E63 70%, #B23A2E 70%, #B23A2E 100%);
+    }
+
+    .student-info-field[readonly] {
+      background-color: #EEF1F8;
+      border-color: #B9C5DF;
+      color: #1A2740;
+      cursor: not-allowed;
+    }
+
+    .speech-bubble {
+      position: relative;
+      background: #FEFCF7;
+      border: 2px solid #382F26;
+      border-radius: 1.5rem;
+      transition: all 0.2s ease;
+    }
+    .speech-bubble:hover {
+      box-shadow: 0 10px 25px -5px rgba(44, 62, 99, 0.15);
+      transform: translateY(-2px);
+    }
+    .bubble-tail-bottom-left::after {
+      content: ''; position: absolute; bottom: -16px; left: 32px;
+      border-width: 16px 16px 0 0; border-style: solid; border-color: #FEFCF7 transparent;
+      display: block; width: 0;
+    }
+    .bubble-tail-bottom-left::before {
+      content: ''; position: absolute; bottom: -19px; left: 30px;
+      border-width: 19px 19px 0 0; border-style: solid; border-color: #382F26 transparent;
+      display: block; width: 0;
+    }
+    .bubble-tail-bottom-right::after {
+      content: ''; position: absolute; bottom: -16px; right: 32px;
+      border-width: 16px 0 0 16px; border-style: solid; border-color: #FEFCF7 transparent;
+      display: block; width: 0;
+    }
+    .bubble-tail-bottom-right::before {
+      content: ''; position: absolute; bottom: -19px; right: 30px;
+      border-width: 19px 0 0 19px; border-style: solid; border-color: #382F26 transparent;
+      display: block; width: 0;
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #F2EDE1; }
+    ::-webkit-scrollbar-thumb { background: #D2C6AC; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #A79A81; }
+
+    @media print {
+      @page { size: A4 portrait; margin: 6mm 8mm; }
+      body * { visibility: hidden; }
+      #printReportRoot, #printReportRoot * { visibility: visible; }
+      #printReportRoot {
+        position: absolute; left: 0; top: 0; width: 100%;
+        display: block !important; background: #ffffff !important; padding: 0 !important; margin: 0 !important;
+      }
+      .no-print { display: none !important; }
+    }
+  </style>
+
+  <!-- FIREBASE INTEGRATION MODULE -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { 
+      getFirestore, collection, addDoc, getDocs, doc, setDoc, deleteDoc, 
+      onSnapshot, query, where 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyA5Dpks5CY8Jc5-22ItZXKUenDUpifUZdM",
+      authDomain: "test-app-a08c4.firebaseapp.com",
+      projectId: "test-app-a08c4",
+      storageBucket: "test-app-a08c4.firebasestorage.app",
+      messagingSenderId: "671328032430",
+      appId: "1:671328032430:web:69f943699ab71a3e797f3f"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    window.db = db;
+    window.firestoreTools = { 
+      collection, addDoc, getDocs, doc, setDoc, deleteDoc, onSnapshot, query, where 
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initFirebaseListeners();
+    });
+
+    function initFirebaseListeners() {
+      // 1. Real-time Submissions Listener (Instantly updates teacher grid when any student submits)
+      onSnapshot(collection(db, "submissions"), (snapshot) => {
+        const remoteSubs = [];
+        snapshot.forEach((docSnap) => {
+          remoteSubs.push({ docId: docSnap.id, ...docSnap.data() });
+        });
+        if (typeof window.syncSubmissionsFromFirebase === 'function') {
+          window.syncSubmissionsFromFirebase(remoteSubs);
+        }
+      }, (error) => {
+        console.error("Firestore submissions listener error:", error);
+      });
+
+      // 2. Real-time Students Roster Listener
+      onSnapshot(collection(db, "students"), (snapshot) => {
+        const remoteStudents = [];
+        snapshot.forEach((docSnap) => {
+          remoteStudents.push({ id: docSnap.id, ...docSnap.data() });
+        });
+        if (typeof window.syncStudentsFromFirebase === 'function') {
+          window.syncStudentsFromFirebase(remoteStudents);
+        }
+      }, (error) => {
+        console.error("Firestore students listener error:", error);
+      });
+
+      // 3. Real-time Tasks Listener
+      onSnapshot(collection(db, "tasks"), (snapshot) => {
+        const remoteTasks = [];
+        snapshot.forEach((docSnap) => {
+          remoteTasks.push({ id: docSnap.id, ...docSnap.data() });
+        });
+        if (remoteTasks.length > 0 && typeof window.syncTasksFromFirebase === 'function') {
+          window.syncTasksFromFirebase(remoteTasks);
+        }
+      }, (error) => {
+        console.error("Firestore tasks listener error:", error);
+      });
+    }
+
+    // Manual Refresh Function
+    window.manualFetchAllFirebase = async function() {
+      try {
+        const subsSnap = await getDocs(collection(db, "submissions"));
+        const freshSubs = [];
+        subsSnap.forEach(d => freshSubs.push({ docId: d.id, ...d.data() }));
+        window.syncSubmissionsFromFirebase(freshSubs);
+
+        const stuSnap = await getDocs(collection(db, "students"));
+        const freshStudents = [];
+        stuSnap.forEach(d => freshStudents.push({ id: d.id, ...d.data() }));
+        window.syncStudentsFromFirebase(freshStudents);
+
+        window.showNotification("Firebase Synced", `Loaded ${freshSubs.length} submission(s) and ${freshStudents.length} student(s).`, "success");
+      } catch (err) {
+        window.showNotification("Sync Failed", err.message, "error");
+      }
+    };
+  </script>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-indigo-100 selection:text-indigo-800">
+
+  <header class="sticky top-0 z-40 bg-[#FEFCF7]/95 backdrop-blur-md shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- App Brand & Logo -->
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 flex items-center justify-center">
+          <img 
+            src="logo.png" 
+            alt="App Logo" 
+            class="max-h-9 max-w-9 object-contain"
+            onerror="this.style.display='none'; document.getElementById('logoFallback').classList.remove('hidden');"
+          >
+          <div id="logoFallback" class="hidden w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-base shadow-sm">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="text-xs font-extrabold tracking-wider text-indigo-600 uppercase">Cambridge IGCSE ESL</span>
+            <span class="px-1.5 py-0.5 text-[10px] font-mono font-semibold border border-examred-500 text-examred-600 rounded-sm">0510/0511</span>
+          </div>
+          <h1 class="text-sm sm:text-base font-bold text-slate-900 leading-tight font-serif">Exercise 6 Paper 2: Writing Workspace</h1>
+        </div>
+      </div>
+
+      <!-- Controls & Header Buttons -->
+      <div class="flex items-center space-x-2 sm:space-x-3">
+        
+        <!-- Active Task Dropdown -->
+        <div class="flex items-center bg-slate-50 px-2.5 py-1.5 rounded-xl border border-slate-200 shadow-inner">
+          <i class="fa-solid fa-book-open text-indigo-600 text-xs mr-2"></i>
+          <select 
+            id="globalTaskSelect" 
+            onchange="switchActiveTask(this.value)" 
+            class="text-xs font-bold text-slate-800 bg-transparent outline-none cursor-pointer max-w-[140px] sm:max-w-[200px] truncate"
+          >
+          </select>
+        </div>
+
+        <!-- Dedicated Student Login Button in Navbar -->
+        <button 
+          id="navStudentLoginBtn"
+          onclick="openStudentLoginModal()" 
+          class="px-3 py-1.5 text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-xl shadow-sm transition inline-flex items-center"
+        >
+          <i class="fa-solid fa-user-check mr-1.5 text-indigo-600"></i>Student Login
+        </button>
+
+        <!-- Navbar Student Logged-In Pill with Quick Logout -->
+        <div id="navStudentLoggedPill" class="hidden items-center gap-1.5 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-xl shadow-sm">
+          <span class="text-[11px] font-bold text-emerald-800 flex items-center">
+            <i class="fa-solid fa-circle-user mr-1 text-emerald-600"></i><span id="navStudentBadgeName" class="max-w-[90px] sm:max-w-[120px] truncate">Student</span>
+          </span>
+          <button 
+            type="button" 
+            onclick="logoutStudent()" 
+            class="ml-1 px-1.5 py-0.5 text-[10px] font-bold text-rose-700 bg-rose-100 hover:bg-rose-200 rounded transition inline-flex items-center" 
+            title="Log Out"
+          >
+            <i class="fa-solid fa-right-from-bracket mr-1"></i>Exit
+          </button>
+        </div>
+
+        <!-- Check Result Button -->
+        <button 
+          onclick="openStudentResultModal()" 
+          class="px-3 py-1.5 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl shadow-sm transition inline-flex items-center"
+        >
+          <i class="fa-solid fa-award text-amber-500 mr-1.5"></i>Check Result
+        </button>
+
+        <!-- View Switch Buttons -->
+        <div class="bg-slate-100 p-1 rounded-xl flex items-center space-x-1">
+          <button 
+            id="viewBtnStudent" 
+            onclick="switchView('student')" 
+            class="px-3 py-1.5 text-xs font-bold rounded-lg transition bg-white text-indigo-700 shadow-sm"
+          >
+            <i class="fa-solid fa-pen-nib mr-1.5"></i>Student
+          </button>
+          <button 
+            id="viewBtnTeacher" 
+            onclick="requestTeacherAccess()" 
+            class="px-3 py-1.5 text-xs font-semibold rounded-lg transition text-slate-600 hover:text-slate-900"
+          >
+            <i class="fa-solid fa-lock text-xs mr-1.5"></i>Teacher Grid
+          </button>
+        </div>
+
+      </div>
+    </div>
+    <div class="exam-rule"></div>
+  </header>
+
+  <main id="studentView" class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+    
+    <!-- Candidate Information & Explicit Login Card -->
+    <section class="bg-white rounded-2xl border-2 border-indigo-900 shadow-md relative overflow-hidden">
+      <div class="exam-rule"></div>
+      <div class="p-5 sm:p-6">
+        
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4 mb-4">
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-xl bg-indigo-900 text-white flex items-center justify-center shrink-0 shadow-sm">
+              <i class="fa-solid fa-id-card"></i>
+            </div>
+            <div>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-800 uppercase tracking-wide mb-1">
+                Candidate Information
+              </span>
+              <h2 class="text-base sm:text-lg font-bold font-serif text-slate-900 leading-snug">
+                Step 1: Sign in with your Candidate Details
+              </h2>
+            </div>
+          </div>
+
+          <!-- Verified Student Banner or Prompt -->
+          <div id="studentAuthStatusBanner" class="flex items-center gap-3">
+            <div id="unverifiedPill" class="flex items-center gap-2 bg-amber-50 text-amber-900 border border-amber-200 px-3 py-1.5 rounded-xl text-xs font-medium">
+              <i class="fa-solid fa-circle-exclamation text-amber-600"></i>
+              <span>Not logged in</span>
+              <button onclick="openStudentLoginModal()" class="ml-1.5 font-bold text-indigo-700 underline">Log in now</button>
+            </div>
+            <div id="verifiedPill" class="hidden flex items-center gap-2 bg-emerald-50 text-emerald-900 border border-emerald-200 px-3.5 py-1.5 rounded-xl text-xs font-bold shadow-sm">
+              <i class="fa-solid fa-circle-check text-emerald-600"></i>
+              <span>Logged in: <span id="verifiedCandidateBadge">Student Name</span></span>
+              <button onclick="switchStudentAccount()" class="ml-2 text-[11px] text-indigo-700 hover:text-indigo-900 font-semibold underline">Switch</button>
+              <button onclick="logoutStudent()" class="ml-2 px-2.5 py-1 text-[11px] font-bold text-rose-700 bg-rose-100 hover:bg-rose-200 border border-rose-300 rounded-lg transition inline-flex items-center shadow-sm">
+                <i class="fa-solid fa-right-from-bracket mr-1 text-[10px]"></i>Log Out
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Inline Student Credentials Form -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label class="block text-[11px] text-slate-500 font-bold uppercase tracking-wide mb-1">Candidate ID *</label>
+            <input 
+              type="text" 
+              id="studentIdInput" 
+              placeholder="e.g. SA-2026-042" 
+              oninput="syncCandidateId(this.value)"
+              class="student-info-field w-full text-xs px-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 outline-none focus:ring-2 focus:ring-indigo-300 font-mono font-bold uppercase"
+            >
+          </div>
+          <div>
+            <label class="block text-[11px] text-slate-500 font-bold uppercase tracking-wide mb-1">Full Name *</label>
+            <input 
+              type="text" 
+              id="studentNameInput" 
+              placeholder="e.g. Jane Doe" 
+              class="student-info-field w-full text-xs px-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 outline-none focus:ring-2 focus:ring-indigo-300 font-semibold"
+            >
+          </div>
+          <div>
+            <label class="block text-[11px] text-slate-500 font-bold uppercase tracking-wide mb-1">Class / Section</label>
+            <input 
+              type="text" 
+              id="studentClassInput" 
+              placeholder="e.g. Year 11-A" 
+              class="student-info-field w-full text-xs px-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 outline-none focus:ring-2 focus:ring-indigo-300 font-semibold"
+            >
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between mt-3.5 pt-3 border-t border-slate-100 text-xs">
+          <span class="text-slate-500 text-[11px]">
+            <i class="fa-solid fa-circle-info mr-1 text-indigo-600"></i>
+            On the class roster? Click <strong>"Student Login"</strong> to auto-fill your details.
+          </span>
+          <button 
+            type="button" 
+            onclick="openStudentLoginModal()"
+            class="px-4 py-1.5 text-xs font-bold text-white bg-indigo-900 hover:bg-indigo-800 rounded-xl transition inline-flex items-center shadow-sm"
+          >
+            <i class="fa-solid fa-right-to-bracket mr-1.5"></i>Log In via Roster / PIN
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Task Prompt Card -->
+    <section id="taskPromptSection" class="bg-[#FEFCF7] rounded-2xl border-2 border-slate-800 shadow-sm p-6 sm:p-8 relative overflow-hidden">
+      <div class="absolute top-0 left-0 bg-indigo-900 text-white text-xs font-bold px-4 py-1.5 rounded-br-xl tracking-wide uppercase">
+        <span id="taskBadgeLabel">Exercise 6 • Task 1</span>
+      </div>
+
+      <div class="absolute top-0 right-0 bg-examred-50 text-right px-4 py-2 rounded-bl-2xl border-l-2 border-b-2 border-examred-500">
+        <div class="flex items-baseline justify-end gap-1 leading-none">
+          <span class="text-2xl font-serif font-extrabold text-examred-600">15</span>
+          <span class="text-[9px] font-bold uppercase tracking-wider text-examred-500">marks</span>
+        </div>
+        <div class="flex items-center justify-end gap-1 mt-1.5">
+          <span class="inline-flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-indigo-100 text-indigo-700">
+            <i class="fa-solid fa-pen-nib text-[8px]"></i>Content 6
+          </span>
+          <span class="inline-flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-examred-100 text-examred-700">
+            <i class="fa-solid fa-language text-[8px]"></i>Language 9
+          </span>
+        </div>
+      </div>
+
+      <div class="max-w-3xl mt-6">
+        <p class="text-[11px] font-bold uppercase tracking-widest text-slate-500 mb-2">Read the following question carefully</p>
+        <h2 id="taskMainHeading" class="text-base font-serif font-bold text-slate-900 leading-snug">
+          Your school year group is doing a project on the advantages and disadvantages of the car as a means of transport.
+        </h2>
+        <div class="exam-rule mt-4 mb-3 opacity-70"></div>
+        <p class="text-slate-700 font-serif italic">
+          Here are some comments on the subject:
+        </p>
+      </div>
+
+      <div id="dynamicSpeechBubblesGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 mb-3 pt-1">
+      </div>
+
+      <div id="customTaskPdfScanWrapper" class="hidden mt-3 pt-3 border-t border-slate-300">
+        <button type="button" onclick="toggleTaskPdfScan()" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 inline-flex items-center">
+          <i class="fa-solid fa-file-pdf mr-1.5"></i><span id="togglePdfScanBtnText">View Original Exam Paper Scan</span>
+        </button>
+        <div id="taskPdfScanImageContainer" class="hidden mt-3 bg-slate-100 p-3 rounded-xl border border-slate-200 flex justify-center">
+          <img id="customTaskImagePrompt" src="" alt="Question Paper Scan" class="max-w-full rounded-lg shadow-sm max-h-[500px] object-contain">
+        </div>
+      </div>
+    </section>
+
+    <!-- Student Writing & Planning Area -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start pb-6">
+      <div class="lg:col-span-4 space-y-5">
+        
+        <!-- Student's Submitted Assignments Sidebar -->
+        <div id="studentSubmissionsSidebar" class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm space-y-3">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center">
+              <i class="fa-solid fa-clock-rotate-left text-indigo-600 mr-2"></i>My Submissions
+            </h3>
+            <span id="studentSubmissionsCountBadge" class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700">
+              0 Papers
+            </span>
+          </div>
+
+          <!-- Empty or prompt state when unverified -->
+          <div id="sidebarNoLoginPrompt" class="p-4 bg-slate-50 border border-dashed border-slate-200 rounded-xl text-center space-y-2">
+            <i class="fa-solid fa-user-lock text-2xl text-slate-400"></i>
+            <p class="text-xs text-slate-600 font-medium">Log in with your Candidate ID to track your submitted articles and examiner marks.</p>
+            <button type="button" onclick="openStudentLoginModal()" class="px-3 py-1.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-sm transition inline-flex items-center">
+              <i class="fa-solid fa-right-to-bracket mr-1.5"></i>Log In Now
+            </button>
+          </div>
+
+          <!-- Submissions list container -->
+          <div id="sidebarSubmissionsList" class="hidden space-y-2 max-h-72 overflow-y-auto pr-1">
+            <!-- Populated dynamically by renderStudentSubmissionsSidebar() -->
+          </div>
+        </div>
+
+        <!-- Timer -->
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Recommended Time</span>
+            <div id="examTimerDisplay" class="text-xl font-mono font-bold text-slate-800">30:00</div>
+          </div>
+          <div class="mt-3 flex items-center space-x-2">
+            <button 
+              id="startTimerBtn" 
+              onclick="toggleTimer()" 
+              class="flex-1 py-1.5 text-xs font-semibold bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-xl transition inline-flex items-center justify-center"
+            >
+              <i class="fa-solid fa-play mr-1.5 text-xs"></i>Start Timer
+            </button>
+            <button 
+              onclick="resetTimer()" 
+              class="px-3 py-1.5 text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 rounded-xl transition" 
+              title="Reset Timer"
+            >
+              <i class="fa-solid fa-rotate-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Article Plan -->
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center">
+              <i class="fa-solid fa-lightbulb text-amber-500 mr-2"></i>My Article Plan
+            </h3>
+            <button 
+              onclick="clearPlanner()" 
+              class="text-[11px] font-semibold text-slate-400 hover:text-slate-600"
+            >
+              Clear
+            </button>
+          </div>
+          <p class="text-[11px] text-slate-500">Click <strong>"+ Add to plan"</strong> on speech bubbles or write your outline here:</p>
+          <textarea 
+            id="articlePlannerText" 
+            rows="6" 
+            placeholder="Outline arguments..." 
+            class="w-full text-xs p-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none bg-slate-50/50 leading-relaxed font-sans"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="lg:col-span-8 space-y-4">
+        <div class="bg-white rounded-2xl p-6 border-2 border-slate-200 shadow-sm space-y-4">
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+                Article Headline / Title <span class="text-rose-500">*</span>
+              </label>
+              <span class="text-[11px] text-slate-400">Make it punchy & engaging</span>
+            </div>
+            <input 
+              type="text" 
+              id="articleHeadlineInput" 
+              placeholder="e.g. Steer Clear or Shift Gears? The Real Cost of the Modern Motorcar" 
+              class="w-full text-sm sm:text-base font-serif font-bold p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none placeholder-slate-400 bg-slate-50/30"
+            >
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+                Article Content (4 Paragraphs) <span class="text-rose-500">*</span>
+              </label>
+              <div class="flex items-center space-x-2">
+                <span id="paragraphCountBadge" class="text-xs font-semibold px-2 py-0.5 rounded-lg bg-slate-100 text-slate-700">
+                  0 Paragraphs
+                </span>
+                <span id="wordCountBadge" class="text-xs font-bold px-2.5 py-0.5 rounded-lg bg-amber-100 text-amber-800 transition">
+                  0 Words
+                </span>
+              </div>
+            </div>
+
+            <textarea 
+              id="articleBodyInput" 
+              rows="16" 
+              oninput="updateWordCount()" 
+              placeholder="Write your article here in 4 paragraphs..." 
+              class="w-full p-4 text-sm font-serif leading-relaxed text-slate-800 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none bg-white placeholder-slate-400 shadow-inner"
+            ></textarea>
+          </div>
+
+          <div id="overWordLimitWarning" class="hidden p-3.5 bg-amber-50 border-l-4 border-amber-500 rounded-xl text-amber-900 text-xs flex items-start space-x-2.5 shadow-sm">
+            <i class="fa-solid fa-triangle-exclamation text-amber-600 text-base mt-0.5 flex-shrink-0"></i>
+            <div>
+              <p class="font-bold text-amber-950">Approaching Word Ceiling</p>
+              <p class="mt-0.5 text-amber-800">
+                You have exceeded <strong>180 words</strong>. The ideal range is <strong>150 to 200 words</strong>.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-slate-100">
+            <div class="flex items-center space-x-2 w-full sm:w-auto">
+              <button 
+                type="button" 
+                onclick="downloadStudentResponseJSON()" 
+                class="flex-1 sm:flex-none px-3.5 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition inline-flex items-center justify-center"
+              >
+                <i class="fa-solid fa-download mr-1.5 text-slate-500"></i>Save (.json)
+              </button>
+              <button 
+                type="button" 
+                onclick="copyStudentArticleFormatted()" 
+                class="flex-1 sm:flex-none px-3.5 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition inline-flex items-center justify-center"
+              >
+                <i class="fa-regular fa-copy mr-1.5 text-slate-500"></i>Copy
+              </button>
+            </div>
+
+            <button 
+              id="submitArticleBtn" 
+              type="button" 
+              onclick="validateAndSubmitArticle()" 
+              class="w-full sm:w-auto px-6 py-2.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-md shadow-indigo-200 transition inline-flex items-center justify-center"
+            >
+              <i class="fa-solid fa-paper-plane mr-2"></i>Submit Article to Firebase
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- TEACHER VIEW -->
+  <main id="teacherView" class="hidden flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+    <section class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+        <div>
+          <div class="flex items-center space-x-2 mb-1">
+            <span class="text-xs font-extrabold uppercase tracking-wider text-indigo-600">Teacher Evaluation & Grading Center</span>
+            <span class="px-2 py-0.5 text-[10px] font-bold bg-emerald-100 text-emerald-800 rounded-full">Firebase Live Active</span>
+          </div>
+          <h2 class="text-lg font-bold text-slate-900">IGCSE ESL Writing Mark Scheme Portal</h2>
+          <p class="text-xs text-slate-500">Submissions sync live from Firestore. Manage candidate credentials, annotate scripts, and grade with the 26-point matrix.</p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <!-- Refresh Firebase Button -->
+          <button 
+            onclick="manualRefreshFirebase()" 
+            class="px-3.5 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-sm transition inline-flex items-center"
+          >
+            <i class="fa-solid fa-arrows-rotate mr-1.5"></i>Sync Firebase
+          </button>
+
+          <!-- Manage Students Button -->
+          <button 
+            onclick="openManageStudentsModal()" 
+            class="px-3.5 py-2 text-xs font-bold text-white bg-amber-600 hover:bg-amber-700 rounded-xl shadow-md transition inline-flex items-center"
+          >
+            <i class="fa-solid fa-users-gear mr-1.5"></i>Manage Students
+          </button>
+
+          <!-- Add Task Button -->
+          <button 
+            onclick="openAddTaskModal()" 
+            class="px-3.5 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-md transition inline-flex items-center"
+          >
+            <i class="fa-solid fa-file-circle-plus mr-1.5"></i>+ Add Task (PDF)
+          </button>
+
+          <!-- Manage Tasks Button -->
+          <button 
+            onclick="openManageTasksModal()" 
+            class="px-3 py-2 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 rounded-xl border border-slate-200 shadow-sm transition inline-flex items-center" 
+          >
+            <i class="fa-solid fa-list-check text-indigo-500 mr-1.5"></i>Tasks
+          </button>
+
+          <!-- Export CSV Button -->
+          <button 
+            onclick="exportAllSubmissionsCSV()" 
+            class="px-3 py-2 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 rounded-xl border border-slate-200 shadow-sm transition inline-flex items-center" 
+          >
+            <i class="fa-solid fa-file-csv text-emerald-600 mr-1.5"></i>CSV
+          </button>
+
+          <!-- Lock / Log Out Teacher Grid Button -->
+          <button 
+            onclick="lockTeacherView()" 
+            class="px-3 py-2 text-xs font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 rounded-xl border border-rose-200 shadow-sm transition inline-flex items-center"
+            title="Log Out & Lock Teacher Grid"
+          >
+            <i class="fa-solid fa-lock mr-1.5"></i>Log Out Grid
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Metrics -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1">
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+          <span class="text-[10px] font-bold uppercase text-slate-400">Total Submissions in Firebase</span>
+          <div id="statTotalSubmissions" class="text-xl font-bold text-slate-800 mt-0.5">0</div>
+        </div>
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+          <span class="text-[10px] font-bold uppercase text-slate-400">In Word Range (150-200)</span>
+          <div id="statInRange" class="text-xl font-bold text-emerald-600 mt-0.5">0</div>
+        </div>
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+          <span class="text-[10px] font-bold uppercase text-slate-400">Average Words</span>
+          <div id="statAverageWords" class="text-xl font-bold text-indigo-600 mt-0.5">0</div>
+        </div>
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+          <span class="text-[10px] font-bold uppercase text-slate-400">Graded Papers</span>
+          <div id="statGradedCount" class="text-xl font-bold text-amber-600 mt-0.5">0</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Submissions Queue & Evaluation Workspace -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      
+      <!-- Submissions Queue (Left 4 cols) -->
+      <div class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 shadow-sm p-4 space-y-3">
+        <div class="flex items-center justify-between">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800">
+            Student Submissions (<span id="submissionsListCount">0</span>)
+          </h3>
+          <span class="text-[11px] text-slate-400">Click paper to grade</span>
+        </div>
+
+        <div id="submissionsListContainer" class="space-y-2 max-h-[700px] overflow-y-auto pr-1">
+          <div id="emptySubmissionsState" class="p-8 text-center text-slate-400 border border-dashed border-slate-200 rounded-xl">
+            <i class="fa-solid fa-inbox text-3xl mb-2 text-slate-300"></i>
+            <p class="text-xs font-medium">No submissions in Firebase yet.</p>
+            <p class="text-[11px] mt-1 text-slate-400">As soon as students submit, they will appear here automatically.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grading Workspace (Right 8 cols) -->
+      <div id="activeGradingPanel" class="lg:col-span-8 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+        <div id="noSubmissionSelectedNotice" class="py-20 text-center text-slate-400">
+          <i class="fa-solid fa-file-pen text-4xl mb-3 text-slate-300"></i>
+          <h4 class="text-sm font-bold text-slate-700">No Paper Selected</h4>
+          <p class="text-xs text-slate-400 mt-1">Select a student submission from the queue on the left to review and grade.</p>
+        </div>
+
+        <div id="activeSubmissionDetail" class="hidden space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 bg-slate-50 border border-slate-200 rounded-xl">
+            <div>
+              <div class="flex items-center space-x-2">
+                <span id="activeStudentIdBadge" class="text-xs font-mono font-bold bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded">
+                  ID: SA-2026-000
+                </span>
+                <span id="activeStudentClassBadge" class="text-xs font-semibold text-slate-500">
+                  Year 11
+                </span>
+                <span id="activeTaskBadge" class="text-xs font-bold bg-slate-200 text-slate-700 px-2 py-0.5 rounded">
+                  Task 1
+                </span>
+              </div>
+              <h3 id="activeStudentNameHeading" class="text-base font-bold text-slate-900 mt-1">Jane Doe</h3>
+              <p id="activeStudentTimeText" class="text-[11px] text-slate-400">Submitted at: 2026-09-05 14:30</p>
+            </div>
+
+            <div class="flex items-center space-x-3">
+              <div class="text-center p-2.5 bg-white border border-slate-200 rounded-xl shadow-sm min-w-[90px]">
+                <span class="block text-[10px] font-bold text-slate-400 uppercase">Checklist</span>
+                <span id="activeRawScore" class="text-lg font-extrabold text-slate-800">0 / 26</span>
+              </div>
+              <div class="text-center p-2.5 bg-indigo-600 text-white rounded-xl shadow-md min-w-[90px]">
+                <span class="block text-[10px] font-bold uppercase text-indigo-200">Converted</span>
+                <span id="activeConvertedScore" class="text-lg font-extrabold text-white">0.0 / 15</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stylus Toolbar -->
+          <div class="p-3 bg-slate-900 text-white rounded-xl flex flex-wrap items-center justify-between gap-2 shadow-sm">
+            <div class="flex items-center space-x-2">
+              <span class="text-xs font-bold uppercase text-slate-300 mr-1 flex items-center">
+                <i class="fa-solid fa-pen-fancy mr-1.5 text-indigo-400"></i>Stylus Pen:
+              </span>
+              <button type="button" onclick="setDrawingTool('red_pen')" id="tool_red_pen" class="w-7 h-7 rounded-lg bg-rose-600 text-white flex items-center justify-center text-xs shadow transition ring-2 ring-white">
+                <i class="fa-solid fa-pen"></i>
+              </button>
+              <button type="button" onclick="setDrawingTool('blue_pen')" id="tool_blue_pen" class="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center text-xs shadow transition">
+                <i class="fa-solid fa-pen"></i>
+              </button>
+              <button type="button" onclick="setDrawingTool('green_pen')" id="tool_green_pen" class="w-7 h-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center text-xs shadow transition">
+                <i class="fa-solid fa-check"></i>
+              </button>
+              <button type="button" onclick="setDrawingTool('highlighter')" id="tool_highlighter" class="w-7 h-7 rounded-lg bg-amber-300 text-amber-950 flex items-center justify-center text-xs shadow transition">
+                <i class="fa-solid fa-highlighter"></i>
+              </button>
+              <button type="button" onclick="setDrawingTool('eraser')" id="tool_eraser" class="w-7 h-7 rounded-lg bg-slate-700 text-white flex items-center justify-center text-xs shadow transition">
+                <i class="fa-solid fa-eraser"></i>
+              </button>
+            </div>
+
+            <div class="flex items-center space-x-2">
+              <button type="button" onclick="undoAnnotationStroke()" class="px-2.5 py-1 text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition">
+                <i class="fa-solid fa-rotate-left mr-1"></i>Undo
+              </button>
+              <button type="button" onclick="clearAnnotationCanvas()" class="px-2.5 py-1 text-xs bg-slate-800 hover:bg-rose-950 text-rose-300 rounded-lg transition">
+                <i class="fa-solid fa-trash-can mr-1"></i>Clear Ink
+              </button>
+            </div>
+          </div>
+
+          <!-- Script View with Canvas Overlay -->
+          <div class="relative bg-white border-2 border-slate-200 rounded-2xl p-6 shadow-inner" id="annotationWrapper">
+            <div id="activeArticleTextContainer" class="select-none font-serif leading-relaxed text-slate-800 space-y-3">
+              <h4 id="activeArticleHeadline" class="text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">Article Headline</h4>
+              <div id="activeArticleBody" class="text-sm whitespace-pre-wrap leading-relaxed">Article content...</div>
+            </div>
+            <canvas id="annotationCanvas" class="absolute inset-0 w-full h-full rounded-2xl cursor-crosshair touch-none z-10"></canvas>
+          </div>
+
+          <!-- 26-Point Cambridge Rubric Checklist -->
+          <div class="space-y-4 pt-2">
+            <div class="flex items-center justify-between">
+              <div>
+                <h4 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Paper 1 Exercise 6 Writing Checklist (26 Marks Total)</h4>
+                <p class="text-xs text-slate-500">Criteria by Amanullah Khan • Converts to 15 marks</p>
+              </div>
+              <div class="flex items-center space-x-2">
+                <button type="button" onclick="autoEvaluateWithAI()" class="px-3 py-1.5 text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-xl transition inline-flex items-center">
+                  <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i>Auto-Fill Checklist
+                </button>
+                <button type="button" onclick="openClaudePromptModal()" class="px-3 py-1.5 text-xs font-bold text-purple-700 bg-purple-50 hover:bg-purple-100 rounded-xl transition inline-flex items-center">
+                  <i class="fa-solid fa-robot mr-1.5"></i>Claude Prompt
+                </button>
+              </div>
+            </div>
+
+            <div class="border border-slate-200 rounded-2xl overflow-hidden">
+              <div class="bg-indigo-50 px-4 py-2.5 border-b border-indigo-100 flex items-center justify-between">
+                <span class="text-xs font-bold text-indigo-950 uppercase tracking-wider">Language Assessment (14 Marks)</span>
+                <span id="languageSubtotalScore" class="text-xs font-bold text-indigo-700">0 / 14</span>
+              </div>
+              <div id="languageChecklistRows" class="divide-y divide-slate-100 bg-white"></div>
+            </div>
+
+            <div class="border border-slate-200 rounded-2xl overflow-hidden">
+              <div class="bg-emerald-50 px-4 py-2.5 border-b border-emerald-100 flex items-center justify-between">
+                <span class="text-xs font-bold text-emerald-950 uppercase tracking-wider">Content Assessment (12 Marks)</span>
+                <span id="contentSubtotalScore" class="text-xs font-bold text-emerald-700">0 / 12</span>
+              </div>
+              <div id="contentChecklistRows" class="divide-y divide-slate-100 bg-white"></div>
+            </div>
+
+            <!-- Conversion Matrix Table -->
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-slate-800 uppercase">Marks Conversion Chart (26 to 15 Scale)</span>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-center text-[11px] border border-slate-200 bg-white rounded-lg overflow-hidden">
+                  <tr class="bg-slate-100 font-bold text-slate-700">
+                    <td class="p-1 border">Score /26</td>
+                    <td class="p-1 border" id="m_hdr_1">1</td><td class="p-1 border" id="m_hdr_2">2</td><td class="p-1 border" id="m_hdr_3">3</td><td class="p-1 border" id="m_hdr_4">4</td><td class="p-1 border" id="m_hdr_5">5</td><td class="p-1 border" id="m_hdr_6">6</td><td class="p-1 border" id="m_hdr_7">7</td><td class="p-1 border" id="m_hdr_8">8</td><td class="p-1 border" id="m_hdr_9">9</td><td class="p-1 border" id="m_hdr_10">10</td><td class="p-1 border" id="m_hdr_11">11</td><td class="p-1 border" id="m_hdr_12">12</td><td class="p-1 border" id="m_hdr_13">13</td>
+                  </tr>
+                  <tr class="text-slate-600">
+                    <td class="p-1 font-bold bg-slate-50 border">/15</td>
+                    <td class="p-1 border" id="m_val_1">0.6</td><td class="p-1 border" id="m_val_2">1.2</td><td class="p-1 border" id="m_val_3">1.7</td><td class="p-1 border" id="m_val_4">2.3</td><td class="p-1 border" id="m_val_5">2.9</td><td class="p-1 border" id="m_val_6">3.5</td><td class="p-1 border" id="m_val_7">4.0</td><td class="p-1 border" id="m_val_8">4.6</td><td class="p-1 border" id="m_val_9">5.2</td><td class="p-1 border" id="m_val_10">5.8</td><td class="p-1 border" id="m_val_11">6.3</td><td class="p-1 border" id="m_val_12">6.9</td><td class="p-1 border" id="m_val_13">7.5</td>
+                  </tr>
+                  <tr class="bg-slate-100 font-bold text-slate-700">
+                    <td class="p-1 border">Score /26</td>
+                    <td class="p-1 border" id="m_hdr_14">14</td><td class="p-1 border" id="m_hdr_15">15</td><td class="p-1 border" id="m_hdr_16">16</td><td class="p-1 border" id="m_hdr_17">17</td><td class="p-1 border" id="m_hdr_18">18</td><td class="p-1 border" id="m_hdr_19">19</td><td class="p-1 border" id="m_hdr_20">20</td><td class="p-1 border" id="m_hdr_21">21</td><td class="p-1 border" id="m_hdr_22">22</td><td class="p-1 border" id="m_hdr_23">23</td><td class="p-1 border" id="m_hdr_24">24</td><td class="p-1 border" id="m_hdr_25">25</td><td class="p-1 border" id="m_hdr_26">26</td>
+                  </tr>
+                  <tr class="text-slate-600">
+                    <td class="p-1 font-bold bg-slate-50 border">/15</td>
+                    <td class="p-1 border" id="m_val_14">8.1</td><td class="p-1 border" id="m_val_15">8.7</td><td class="p-1 border" id="m_val_16">9.2</td><td class="p-1 border" id="m_val_17">9.8</td><td class="p-1 border" id="m_val_18">10.4</td><td class="p-1 border" id="m_val_19">11.0</td><td class="p-1 border" id="m_val_20">11.5</td><td class="p-1 border" id="m_val_21">12.1</td><td class="p-1 border" id="m_val_22">12.7</td><td class="p-1 border" id="m_val_23">13.3</td><td class="p-1 border" id="m_val_24">13.8</td><td class="p-1 border" id="m_val_25">14.4</td><td class="p-1 border" id="m_val_26">15.0</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+
+            <div class="space-y-1.5">
+              <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">Examiner Feedback & Remarks</label>
+              <textarea 
+                id="activeTeacherFeedback" 
+                rows="3" 
+                placeholder="Feedback remarks..." 
+                class="w-full text-xs p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+              ></textarea>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100">
+              <div class="flex items-center space-x-2">
+                <button type="button" onclick="saveActiveGrading()" class="px-5 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-md transition inline-flex items-center">
+                  <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i>Save Evaluation to Firebase
+                </button>
+                <button type="button" onclick="printGradedPaperReport()" class="px-4 py-2 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition inline-flex items-center">
+                  <i class="fa-solid fa-print mr-1.5 text-indigo-600"></i>Print 1-Page Report
+                </button>
+              </div>
+              <button type="button" onclick="confirmDeleteCurrentPaper()" class="px-3 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 rounded-xl transition inline-flex items-center">
+                <i class="fa-regular fa-trash-can mr-1.5"></i>Delete Paper
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL: STUDENT DEDICATED LOGIN (ROSTER PICK OR DIRECT ID) -->
+  <div id="studentLoginModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-base shadow-sm">
+            <i class="fa-solid fa-user-lock"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-slate-900">Student Candidate Sign In</h3>
+            <p class="text-xs text-slate-500">Pick your name or enter your Candidate ID</p>
+          </div>
+        </div>
+        <button onclick="closeStudentLoginModal()" class="text-slate-400 hover:text-slate-600 text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Select from Roster Option -->
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Option 1: Select Name from Class Roster</label>
+          <select 
+            id="modalRosterSelect" 
+            onchange="onModalRosterSelect(this.value)"
+            class="w-full text-xs p-2.5 bg-slate-50 border border-slate-300 rounded-xl font-semibold outline-none focus:ring-2 focus:ring-indigo-400"
+          >
+            <option value="">-- Choose your name --</option>
+          </select>
+        </div>
+
+        <div class="relative flex py-1 items-center">
+          <div class="flex-grow border-t border-slate-200"></div>
+          <span class="flex-shrink mx-3 text-[10px] uppercase font-bold text-slate-400">OR DIRECT LOGIN</span>
+          <div class="flex-grow border-t border-slate-200"></div>
+        </div>
+
+        <!-- Direct Candidate ID & Password -->
+        <div class="space-y-2">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Candidate ID *</label>
+            <input 
+              type="text" 
+              id="modalDirectIdInput" 
+              placeholder="e.g. SA-2026-042" 
+              class="w-full text-xs p-2.5 bg-slate-50 border border-slate-300 rounded-xl font-mono uppercase font-bold outline-none focus:ring-2 focus:ring-indigo-400"
+            >
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">PIN / Password (if required)</label>
+            <input 
+              type="password" 
+              id="modalDirectPassInput" 
+              placeholder="Enter PIN..." 
+              onkeydown="if(event.key==='Enter') executeStudentModalLogin()"
+              class="w-full text-xs p-2.5 bg-slate-50 border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-indigo-400"
+            >
+          </div>
+        </div>
+
+        <p id="modalLoginError" class="hidden text-xs text-rose-600 font-semibold bg-rose-50 p-2 rounded-lg">
+          <i class="fa-solid fa-circle-exclamation mr-1"></i>Candidate ID or Password does not match.
+        </p>
+      </div>
+
+      <div class="flex items-center justify-end space-x-2 pt-3 border-t border-slate-100">
+        <button onclick="closeStudentLoginModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition">Cancel</button>
+        <button onclick="executeStudentModalLogin()" class="px-5 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-md transition inline-flex items-center">
+          <i class="fa-solid fa-unlock mr-1.5"></i>Log In
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: MANAGE STUDENTS (ROSTER & CSV UPLOAD) -->
+  <div id="manageStudentsModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-100 space-y-4 max-h-[90vh] flex flex-col">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-8 h-8 rounded-lg bg-amber-600 text-white flex items-center justify-center font-bold text-sm">
+            <i class="fa-solid fa-users-gear"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-slate-900">Manage Student Roster (Firebase Database)</h3>
+            <p class="text-xs text-slate-500">Add candidates manually or upload a bulk CSV file</p>
+          </div>
+        </div>
+        <button onclick="closeManageStudentsModal()" class="text-slate-400 hover:text-slate-600 text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-3">
+        <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Add Single Student</h4>
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-2">
+          <input type="text" id="newStuId" placeholder="Candidate ID *" class="text-xs p-2 border border-slate-300 rounded-lg outline-none font-mono uppercase">
+          <input type="text" id="newStuName" placeholder="Full Name *" class="text-xs p-2 border border-slate-300 rounded-lg outline-none">
+          <input type="text" id="newStuClass" placeholder="Class / Sec" class="text-xs p-2 border border-slate-300 rounded-lg outline-none">
+          <input type="password" id="newStuPass" placeholder="Password (Opt)" class="text-xs p-2 border border-slate-300 rounded-lg outline-none">
+        </div>
+        <button onclick="addSingleStudentFirebase()" class="px-4 py-1.5 text-xs font-bold text-white bg-amber-600 hover:bg-amber-700 rounded-lg transition inline-flex items-center">
+          <i class="fa-solid fa-user-plus mr-1.5"></i>Add Student to Firebase
+        </button>
+      </div>
+
+      <div class="bg-indigo-50/60 p-3.5 rounded-xl border border-indigo-100 flex items-center justify-between gap-3">
+        <div>
+          <h4 class="text-xs font-bold text-indigo-950 uppercase tracking-wider">Bulk Upload CSV</h4>
+          <p class="text-[11px] text-slate-500">Columns: <code>Candidate ID, Full Name, Class, Password</code></p>
+        </div>
+        <label class="px-3.5 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition cursor-pointer shrink-0">
+          <i class="fa-solid fa-file-csv mr-1.5"></i>Upload CSV
+          <input type="file" id="studentsCsvFileInput" accept=".csv" onchange="uploadStudentsCSV(event)" class="hidden">
+        </label>
+      </div>
+
+      <div class="flex-1 overflow-y-auto space-y-2 border border-slate-200 rounded-xl p-3 bg-white">
+        <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Current Roster in Firebase (<span id="rosterCountText">0</span>)</h4>
+        <div id="manageStudentsList" class="space-y-1.5"></div>
+      </div>
+
+      <div class="flex items-center justify-end pt-2 border-t border-slate-100">
+        <button onclick="closeManageStudentsModal()" class="px-4 py-2 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: TEACHER ACCESS SECURITY -->
+  <div id="passwordModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 space-y-4">
+      <div class="text-center space-y-2">
+        <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto text-xl font-bold">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <h3 class="text-base font-bold text-slate-900">Teacher Grid Security</h3>
+        <p class="text-xs text-slate-500">Please enter the teacher password to unlock the evaluation center.</p>
+      </div>
+      <div>
+        <input 
+          type="password" 
+          id="teacherPasswordInput" 
+          placeholder="Enter password..." 
+          onkeydown="if(event.key==='Enter') verifyTeacherPassword()"
+          class="w-full text-center text-sm p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+        >
+        <p id="passwordErrorMsg" class="text-rose-500 text-[11px] font-semibold text-center mt-1 hidden">Incorrect password.</p>
+      </div>
+      <div class="flex items-center space-x-2">
+        <button onclick="closePasswordModal()" class="w-1/2 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition">Cancel</button>
+        <button onclick="verifyTeacherPassword()" class="w-1/2 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-md transition">Unlock</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD NEW TASK (PDF) -->
+  <div id="addTaskModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-100 space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-sm">
+            <i class="fa-solid fa-file-circle-plus"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-slate-900">Create Task from PDF</h3>
+            <p class="text-xs text-slate-500">Extract prompt & quotes to match Task 1 style</p>
+          </div>
+        </div>
+        <button onclick="closeAddTaskModal()" class="text-slate-400 hover:text-slate-600 text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Task Title *</label>
+            <input 
+              type="text" 
+              id="newTaskTitleInput" 
+              placeholder="e.g. Task 2: Public Transport vs Cycling" 
+              class="w-full text-xs p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+            >
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Select Question Paper (PDF or Image)</label>
+            <input 
+              type="file" 
+              id="taskPdfFileInput" 
+              accept=".pdf, image/*" 
+              onchange="onPdfFileSelected(event)"
+              class="w-full text-xs p-1.5 border border-slate-200 rounded-xl file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-indigo-50 file:text-indigo-700"
+            >
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Topic / Main Prompt Statement *</label>
+          <textarea 
+            id="newTaskHeadingInput" 
+            rows="4" 
+            placeholder="Prompt text..." 
+            class="w-full text-xs p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none font-medium text-slate-800"
+          ></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1.5">Friend Comments for Speech Bubbles (4 Ideas)</label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div class="p-2.5 rounded-xl border border-indigo-200 bg-indigo-50/30 space-y-1">
+              <span class="text-[10px] font-bold text-indigo-700 uppercase">Bubble 1</span>
+              <textarea id="bubbleInput1" rows="2" class="w-full text-xs p-2 border border-slate-200 rounded-lg bg-white font-serif"></textarea>
+            </div>
+            <div class="p-2.5 rounded-xl border border-rose-200 bg-rose-50/30 space-y-1">
+              <span class="text-[10px] font-bold text-rose-700 uppercase">Bubble 2</span>
+              <textarea id="bubbleInput2" rows="2" class="w-full text-xs p-2 border border-slate-200 rounded-lg bg-white font-serif"></textarea>
+            </div>
+            <div class="p-2.5 rounded-xl border border-emerald-200 bg-emerald-50/30 space-y-1">
+              <span class="text-[10px] font-bold text-emerald-700 uppercase">Bubble 3</span>
+              <textarea id="bubbleInput3" rows="2" class="w-full text-xs p-2 border border-slate-200 rounded-lg bg-white font-serif"></textarea>
+            </div>
+            <div class="p-2.5 rounded-xl border border-amber-200 bg-amber-50/30 space-y-1">
+              <span class="text-[10px] font-bold text-amber-700 uppercase">Bubble 4</span>
+              <textarea id="bubbleInput4" rows="2" class="w-full text-xs p-2 border border-slate-200 rounded-lg bg-white font-serif"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between pt-3 border-t border-slate-100">
+        <span class="text-xs text-slate-400">Creates formatted speech bubbles</span>
+        <div class="flex items-center space-x-2">
+          <button onclick="closeAddTaskModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl">Cancel</button>
+          <button id="saveNewTaskBtn" onclick="processAndSaveNewTask()" class="px-5 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-md transition flex items-center">
+            <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i><span>Publish Task</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: MANAGE TASKS -->
+  <div id="manageTasksModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 space-y-4 max-h-[85vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-sm">
+            <i class="fa-solid fa-list-check"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-slate-900">Manage Writing Tasks</h3>
+            <p class="text-xs text-slate-500">Delete custom tasks or switch active task</p>
+          </div>
+        </div>
+        <button onclick="closeManageTasksModal()" class="text-slate-400 hover:text-slate-600 text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div id="tasksListManageContainer" class="space-y-2"></div>
+
+      <div class="flex items-center justify-between pt-3 border-t border-slate-100">
+        <button onclick="openAddTaskModal(); closeManageTasksModal();" class="px-3.5 py-1.5 text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-xl transition inline-flex items-center">
+          <i class="fa-solid fa-plus mr-1"></i>Add Another Task
+        </button>
+        <button onclick="closeManageTasksModal()" class="px-4 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: STUDENT RESULT LOOKUP -->
+  <div id="studentResultModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-sm">
+            <i class="fa-solid fa-award"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-slate-900">Check My Graded Paper</h3>
+            <p class="text-xs text-slate-500">Enter your Candidate ID to view marks</p>
+          </div>
+        </div>
+        <button onclick="closeStudentResultModal()" class="text-slate-400 hover:text-slate-600 text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="flex items-center space-x-2">
+        <input 
+          type="text" 
+          id="studentSearchIdInput" 
+          placeholder="Enter Candidate ID (e.g. SA-2026-042)" 
+          onkeydown="if(event.key==='Enter') searchStudentPaperResult()"
+          class="flex-1 text-xs p-2.5 border border-slate-200 rounded-xl font-mono uppercase focus:ring-2 focus:ring-amber-500 outline-none"
+        >
+        <button onclick="searchStudentPaperResult()" class="px-4 py-2.5 text-xs font-bold text-white bg-amber-600 hover:bg-amber-700 rounded-xl transition">
+          <i class="fa-solid fa-magnifying-glass mr-1"></i>Search
+        </button>
+      </div>
+
+      <div id="studentSearchResultContent" class="hidden space-y-3 pt-2"></div>
+    </div>
+  </div>
+
+  <!-- MODAL: CLAUDE AI EVALUATION -->
+  <div id="claudePromptModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-100 space-y-4 max-h-[90vh] flex flex-col">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-8 h-8 rounded-lg bg-purple-600 text-white flex items-center justify-center font-bold text-sm">
+            <i class="fa-solid fa-robot"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-slate-900">Anthropic Claude Evaluation Assistant</h3>
+            <p class="text-xs text-slate-500">Generate prompt and copy to Claude</p>
+          </div>
+        </div>
+        <button onclick="closeClaudePromptModal()" class="text-slate-400 hover:text-slate-600 text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3 flex-1 overflow-y-auto">
+        <div class="bg-slate-900 text-slate-200 p-3 rounded-xl font-mono text-xs max-h-48 overflow-y-auto">
+          <pre id="claudePromptCodeBlock"><code>Prompt generating...</code></pre>
+        </div>
+        <button onclick="copyClaudePromptToClipboard()" class="w-full py-2 text-xs font-bold text-purple-700 bg-purple-50 hover:bg-purple-100 rounded-xl transition">
+          <i class="fa-regular fa-copy mr-1.5"></i>Copy Prompt for Claude
+        </button>
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Paste Claude's JSON Output Below:</label>
+          <textarea 
+            id="claudeResponseInput" 
+            rows="4" 
+            placeholder='{"scores": {"lang_common_vocab": 2, ...}, "feedback": "..."}' 
+            class="w-full text-xs p-2.5 font-mono border border-slate-200 rounded-xl outline-none"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end space-x-2 pt-2 border-t border-slate-100">
+        <button onclick="closeClaudePromptModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl">Close</button>
+        <button onclick="applyClaudeJsonEvaluation()" class="px-5 py-2 text-xs font-bold text-white bg-purple-600 hover:bg-purple-700 rounded-xl transition">Apply Claude Marks</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTIFICATION MODAL -->
+  <div id="notificationModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 space-y-4">
+      <div class="flex items-center space-x-3">
+        <div id="notifIconWrapper" class="w-10 h-10 rounded-xl flex items-center justify-center text-lg font-bold">
+          <i id="notifIcon" class="fa-solid fa-circle-info"></i>
+        </div>
+        <div>
+          <h4 id="notifTitle" class="text-sm font-bold text-slate-900">Notification</h4>
+          <p id="notifMessage" class="text-xs text-slate-500 mt-0.5 leading-relaxed">Message text</p>
+        </div>
+      </div>
+      <div id="notifButtonsRow" class="flex items-center justify-end space-x-2 pt-2">
+        <button id="notifPrimaryBtn" onclick="closeNotification()" class="px-4 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRINT REPORT ROOT -->
+  <div id="printReportRoot" class="hidden p-6 bg-white font-sans text-slate-900 max-w-4xl mx-auto">
+    <div class="border-b-2 border-indigo-900 pb-3 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <img src="logo.png" alt="School Logo" class="h-10 w-10 object-contain" onerror="this.style.display='none';">
+        <div>
+          <h2 class="text-base font-extrabold text-indigo-950 uppercase tracking-wide">Cambridge IGCSE ESL • Exercise 6</h2>
+          <p class="text-xs font-bold text-slate-600">Writing Assessment Evaluation & Examiner Mark Sheet</p>
+        </div>
+      </div>
+      <div class="text-right">
+        <span class="inline-block px-3 py-1 bg-indigo-900 text-white text-xs font-bold rounded-lg uppercase tracking-wider">Official Report</span>
+        <p id="prDateText" class="text-[10px] text-slate-400 mt-1">Date: 2026-09-05</p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-4 gap-2 py-3 border-b border-slate-200 text-xs bg-slate-50/70 p-2.5 rounded-xl mt-2">
+      <div>
+        <span class="block text-[10px] font-bold text-slate-400 uppercase">Student Name</span>
+        <strong id="prStudentName" class="text-slate-800 text-xs">Jane Doe</strong>
+      </div>
+      <div>
+        <span class="block text-[10px] font-bold text-slate-400 uppercase">Candidate ID</span>
+        <strong id="prCandidateId" class="text-indigo-800 font-mono text-xs">SA-2026-042</strong>
+      </div>
+      <div>
+        <span class="block text-[10px] font-bold text-slate-400 uppercase">Class / Task</span>
+        <span id="prClassAndTask" class="text-slate-700 font-semibold text-xs">Year 11 • Task 1</span>
+      </div>
+      <div>
+        <span class="block text-[10px] font-bold text-slate-400 uppercase">Word Count</span>
+        <span id="prWordCount" class="font-bold text-emerald-700 text-xs">178 Words</span>
+      </div>
+    </div>
+
+    <div class="my-3 p-3.5 rounded-xl border border-slate-200 bg-white" style="height: auto; max-height: none; overflow: visible;">
+      <h3 id="prArticleHeadline" class="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-1 mb-2 font-serif">Article Headline</h3>
+      <div id="prArticleBody" class="text-xs font-serif leading-relaxed text-slate-800 whitespace-pre-wrap" style="height: auto; max-height: none; overflow: visible;">Student text...</div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3 my-2 text-xs">
+      <div class="border border-indigo-200 rounded-xl p-2.5 bg-indigo-50/20">
+        <div class="flex items-center justify-between border-b border-indigo-100 pb-1 mb-1.5">
+          <span class="font-bold text-indigo-950 uppercase text-[11px]">Language (14 Marks)</span>
+          <span id="prLangScoreBadge" class="font-bold text-indigo-700 text-[11px]">11 / 14</span>
+        </div>
+        <div id="prLangChecklistSummary" class="space-y-0.5 text-[10px] text-slate-600"></div>
+      </div>
+
+      <div class="border border-emerald-200 rounded-xl p-2.5 bg-emerald-50/20">
+        <div class="flex items-center justify-between border-b border-emerald-100 pb-1 mb-1.5">
+          <span class="font-bold text-emerald-950 uppercase text-[11px]">Content (12 Marks)</span>
+          <span id="prContentScoreBadge" class="font-bold text-emerald-700 text-[11px]">10 / 12</span>
+        </div>
+        <div id="prContentChecklistSummary" class="space-y-0.5 text-[10px] text-slate-600"></div>
+      </div>
+    </div>
+
+    <div class="bg-gradient-to-r from-indigo-900 to-slate-900 text-white p-3 rounded-xl flex items-center justify-between my-2">
+      <div>
+        <span class="text-[10px] font-bold uppercase text-indigo-200">Raw Checklist Mark</span>
+        <div id="prRawScoreBadge" class="text-base font-extrabold">21 / 26 Marks</div>
+      </div>
+      <div class="text-right">
+        <span class="text-[10px] font-bold uppercase text-emerald-300">Final Official Converted Mark</span>
+        <div id="prConvertedScoreBadge" class="text-xl font-extrabold text-emerald-300">12.1 / 15 Marks</div>
+      </div>
+    </div>
+
+    <div class="border border-amber-200 bg-amber-50/30 rounded-xl p-3 flex flex-col justify-between mt-2">
+      <div>
+        <span class="block text-[10px] font-bold text-amber-900 uppercase">Examiner Remarks</span>
+        <p id="prExaminerFeedback" class="text-xs text-slate-800 mt-1 italic leading-relaxed">Feedback text...</p>
+      </div>
+
+      <div class="flex items-end justify-between border-t border-amber-200/60 pt-2 mt-3">
+        <div>
+          <span class="text-[10px] text-slate-500 uppercase font-semibold">Evaluation Status: Complete</span>
+          <p class="text-xs font-bold text-slate-800">Graded by: <span class="text-indigo-950">Amanullah Khan</span></p>
+        </div>
+        <div class="text-center">
+          <img src="mysign.png" alt="Teacher Signature" class="h-8 max-w-[120px] object-contain mx-auto" onerror="this.style.display='none'; document.getElementById('prSigFallback').classList.remove('hidden');">
+          <span id="prSigFallback" class="hidden font-handwriting text-base font-bold text-indigo-950 block">Amanullah Khan</span>
+          <span class="block text-[9px] text-slate-400 uppercase tracking-wider">Teacher Signature</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="sticky bottom-0 z-30 py-2.5 border-t border-slate-200 bg-white/95 backdrop-blur-md text-center text-xs text-slate-500 no-print">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <span class="font-bold text-slate-800">Cambridge IGCSE ESL Exercise 6 Workspace</span>
+      <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-slate-600">
+        <span class="font-semibold text-indigo-950"><i class="fa-solid fa-user-tie text-indigo-600 mr-1.5"></i>Created by: Amanullah Khan</span>
+        <span><i class="fa-solid fa-phone text-emerald-600 mr-1"></i>+966568959394</span>
+        <a href="mailto:amankhan@smartstudygrid.com" class="hover:text-indigo-600 transition"><i class="fa-solid fa-envelope text-indigo-500 mr-1"></i>amankhan@smartstudygrid.com</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const TEACHER_PASSWORD = "Pakistan1947";
+    let editingTaskId = null;
+
+    // Master in-memory state
+    let submissions = [];
+    let availableStudents = [];
+    let availableTasks = [
+      {
+        id: 'task_cars_default',
+        title: 'Task 1: The Car Debate (Advantages vs Disadvantages)',
+        heading: 'Your school year group is doing a project on the advantages and disadvantages of the car as a means of transport.',
+        isDefault: true,
+        bubbles: [
+          { text: '“It would take twice the time for me to travel by bus or train than by car.”', note: 'Bus vs train time difference' },
+          { text: '“Cars cause more accidents than any other forms of transport.”', note: 'Safety concerns' },
+          { text: '“It’s cheaper for a family to travel together in a car than by public transport.”', note: 'Family travel costs' },
+          { text: '“There are so many cars on the road, drivers become frustrated and angry.”', note: 'Traffic frustration' }
+        ],
+        imageData: null
+      }
+    ];
+
+    let currentActiveTaskId = 'task_cars_default';
+    let currentLoggedStudent = null;
+
+    const CONVERSION_26_TO_15 = {
+      0: 0.0, 1: 0.6, 2: 1.2, 3: 1.7, 4: 2.3, 5: 2.9, 6: 3.5, 7: 4.0, 8: 4.6, 9: 5.2, 10: 5.8,
+      11: 6.3, 12: 6.9, 13: 7.5, 14: 8.1, 15: 8.7, 16: 9.2, 17: 9.8, 18: 10.4, 19: 11.0,
+      20: 11.5, 21: 12.1, 22: 12.7, 23: 13.3, 24: 13.8, 25: 14.4, 26: 15.0
+    };
+
+    const RUBRIC_CRITERIA = {
+      language: [
+        { id: 'lang_common_vocab', label: 'Effectively used common vocabulary', desc: 'Accurate and natural high-frequency words' },
+        { id: 'lang_less_common_vocab', label: 'Effectively used less common vocabulary', desc: 'Ambitious lexical choices, idioms' },
+        { id: 'lang_simple_struct', label: 'Effective use of simple structure', desc: 'Accurate basic sentences' },
+        { id: 'lang_complex_struct', label: 'Effective use of complex structure', desc: 'Subordinate clauses, passive voice' },
+        { id: 'lang_accuracy', label: 'High level of language accuracy throughout', desc: 'Minimal spelling or tense errors' },
+        { id: 'lang_sequenced', label: 'Effectively organized and sequenced ideas', desc: 'Cohesive paragraph progression' },
+        { id: 'lang_linking', label: 'Effective use of linking words', desc: 'Connectors like "Conversely", "Furthermore"' }
+      ],
+      content: [
+        { id: 'cont_fulfilled', label: 'Task is fulfilled / Addressed prompt aspects', desc: 'Addresses both advantages and disadvantages' },
+        { id: 'cont_register', label: 'Consistently appropriate style and register', desc: 'Engaging school-aged readership' },
+        { id: 'cont_purpose_audience', label: 'Excellent sense of purpose and audience', desc: 'Clear perspective, rhetorical awareness' },
+        { id: 'cont_development_length', label: 'Very well developed with appropriate length', desc: '150-200 words target' },
+        { id: 'cont_personalizing', label: 'Effective use of personalizing', desc: 'Relatable voice' },
+        { id: 'cont_creative_interest', label: 'Very creative and interesting', desc: 'Engaging title and conclusion' }
+      ]
+    };
+
+    let annotationCanvas, annotationCtx;
+    let isDrawing = false;
+    let currentDrawingTool = 'red_pen';
+    let annotationStrokes = [];
+    let currentStroke = null;
+
+    let activeSubmissionId = null;
+    let isTeacherUnlocked = false;
+
+    let timerSeconds = 1800;
+    let timerInterval = null;
+    let timerRunning = false;
+    let stagedPdfDataUrl = null;
+
+    window.onload = function () {
+      buildRubricChecklistUI();
+      initAnnotationCanvas();
+      updateWordCount();
+      renderTaskDropdown();
+      applyActiveTaskView();
+      renderStudentSubmissionsSidebar();
+      switchView('student');
+    };
+
+    /* FIREBASE BRIDGE FUNCTIONS */
+    window.syncSubmissionsFromFirebase = function(remoteList) {
+      submissions = Array.isArray(remoteList) ? remoteList : [];
+      updateSubmissionMetrics();
+      renderSubmissionsTable();
+      renderStudentSubmissionsSidebar();
+    };
+
+    window.syncStudentsFromFirebase = function(remoteList) {
+      availableStudents = Array.isArray(remoteList) ? remoteList : [];
+      renderStudentDropdown();
+      renderManageStudentsList();
+    };
+
+    window.syncTasksFromFirebase = function(remoteList) {
+      if (Array.isArray(remoteList) && remoteList.length > 0) {
+        availableTasks = remoteList;
+        renderTaskDropdown();
+        applyActiveTaskView();
+      }
+    };
+
+    function manualRefreshFirebase() {
+      if (typeof window.manualFetchAllFirebase === 'function') {
+        window.manualFetchAllFirebase();
+      }
+    }
+
+    /* STUDENT LOGIN SYSTEM & SIDEBAR SYNC */
+    function openStudentLoginModal() {
+      renderStudentDropdown();
+      document.getElementById('modalLoginError')?.classList.add('hidden');
+      document.getElementById('modalDirectIdInput').value = document.getElementById('studentIdInput')?.value || '';
+      document.getElementById('modalDirectPassInput').value = '';
+      document.getElementById('studentLoginModal')?.classList.remove('hidden');
+    }
+
+    function closeStudentLoginModal() {
+      document.getElementById('studentLoginModal')?.classList.add('hidden');
+    }
+
+    function renderStudentDropdown() {
+      const modalSelect = document.getElementById('modalRosterSelect');
+      if (!modalSelect) return;
+
+      modalSelect.innerHTML = '<option value="">-- Choose your name from roster --</option>';
+      const sorted = [...availableStudents].sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+      sorted.forEach(stu => {
+        const opt = document.createElement('option');
+        opt.value = stu.candidateId || stu.id;
+        opt.innerText = `${stu.name} (${stu.candidateId || stu.id})${stu.className ? ' - ' + stu.className : ''}`;
+        modalSelect.appendChild(opt);
+      });
+    }
+
+    function onModalRosterSelect(selectedId) {
+      if (!selectedId) return;
+      const found = availableStudents.find(s => (s.candidateId || s.id).toUpperCase() === selectedId.toUpperCase());
+      if (found) {
+        document.getElementById('modalDirectIdInput').value = found.candidateId || found.id;
+        document.getElementById('modalDirectPassInput').focus();
+      }
+    }
+
+    function executeStudentModalLogin() {
+      const typedId = document.getElementById('modalDirectIdInput')?.value?.trim().toUpperCase();
+      const typedPass = document.getElementById('modalDirectPassInput')?.value?.trim();
+      const errEl = document.getElementById('modalLoginError');
+
+      if (!typedId) {
+        if (errEl) {
+          errEl.innerHTML = '<i class="fa-solid fa-circle-exclamation mr-1"></i>Please enter your Candidate ID.';
+          errEl.classList.remove('hidden');
+        }
+        return;
+      }
+
+      let student = availableStudents.find(s => (s.candidateId || s.id).toUpperCase() === typedId);
+
+      if (student && student.password) {
+        if (student.password !== typedPass) {
+          if (errEl) {
+            errEl.innerHTML = '<i class="fa-solid fa-circle-exclamation mr-1"></i>Incorrect password for this student.';
+            errEl.classList.remove('hidden');
+          }
+          return;
+        }
+      }
+
+      currentLoggedStudent = student || { candidateId: typedId, name: typedId, className: 'General' };
+
+      document.getElementById('studentIdInput').value = currentLoggedStudent.candidateId || typedId;
+      document.getElementById('studentNameInput').value = currentLoggedStudent.name || '';
+      document.getElementById('studentClassInput').value = currentLoggedStudent.className || '';
+      syncCandidateId(currentLoggedStudent.candidateId || typedId);
+
+      document.getElementById('unverifiedPill')?.classList.add('hidden');
+      const verPill = document.getElementById('verifiedPill');
+      if (verPill) {
+        verPill.classList.remove('hidden');
+        document.getElementById('verifiedCandidateBadge').innerText = `${currentLoggedStudent.name} (${currentLoggedStudent.candidateId})`;
+      }
+
+      document.getElementById('navStudentLoginBtn')?.classList.add('hidden');
+      const navLoggedPill = document.getElementById('navStudentLoggedPill');
+      if (navLoggedPill) {
+        navLoggedPill.classList.remove('hidden');
+        navLoggedPill.classList.add('flex');
+        document.getElementById('navStudentBadgeName').innerText = currentLoggedStudent.name || typedId;
+      }
+
+      closeStudentLoginModal();
+      renderStudentSubmissionsSidebar();
+      showNotification("Welcome, " + (currentLoggedStudent.name || typedId), "You are logged in. Your submissions appear on the left sidebar.", "success");
+    }
+
+    function logoutStudent() {
+      currentLoggedStudent = null;
+      document.getElementById('studentIdInput').value = '';
+      document.getElementById('studentNameInput').value = '';
+      document.getElementById('studentClassInput').value = '';
+      syncCandidateId('');
+
+      document.getElementById('verifiedPill')?.classList.add('hidden');
+      document.getElementById('unverifiedPill')?.classList.remove('hidden');
+
+      document.getElementById('navStudentLoggedPill')?.classList.add('hidden');
+      document.getElementById('navStudentLoggedPill')?.classList.remove('flex');
+      document.getElementById('navStudentLoginBtn')?.classList.remove('hidden');
+
+      renderStudentSubmissionsSidebar();
+      showNotification("Logged Out", "You have successfully logged out of this candidate session.", "info");
+    }
+
+    function switchStudentAccount() {
+      logoutStudent();
+      openStudentLoginModal();
+    }
+
+    function renderStudentSubmissionsSidebar() {
+      const activeCandidateId = (document.getElementById('studentIdInput')?.value || currentLoggedStudent?.candidateId || '').trim().toUpperCase();
+      const promptEl = document.getElementById('sidebarNoLoginPrompt');
+      const listEl = document.getElementById('sidebarSubmissionsList');
+      const badgeEl = document.getElementById('studentSubmissionsCountBadge');
+      if (!listEl) return;
+
+      if (!activeCandidateId) {
+        promptEl?.classList.remove('hidden');
+        listEl.classList.add('hidden');
+        if (badgeEl) badgeEl.innerText = '0 Papers';
+        return;
+      }
+
+      promptEl?.classList.add('hidden');
+      listEl.classList.remove('hidden');
+
+      const mySubs = submissions.filter(s => (s.studentId || '').toUpperCase() === activeCandidateId);
+      if (badgeEl) badgeEl.innerText = `${mySubs.length} Paper${mySubs.length === 1 ? '' : 's'}`;
+
+      listEl.innerHTML = '';
+      if (mySubs.length === 0) {
+        listEl.innerHTML = `
+          <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center text-slate-500 text-xs">
+            <i class="fa-solid fa-pen-clip text-slate-400 mb-1"></i>
+            <p class="font-bold">No submissions yet</p>
+            <p class="text-[11px] text-slate-400 mt-0.5">Submit your article above to see your history and evaluation here.</p>
+          </div>
+        `;
+        return;
+      }
+
+      mySubs.forEach(sub => {
+        const item = document.createElement('div');
+        const isGraded = !!sub.isGraded;
+        item.className = "p-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 transition space-y-1.5 shadow-sm";
+        const docKey = sub.docId || sub.id;
+
+        item.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-bold text-slate-400">${escapeHtml((sub.timestamp || '').split(',')[0] || 'Recent')}</span>
+            ${isGraded ? 
+              `<span class="text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800"><i class="fa-solid fa-check mr-1"></i>${sub.marks?.converted15 || '0.0'}/15 Marks</span>` :
+              `<span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800"><i class="fa-regular fa-clock mr-1"></i>Under Review</span>`
+            }
+          </div>
+          <h4 class="text-xs font-bold text-slate-800 truncate" title="${escapeHtml(sub.headline || '')}">${escapeHtml(sub.headline || 'Untitled Article')}</h4>
+          <div class="flex items-center justify-between text-[10px] text-slate-500 pt-1 border-t border-slate-100">
+            <span>${sub.wordCount || 0} words</span>
+            <div class="flex items-center space-x-1.5">
+              <button type="button" onclick="loadDraftToEditor('${docKey}')" class="text-indigo-600 hover:text-indigo-800 font-bold underline" title="Load into editor">
+                Load
+              </button>
+              ${isGraded ? `
+                <span>•</span>
+                <button type="button" onclick="printStudentPersonalReport('${docKey}')" class="text-emerald-700 hover:text-emerald-900 font-bold underline">
+                  <i class="fa-solid fa-print mr-0.5"></i>Report
+                </button>
+              ` : ''}
+            </div>
+          </div>
+        `;
+        listEl.appendChild(item);
+      });
+    }
+
+    function loadDraftToEditor(docId) {
+      const match = submissions.find(s => (s.docId === docId || s.id === docId));
+      if (!match) return;
+
+      document.getElementById('articleHeadlineInput').value = match.headline || '';
+      document.getElementById('articleBodyInput').value = match.articleBody || '';
+      if (match.taskId) switchActiveTask(match.taskId);
+      updateWordCount();
+      showNotification("Article Loaded", "Restored your draft into the writing area.", "info");
+    }
+
+    /* SUBMISSIONS ENGINE (SAVING TO FIREBASE) */
+    function validateAndSubmitArticle() {
+      const studentId = document.getElementById('studentIdInput')?.value?.trim();
+      const studentName = document.getElementById('studentNameInput')?.value?.trim();
+      const studentClass = document.getElementById('studentClassInput')?.value?.trim() || 'General';
+      const headline = document.getElementById('articleHeadlineInput')?.value?.trim();
+      const body = document.getElementById('articleBodyInput')?.value?.trim();
+
+      if (!studentId || !studentName) {
+        showNotification("Candidate Details Required", "Please click 'Student Login' or fill your Candidate ID and Name.", "error");
+        return;
+      }
+      if (!headline) {
+        showNotification("Headline Missing", "Please enter an Article Headline / Title.", "error");
+        return;
+      }
+      if (!body) {
+        showNotification("Article Body Empty", "Please write your article before submitting.", "error");
+        return;
+      }
+
+      const words = body.split(/\s+/).length;
+      executeSubmission(studentId, studentName, studentClass, headline, body, words);
+    }
+
+    async function executeSubmission(studentId, studentName, studentClass, headline, body, words) {
+      const activeTask = availableTasks.find(t => t.id === currentActiveTaskId) || availableTasks[0];
+      const docId = `${studentId.toUpperCase()}_${Date.now()}`;
+
+      const newSubmission = {
+        id: docId,
+        timestamp: new Date().toLocaleString(),
+        studentId: studentId.toUpperCase(),
+        name: studentName,
+        className: studentClass,
+        taskId: activeTask.id,
+        taskTitle: activeTask.title,
+        headline: headline,
+        articleBody: body,
+        wordCount: words,
+        isGraded: false,
+        marks: { raw26: 0, converted15: 0.0, language14: 0, content12: 0 },
+        scores: {},
+        feedback: '',
+        annotations: []
+      };
+
+      const btn = document.getElementById('submitArticleBtn');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>Saving to Firebase...';
+      }
+
+      try {
+        const { doc, setDoc } = window.firestoreTools;
+        await setDoc(doc(window.db, "submissions", docId), newSubmission);
+
+        renderStudentSubmissionsSidebar();
+        showNotification("Article Submitted Successfully!", `Your paper has been uploaded to Firebase under Candidate ID: ${studentId.toUpperCase()}.`, "success");
+      } catch (err) {
+        console.error("Firebase submit error:", err);
+        showNotification("Submission Failed", err.message || "Could not write to Firebase.", "error");
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-paper-plane mr-2"></i>Submit Article to Firebase';
+        }
+      }
+    }
+
+    /* TEACHER SUBMISSIONS RENDERING */
+    function updateSubmissionMetrics() {
+      const total = submissions.length;
+      const inRange = submissions.filter(s => s.wordCount >= 150 && s.wordCount <= 200).length;
+      const graded = submissions.filter(s => s.isGraded).length;
+      const avg = total > 0 ? Math.round(submissions.reduce((acc, s) => acc + (s.wordCount || 0), 0) / total) : 0;
+
+      const statTot = document.getElementById('statTotalSubmissions');
+      const statRng = document.getElementById('statInRange');
+      const statAvg = document.getElementById('statAverageWords');
+      const statGrd = document.getElementById('statGradedCount');
+      const countEl = document.getElementById('submissionsListCount');
+
+      if (statTot) statTot.innerText = total;
+      if (statRng) statRng.innerText = inRange;
+      if (statAvg) statAvg.innerText = avg;
+      if (statGrd) statGrd.innerText = graded;
+      if (countEl) countEl.innerText = total;
+    }
+
+    function renderSubmissionsTable() {
+      const container = document.getElementById('submissionsListContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (submissions.length === 0) {
+        container.innerHTML = `
+          <div class="p-8 text-center text-slate-400 border border-dashed border-slate-200 rounded-xl">
+            <i class="fa-solid fa-inbox text-3xl mb-2 text-slate-300"></i>
+            <p class="text-xs font-medium">No submissions in Firebase yet.</p>
+            <p class="text-[11px] mt-1 text-slate-400">Submissions will show here instantly when students submit.</p>
+          </div>
+        `;
+        return;
+      }
+
+      submissions.forEach(sub => {
+        const docKey = sub.docId || sub.id;
+        const isActive = docKey === activeSubmissionId;
+        const card = document.createElement('div');
+        card.className = `p-3 rounded-xl border transition cursor-pointer flex flex-col justify-between space-y-1.5 ${isActive ? 'border-indigo-600 bg-indigo-50/60 shadow-sm ring-1 ring-indigo-600' : 'border-slate-200 bg-white hover:bg-slate-50'}`;
+        card.onclick = () => selectSubmissionForGrading(docKey);
+
+        card.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-indigo-700 bg-indigo-50 px-1.5 py-0.5 rounded">${escapeHtml(sub.studentId || 'ID')}</span>
+            <div class="flex items-center space-x-1.5">
+              ${sub.isGraded ? `<span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">${sub.marks?.converted15 || '0.0'}/15</span>` : '<span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800">Ungraded</span>'}
+              <button type="button" onclick="event.stopPropagation(); deleteSubmissionFirebase('${docKey}')" class="text-slate-400 hover:text-rose-600 p-1 text-xs" title="Delete Paper">
+                <i class="fa-regular fa-trash-can"></i>
+              </button>
+            </div>
+          </div>
+          <h4 class="text-xs font-bold text-slate-800 truncate">${escapeHtml(sub.name || 'Student')}</h4>
+          <p class="text-[11px] text-slate-500 truncate italic">"${escapeHtml(sub.headline || 'No title')}"</p>
+          <div class="flex items-center justify-between text-[10px] text-slate-400 pt-1 border-t border-slate-100">
+            <span>${sub.wordCount || 0} words</span>
+            <span>${escapeHtml(sub.taskTitle ? sub.taskTitle.split(':')[0] : 'Task')}</span>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function selectSubmissionForGrading(id) {
+      activeSubmissionId = id;
+      const sub = submissions.find(s => (s.docId === id || s.id === id));
+      if (!sub) return;
+
+      document.getElementById('noSubmissionSelectedNotice')?.classList.add('hidden');
+      document.getElementById('activeSubmissionDetail')?.classList.remove('hidden');
+
+      document.getElementById('activeStudentIdBadge').innerText = `ID: ${sub.studentId}`;
+      document.getElementById('activeStudentClassBadge').innerText = sub.className || 'General';
+      document.getElementById('activeTaskBadge').innerText = sub.taskTitle ? sub.taskTitle.split(':')[0] : 'Task 1';
+      document.getElementById('activeStudentNameHeading').innerText = sub.name || 'Candidate';
+      document.getElementById('activeStudentTimeText').innerText = `Submitted: ${sub.timestamp || 'N/A'} • ${sub.wordCount || 0} words`;
+
+      document.getElementById('activeArticleHeadline').innerText = sub.headline || 'Untitled Article';
+      document.getElementById('activeArticleBody').innerText = sub.articleBody || '';
+      document.getElementById('activeTeacherFeedback').value = sub.feedback || '';
+
+      RUBRIC_CRITERIA.language.forEach(c => updateCriterionButtonUI(c.id, sub.scores?.[c.id]));
+      RUBRIC_CRITERIA.content.forEach(c => updateCriterionButtonUI(c.id, sub.scores?.[c.id]));
+      calculateCurrentScores(sub);
+
+      annotationStrokes = Array.isArray(sub.annotations) ? JSON.parse(JSON.stringify(sub.annotations)) : [];
+      setTimeout(() => {
+        resizeAnnotationCanvas();
+        redrawAllAnnotationStrokes();
+      }, 60);
+
+      renderSubmissionsTable();
+    }
+
+    async function saveActiveGrading() {
+      const sub = submissions.find(s => (s.docId === activeSubmissionId || s.id === activeSubmissionId));
+      if (!sub) return;
+
+      sub.isGraded = true;
+      sub.feedback = document.getElementById('activeTeacherFeedback')?.value?.trim() || '';
+      sub.annotations = JSON.parse(JSON.stringify(annotationStrokes));
+
+      try {
+        const { doc, setDoc } = window.firestoreTools;
+        const targetId = sub.docId || sub.id;
+        await setDoc(doc(window.db, "submissions", targetId), sub, { merge: true });
+
+        renderStudentSubmissionsSidebar();
+        showNotification("Evaluation Saved", `Updated evaluation and marks in Firebase for ${sub.name}.`, "success");
+      } catch (err) {
+        showNotification("Save Error", err.message, "error");
+      }
+    }
+
+    async function deleteSubmissionFirebase(docId) {
+      if (!confirm("Permanently delete this paper from Firebase?")) return;
+      try {
+        const { doc, deleteDoc } = window.firestoreTools;
+        await deleteDoc(doc(window.db, "submissions", docId));
+        if (activeSubmissionId === docId) {
+          activeSubmissionId = null;
+          document.getElementById('activeSubmissionDetail')?.classList.add('hidden');
+          document.getElementById('noSubmissionSelectedNotice')?.classList.remove('hidden');
+        }
+        renderStudentSubmissionsSidebar();
+        showNotification("Paper Deleted", "Submission deleted from Firebase.", "info");
+      } catch (err) {
+        showNotification("Delete Error", err.message, "error");
+      }
+    }
+
+    function confirmDeleteCurrentPaper() {
+      if (activeSubmissionId) deleteSubmissionFirebase(activeSubmissionId);
+    }
+
+    /* AI AUTO EVALUATION & ANTHROPIC CLAUDE ASSISTANT */
+    function autoEvaluateWithAI() {
+      const sub = submissions.find(s => (s.docId === activeSubmissionId || s.id === activeSubmissionId));
+      if (!sub) {
+        showNotification("No Paper Selected", "Please select a student paper from the queue first.", "error");
+        return;
+      }
+      const words = sub.wordCount || 0;
+      const body = (sub.articleBody || '').toLowerCase();
+
+      const hasLinking = /however|moreover|furthermore|conversely|in addition|on the other hand|in conclusion|consequently|nonetheless|therefore/i.test(body);
+      const hasComplex = /although|whereas|despite|in order to|which|while|even though|not only/i.test(body);
+      const hasAdvancedVocab = /congested|convenient|sustainable|detrimental|alternative|subsequently|inevitable|paramount|vital|beneficial|significant/i.test(body);
+
+      const newScores = {
+        lang_common_vocab: 2,
+        lang_less_common_vocab: hasAdvancedVocab ? 2 : 1,
+        lang_simple_struct: 2,
+        lang_complex_struct: hasComplex ? 2 : 1,
+        lang_accuracy: 2,
+        lang_sequenced: words >= 140 ? 2 : 1,
+        lang_linking: hasLinking ? 2 : 1,
+
+        cont_fulfilled: words >= 140 ? 2 : 1,
+        cont_register: 2,
+        cont_purpose_audience: 2,
+        cont_development_length: (words >= 150 && words <= 200) ? 2 : 1,
+        cont_personalizing: 2,
+        cont_creative_interest: 2
+      };
+
+      if (!sub.scores) sub.scores = {};
+      sub.scores = newScores;
+      RUBRIC_CRITERIA.language.forEach(c => updateCriterionButtonUI(c.id, newScores[c.id]));
+      RUBRIC_CRITERIA.content.forEach(c => updateCriterionButtonUI(c.id, newScores[c.id]));
+      calculateCurrentScores(sub);
+
+      const feedbackEl = document.getElementById('activeTeacherFeedback');
+      if (feedbackEl && !feedbackEl.value) {
+        feedbackEl.value = "Commendable balance of advantages and disadvantages. Cohesive linking words are used naturally with sound paragraph organization. Maintain this lexical variety.";
+      }
+
+      showNotification("Checklist Auto-Filled", "Assigned marks based on lexical variety, grammatical structures, cohesion, and length.", "success");
+    }
+
+    function openClaudePromptModal() {
+      const sub = submissions.find(s => (s.docId === activeSubmissionId || s.id === activeSubmissionId));
+      if (!sub) {
+        showNotification("No Paper Selected", "Please select a student paper from the queue first.", "error");
+        return;
+      }
+
+      const prompt = `You are a Cambridge IGCSE English as a Second Language (0510/0511) Senior Examiner evaluating an Exercise 6 article.
+Please evaluate the following student article using the 26-Point Writing Checklist (14 Marks Language + 12 Marks Content):
+
+STUDENT DETAILS:
+Name: ${sub.name}
+Candidate ID: ${sub.studentId}
+Task: ${sub.taskTitle || 'Exercise 6: The Car Debate'}
+Headline: ${sub.headline}
+Word Count: ${sub.wordCount} words
+
+ARTICLE TEXT:
+"${sub.articleBody}"
+
+RUBRIC CRITERIA (Assign 0, 1, or 2 marks each):
+Language (14 marks):
+1. lang_common_vocab
+2. lang_less_common_vocab
+3. lang_simple_struct
+4. lang_complex_struct
+5. lang_accuracy
+6. lang_sequenced
+7. lang_linking
+
+Content (12 marks):
+1. cont_fulfilled
+2. cont_register
+3. cont_purpose_audience
+4. cont_development_length
+5. cont_personalizing
+6. cont_creative_interest
+
+OUTPUT IN EXACT JSON FORMAT:
+{
+  "scores": {
+    "lang_common_vocab": 2,
+    "lang_less_common_vocab": 2,
+    "lang_simple_struct": 2,
+    "lang_complex_struct": 2,
+    "lang_accuracy": 2,
+    "lang_sequenced": 2,
+    "lang_linking": 2,
+    "cont_fulfilled": 2,
+    "cont_register": 2,
+    "cont_purpose_audience": 2,
+    "cont_development_length": 2,
+    "cont_personalizing": 2,
+    "cont_creative_interest": 2
+  },
+  "feedback": "Two-sentence constructive examiner feedback..."
+}`;
+
+      const codeBlock = document.getElementById('claudePromptCodeBlock');
+      if (codeBlock) codeBlock.textContent = prompt;
+      const respInput = document.getElementById('claudeResponseInput');
+      if (respInput) respInput.value = '';
+      document.getElementById('claudePromptModal')?.classList.remove('hidden');
+    }
+
+    function closeClaudePromptModal() {
+      document.getElementById('claudePromptModal')?.classList.add('hidden');
+    }
+
+    function copyClaudePromptToClipboard() {
+      const text = document.getElementById('claudePromptCodeBlock')?.textContent || '';
+      const dummy = document.createElement('textarea');
+      dummy.value = text;
+      document.body.appendChild(dummy);
+      dummy.select();
+      document.execCommand('copy');
+      document.body.removeChild(dummy);
+      showNotification("Copied", "Claude prompt copied to clipboard.", "info");
+    }
+
+    function applyClaudeJsonEvaluation() {
+      const raw = document.getElementById('claudeResponseInput')?.value?.trim();
+      const sub = submissions.find(s => (s.docId === activeSubmissionId || s.id === activeSubmissionId));
+      if (!raw || !sub) return;
+
+      try {
+        const parsed = JSON.parse(raw);
+        if (parsed.scores) {
+          if (!sub.scores) sub.scores = {};
+          sub.scores = { ...sub.scores, ...parsed.scores };
+          RUBRIC_CRITERIA.language.forEach(c => updateCriterionButtonUI(c.id, sub.scores[c.id]));
+          RUBRIC_CRITERIA.content.forEach(c => updateCriterionButtonUI(c.id, sub.scores[c.id]));
+          calculateCurrentScores(sub);
+        }
+        if (parsed.feedback) {
+          const fb = document.getElementById('activeTeacherFeedback');
+          if (fb) fb.value = parsed.feedback;
+        }
+        closeClaudePromptModal();
+        showNotification("Marks Applied", "Updated rubric scores and examiner remarks from Claude.", "success");
+      } catch (e) {
+        showNotification("Invalid JSON", "Could not parse Claude's response JSON. Ensure valid JSON format.", "error");
+      }
+    }
+
+    /* FIREBASE STUDENT ROSTER MANAGEMENT */
+    function openManageStudentsModal() {
+      renderManageStudentsList();
+      document.getElementById('manageStudentsModal')?.classList.remove('hidden');
+    }
+
+    function closeManageStudentsModal() {
+      document.getElementById('manageStudentsModal')?.classList.add('hidden');
+    }
+
+    async function addSingleStudentFirebase() {
+      const id = document.getElementById('newStuId')?.value?.trim().toUpperCase();
+      const name = document.getElementById('newStuName')?.value?.trim();
+      const className = document.getElementById('newStuClass')?.value?.trim() || 'General';
+      const password = document.getElementById('newStuPass')?.value?.trim() || '';
+
+      if (!id || !name) {
+        showNotification("Missing Information", "Candidate ID and Full Name are required.", "error");
+        return;
+      }
+
+      const stuObj = { candidateId: id, name, className, password };
+
+      try {
+        const { doc, setDoc } = window.firestoreTools;
+        await setDoc(doc(window.db, "students", id), stuObj);
+
+        document.getElementById('newStuId').value = '';
+        document.getElementById('newStuName').value = '';
+        document.getElementById('newStuClass').value = '';
+        document.getElementById('newStuPass').value = '';
+        showNotification("Candidate Created", `${name} (${id}) added to Firebase.`, "success");
+      } catch (err) {
+        showNotification("Database Error", err.message, "error");
+      }
+    }
+
+    async function uploadStudentsCSV(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = async function(e) {
+        const lines = e.target.result.split('\n');
+        let count = 0;
+        const { doc, setDoc } = window.firestoreTools;
+
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i].trim();
+          if (!line || line.toLowerCase().startsWith('candidate')) continue;
+
+          const parts = line.split(',').map(p => p.trim().replace(/^["']|["']$/g, ''));
+          if (parts.length >= 2) {
+            const candidateId = parts[0].toUpperCase();
+            const name = parts[1];
+            const className = parts[2] || 'General';
+            const password = parts[3] || '';
+
+            if (candidateId && name) {
+              await setDoc(doc(window.db, "students", candidateId), {
+                candidateId, name, className, password
+              });
+              count++;
+            }
+          }
+        }
+        showNotification("CSV Imported", `Uploaded ${count} candidate(s) to Firebase.`, "success");
+        event.target.value = '';
+      };
+      reader.readAsText(file);
+    }
+
+    function renderManageStudentsList() {
+      const container = document.getElementById('manageStudentsList');
+      const countEl = document.getElementById('rosterCountText');
+      if (!container) return;
+
+      container.innerHTML = '';
+      if (countEl) countEl.innerText = availableStudents.length;
+
+      if (availableStudents.length === 0) {
+        container.innerHTML = '<p class="text-xs text-slate-400 p-2">No students added yet. Add manually above or upload CSV.</p>';
+        return;
+      }
+
+      availableStudents.forEach(stu => {
+        const div = document.createElement('div');
+        div.className = "flex items-center justify-between p-2 rounded-lg bg-slate-50 border border-slate-200 text-xs";
+        div.innerHTML = `
+          <div>
+            <strong class="font-mono text-indigo-700">${escapeHtml(stu.candidateId || stu.id)}</strong> - 
+            <span class="font-bold text-slate-800">${escapeHtml(stu.name)}</span> 
+            <span class="text-slate-500">(${escapeHtml(stu.className || 'General')})</span>
+            ${stu.password ? `<span class="ml-2 text-[10px] text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded font-mono">PIN: ${escapeHtml(stu.password)}</span>` : ''}
+          </div>
+          <button onclick="deleteStudentFirebase('${stu.id || stu.candidateId}')" class="text-rose-600 hover:text-rose-800 p-1">
+            <i class="fa-regular fa-trash-can"></i>
+          </button>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    async function deleteStudentFirebase(id) {
+      try {
+        const { doc, deleteDoc } = window.firestoreTools;
+        await deleteDoc(doc(window.db, "students", id));
+        showNotification("Deleted", "Candidate removed from Firebase.", "info");
+      } catch (err) {
+        showNotification("Error", err.message, "error");
+      }
+    }
+
+    /* TASK MANAGEMENT MODALS & PDF EXTRACTOR */
+    function openAddTaskModal() {
+      editingTaskId = null;
+      document.getElementById('newTaskTitleInput').value = `Task ${availableTasks.length + 1}: `;
+      document.getElementById('newTaskHeadingInput').value = '';
+      document.getElementById('bubbleInput1').value = '';
+      document.getElementById('bubbleInput2').value = '';
+      document.getElementById('bubbleInput3').value = '';
+      document.getElementById('bubbleInput4').value = '';
+      stagedPdfDataUrl = null;
+      document.getElementById('pdfExtractionStatus')?.classList.add('hidden');
+      document.getElementById('addTaskModal')?.classList.remove('hidden');
+    }
+
+    function closeAddTaskModal() {
+      document.getElementById('addTaskModal')?.classList.add('hidden');
+    }
+
+    function openManageTasksModal() {
+      renderManageTasksList();
+      document.getElementById('manageTasksModal')?.classList.remove('hidden');
+    }
+
+    function closeManageTasksModal() {
+      document.getElementById('manageTasksModal')?.classList.add('hidden');
+    }
+
+    function renderManageTasksList() {
+      const container = document.getElementById('tasksListManageContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      availableTasks.forEach((task, index) => {
+        const item = document.createElement('div');
+        item.className = "flex items-center justify-between p-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 transition";
+        item.innerHTML = `
+          <div class="flex-1 min-w-0 pr-3">
+            <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded">Task ${index + 1}</span>
+            <h4 class="text-xs font-bold text-slate-800 truncate">${escapeHtml(task.title)}</h4>
+          </div>
+          <div class="flex items-center space-x-1.5">
+            <button type="button" onclick="switchActiveTask('${task.id}'); closeManageTasksModal();" class="px-2.5 py-1 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg">Select</button>
+            ${task.isDefault ? '' : `<button type="button" onclick="deleteTaskFirebase('${task.id}')" class="p-1.5 text-rose-500 hover:bg-rose-50 rounded-lg"><i class="fa-regular fa-trash-can text-xs"></i></button>`}
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    async function deleteTaskFirebase(taskId) {
+      try {
+        const { doc, deleteDoc } = window.firestoreTools;
+        await deleteDoc(doc(window.db, "tasks", taskId));
+        renderManageTasksList();
+        showNotification("Task Deleted", "Task removed from Firebase.", "info");
+      } catch (err) {
+        showNotification("Error", err.message, "error");
+      }
+    }
+
+    async function processAndSaveNewTask() {
+      const title = document.getElementById('newTaskTitleInput')?.value?.trim() || `Task ${availableTasks.length + 1}`;
+      const heading = document.getElementById('newTaskHeadingInput')?.value?.trim() || title;
+
+      const bubbles = [
+        { text: document.getElementById('bubbleInput1')?.value?.trim() || '“Key point 1.”' },
+        { text: document.getElementById('bubbleInput2')?.value?.trim() || '“Key point 2.”' },
+        { text: document.getElementById('bubbleInput3')?.value?.trim() || '“Key point 3.”' },
+        { text: document.getElementById('bubbleInput4')?.value?.trim() || '“Key point 4.”' }
+      ];
+
+      const taskId = editingTaskId || ('task_' + Date.now());
+      const taskObj = { id: taskId, title, heading, bubbles, imageData: stagedPdfDataUrl || null };
+
+      try {
+        const { doc, setDoc } = window.firestoreTools;
+        await setDoc(doc(window.db, "tasks", taskId), taskObj);
+        closeAddTaskModal();
+        showNotification("Task Published", `Task saved to Firebase database.`, "success");
+      } catch (err) {
+        showNotification("Error", err.message, "error");
+      }
+    }
+
+    async function onPdfFileSelected(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      try {
+        if (file.type === 'application/pdf') {
+          const arrayBuffer = await file.arrayBuffer();
+          const pdf = await pdfjsLib.getDocument(new Uint8Array(arrayBuffer)).promise;
+          const page = await pdf.getPage(1);
+          const viewport = page.getViewport({ scale: 1.5 });
+          const tempCanvas = document.createElement('canvas');
+          const tempCtx = tempCanvas.getContext('2d');
+          tempCanvas.width = viewport.width;
+          tempCanvas.height = viewport.height;
+          await page.render({ canvasContext: tempCtx, viewport: viewport }).promise;
+          stagedPdfDataUrl = tempCanvas.toDataURL('image/jpeg', 0.85);
+
+          const textContent = await page.getTextContent();
+          const fullText = textContent.items.map(item => item.str.trim()).filter(Boolean).join(' ');
+          const projectMatch = fullText.match(/(Your school[\s\S]*?\.)/i);
+          if (projectMatch) document.getElementById('newTaskHeadingInput').value = projectMatch[0].trim();
+        } else {
+          const reader = new FileReader();
+          reader.onload = (e) => { stagedPdfDataUrl = e.target.result; };
+          reader.readAsDataURL(file);
+        }
+      } catch (e) {
+        console.warn("PDF extraction note:", e);
+      }
+    }
+
+    function toggleTaskPdfScan() {
+      const container = document.getElementById('taskPdfScanImageContainer');
+      const btnText = document.getElementById('togglePdfScanBtnText');
+      if (!container) return;
+      if (container.classList.contains('hidden')) {
+        container.classList.remove('hidden');
+        if (btnText) btnText.innerText = 'Hide Original Exam Paper Scan';
+      } else {
+        container.classList.add('hidden');
+        if (btnText) btnText.innerText = 'View Original Exam Paper Scan';
+      }
+    }
+
+    /* EXPORT & UTILITY FUNCTIONS */
+    function exportAllSubmissionsCSV() {
+      if (submissions.length === 0) {
+        showNotification("No Data", "No submissions found to export.", "info");
+        return;
+      }
+      let csv = "ID,Timestamp,Candidate_ID,Student_Name,Class,Task,Headline,Word_Count,Score_Converted_15,Score_Raw_26,Language_14,Content_12,Feedback\n";
+      submissions.forEach(s => {
+        const row = [
+          s.docId || s.id,
+          `"${(s.timestamp||'').replace(/"/g, '""')}"`,
+          `"${(s.studentId||'').replace(/"/g, '""')}"`,
+          `"${(s.name||'').replace(/"/g, '""')}"`,
+          `"${(s.className||'').replace(/"/g, '""')}"`,
+          `"${(s.taskTitle||'').replace(/"/g, '""')}"`,
+          `"${(s.headline||'').replace(/"/g, '""')}"`,
+          s.wordCount || 0,
+          s.marks?.converted15 || 0,
+          s.marks?.raw26 || 0,
+          s.marks?.language14 || 0,
+          s.marks?.content12 || 0,
+          `"${(s.feedback||'').replace(/"/g, '""')}"`
+        ];
+        csv += row.join(',') + '\n';
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `IGCSE_Exercise6_Submissions_${new Date().toISOString().slice(0,10)}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+
+    function downloadStudentResponseJSON() {
+      const studentId = document.getElementById('studentIdInput')?.value?.trim() || 'Candidate';
+      const studentName = document.getElementById('studentNameInput')?.value?.trim() || 'Student';
+      const headline = document.getElementById('articleHeadlineInput')?.value?.trim() || 'Untitled';
+      const body = document.getElementById('articleBodyInput')?.value || '';
+      const words = body.trim() ? body.trim().split(/\s+/).length : 0;
+
+      const obj = {
+        id: 'draft_' + Date.now(),
+        timestamp: new Date().toLocaleString(),
+        studentId: studentId.toUpperCase(),
+        name: studentName,
+        className: document.getElementById('studentClassInput')?.value || '',
+        taskId: currentActiveTaskId,
+        headline: headline,
+        articleBody: body,
+        wordCount: words
+      };
+
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj, null, 2));
+      const a = document.createElement('a');
+      a.href = dataStr;
+      a.download = `${studentName.replace(/\s+/g, '_')}_Exercise6_Writing.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+
+    function copyStudentArticleFormatted() {
+      const headline = document.getElementById('articleHeadlineInput')?.value?.trim() || '';
+      const body = document.getElementById('articleBodyInput')?.value || '';
+      const fullText = headline ? `${headline}\n\n${body}` : body;
+
+      const dummy = document.createElement('textarea');
+      dummy.value = fullText;
+      document.body.appendChild(dummy);
+      dummy.select();
+      document.execCommand('copy');
+      document.body.removeChild(dummy);
+
+      showNotification("Copied", "Your article text has been copied to your clipboard.", "info");
+    }
+
+    function syncCandidateId(val) {
+      renderStudentSubmissionsSidebar();
+    }
+
+    function updateWordCount() {
+      const text = document.getElementById('articleBodyInput')?.value || '';
+      const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+      const paras = text.split(/\n+/).filter(p => p.trim().length > 0).length;
+
+      const wordBadge = document.getElementById('wordCountBadge');
+      const paraBadge = document.getElementById('paragraphCountBadge');
+
+      if (paraBadge) paraBadge.innerText = `${paras} Paragraph${paras === 1 ? '' : 's'}`;
+      if (wordBadge) {
+        wordBadge.innerText = `${words} Words`;
+        wordBadge.className = words >= 150 && words <= 200 ? 
+          "text-xs font-bold px-2.5 py-0.5 rounded-lg bg-emerald-100 text-emerald-800" :
+          "text-xs font-bold px-2.5 py-0.5 rounded-lg bg-amber-100 text-amber-800";
+      }
+
+      const warning = document.getElementById('overWordLimitWarning');
+      if (warning) {
+        if (words > 180) warning.classList.remove('hidden');
+        else warning.classList.add('hidden');
+      }
+    }
+
+    function insertNote(text) {
+      const planner = document.getElementById('articlePlannerText');
+      if (!planner) return;
+      planner.value += (planner.value.trim() ? '\n• ' : '• ') + text;
+    }
+
+    function clearPlanner() {
+      const planner = document.getElementById('articlePlannerText');
+      if (planner) planner.value = '';
+    }
+
+    function toggleTimer() {
+      const btn = document.getElementById('startTimerBtn');
+      if (timerRunning) {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        if (btn) btn.innerHTML = '<i class="fa-solid fa-play mr-1.5 text-xs"></i>Resume Timer';
+      } else {
+        timerInterval = setInterval(() => {
+          if (timerSeconds > 0) {
+            timerSeconds--;
+            renderTimer();
+          } else {
+            clearInterval(timerInterval);
+            timerRunning = false;
+          }
+        }, 1000);
+        timerRunning = true;
+        if (btn) btn.innerHTML = '<i class="fa-solid fa-pause mr-1.5 text-xs"></i>Pause Timer';
+      }
+    }
+
+    function resetTimer() {
+      clearInterval(timerInterval);
+      timerRunning = false;
+      timerSeconds = 1800;
+      renderTimer();
+    }
+
+    function renderTimer() {
+      const m = Math.floor(timerSeconds / 60);
+      const s = timerSeconds % 60;
+      const display = document.getElementById('examTimerDisplay');
+      if (display) display.innerText = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    function renderTaskDropdown() {
+      const select = document.getElementById('globalTaskSelect');
+      if (!select) return;
+      select.innerHTML = '';
+      availableTasks.forEach(task => {
+        const opt = document.createElement('option');
+        opt.value = task.id;
+        opt.innerText = task.title;
+        if (task.id === currentActiveTaskId) opt.selected = true;
+        select.appendChild(opt);
+      });
+    }
+
+    function switchActiveTask(taskId) {
+      currentActiveTaskId = taskId;
+      renderTaskDropdown();
+      applyActiveTaskView();
+    }
+
+    function applyActiveTaskView() {
+      const activeTask = availableTasks.find(t => t.id === currentActiveTaskId) || availableTasks[0];
+      if (!activeTask) return;
+
+      const badgeLabel = document.getElementById('taskBadgeLabel');
+      const headingEl = document.getElementById('taskMainHeading');
+      const bubblesGrid = document.getElementById('dynamicSpeechBubblesGrid');
+
+      if (badgeLabel) {
+        const index = availableTasks.findIndex(t => t.id === activeTask.id);
+        badgeLabel.innerText = `Exercise 6 • Task ${index + 1}`;
+      }
+      if (headingEl) headingEl.innerText = activeTask.heading || activeTask.title;
+
+      if (bubblesGrid) {
+        bubblesGrid.innerHTML = '';
+        (activeTask.bubbles || []).forEach((b) => {
+          const bubbleDiv = document.createElement('div');
+          bubbleDiv.className = 'relative border-2 border-slate-300 bg-white rounded-lg p-3 sm:p-4 flex flex-col justify-between shadow-sm';
+          bubbleDiv.innerHTML = `
+            <div class="flex items-start gap-2">
+              <i class="fa-solid fa-quote-left text-indigo-300 text-sm mt-0.5 shrink-0"></i>
+              <p class="text-xs sm:text-[13px] font-serif italic text-slate-800 leading-snug select-none">${escapeHtml(b.text)}</p>
+            </div>
+            <div class="mt-2 pt-2 flex items-center justify-end border-t border-dashed border-slate-300">
+              <button type="button" onclick="insertNote('${escapeHtml(b.note || b.text.replace(/["“”]/g, ''))}')" class="px-2 py-0.5 text-[10px] font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-md transition inline-flex items-center">
+                <i class="fa-solid fa-plus mr-1 text-[9px]"></i>Add to plan
+              </button>
+            </div>
+          `;
+          bubblesGrid.appendChild(bubbleDiv);
+        });
+      }
+    }
+
+    function switchView(viewName) {
+      const studentMain = document.getElementById('studentView');
+      const teacherMain = document.getElementById('teacherView');
+      const btnStudent = document.getElementById('viewBtnStudent');
+      const btnTeacher = document.getElementById('viewBtnTeacher');
+
+      if (viewName === 'teacher') {
+        if (!isTeacherUnlocked) {
+          openPasswordModal();
+          return;
+        }
+        studentMain.classList.add('hidden');
+        teacherMain.classList.remove('hidden');
+        btnTeacher.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition bg-white text-indigo-700 shadow-sm";
+        btnStudent.className = "px-3 py-1.5 text-xs font-semibold rounded-lg transition text-slate-600 hover:text-slate-900";
+        setTimeout(resizeAnnotationCanvas, 100);
+      } else {
+        teacherMain.classList.add('hidden');
+        studentMain.classList.remove('hidden');
+        btnStudent.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition bg-white text-indigo-700 shadow-sm";
+        btnTeacher.className = "px-3 py-1.5 text-xs font-semibold rounded-lg transition text-slate-600 hover:text-slate-900";
+      }
+    }
+
+    function requestTeacherAccess() {
+      if (isTeacherUnlocked) switchView('teacher');
+      else openPasswordModal();
+    }
+
+    function openPasswordModal() { document.getElementById('passwordModal')?.classList.remove('hidden'); }
+    function closePasswordModal() { document.getElementById('passwordModal')?.classList.add('hidden'); }
+
+    function verifyTeacherPassword() {
+      const entered = document.getElementById('teacherPasswordInput')?.value?.trim();
+      if (entered === TEACHER_PASSWORD) {
+        isTeacherUnlocked = true;
+        closePasswordModal();
+        switchView('teacher');
+      } else {
+        document.getElementById('passwordErrorMsg')?.classList.remove('hidden');
+      }
+    }
+
+    function lockTeacherView() {
+      isTeacherUnlocked = false;
+      document.getElementById('teacherPasswordInput').value = '';
+      switchView('student');
+      showNotification("Teacher Grid Locked", "You have logged out of the teacher evaluation portal.", "info");
+    }
+
+    /* ANNOTATION CANVAS */
+    function initAnnotationCanvas() {
+      annotationCanvas = document.getElementById('annotationCanvas');
+      if (!annotationCanvas) return;
+      annotationCtx = annotationCanvas.getContext('2d');
+      window.addEventListener('resize', resizeAnnotationCanvas);
+
+      annotationCanvas.addEventListener('pointerdown', (e) => {
+        isDrawing = true;
+        const rect = annotationCanvas.getBoundingClientRect();
+        currentStroke = { tool: currentDrawingTool, points: [{ x: e.clientX - rect.left, y: e.clientY - rect.top }] };
+      });
+
+      annotationCanvas.addEventListener('pointermove', (e) => {
+        if (!isDrawing || !currentStroke) return;
+        const rect = annotationCanvas.getBoundingClientRect();
+        currentStroke.points.push({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+        drawSingleSegment(currentStroke, currentStroke.points.length - 2, currentStroke.points.length - 1);
+      });
+
+      annotationCanvas.addEventListener('pointerup', () => {
+        if (isDrawing && currentStroke) annotationStrokes.push(currentStroke);
+        isDrawing = false;
+        currentStroke = null;
+      });
+    }
+
+    function resizeAnnotationCanvas() {
+      if (!annotationCanvas) return;
+      const rect = annotationCanvas.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return;
+      const dpr = window.devicePixelRatio || 1;
+      annotationCanvas.width = rect.width * dpr;
+      annotationCanvas.height = rect.height * dpr;
+      annotationCtx.scale(dpr, dpr);
+      redrawAllAnnotationStrokes();
+    }
+
+    function setDrawingTool(tool) { currentDrawingTool = tool; }
+
+    function drawSingleSegment(stroke, idx1, idx2) {
+      if (idx1 < 0 || idx2 >= stroke.points.length) return;
+      const p1 = stroke.points[idx1];
+      const p2 = stroke.points[idx2];
+
+      annotationCtx.beginPath();
+      annotationCtx.moveTo(p1.x, p1.y);
+      annotationCtx.lineTo(p2.x, p2.y);
+      annotationCtx.lineCap = 'round';
+
+      if (stroke.tool === 'red_pen') { annotationCtx.strokeStyle = '#dc2626'; annotationCtx.lineWidth = 2.5; }
+      else if (stroke.tool === 'blue_pen') { annotationCtx.strokeStyle = '#2563eb'; annotationCtx.lineWidth = 2.5; }
+      else if (stroke.tool === 'green_pen') { annotationCtx.strokeStyle = '#059669'; annotationCtx.lineWidth = 2.5; }
+      else if (stroke.tool === 'highlighter') { annotationCtx.strokeStyle = '#fef08a'; annotationCtx.lineWidth = 16; }
+      else if (stroke.tool === 'eraser') { annotationCtx.strokeStyle = '#ffffff'; annotationCtx.lineWidth = 20; }
+
+      annotationCtx.stroke();
+    }
+
+    function redrawAllAnnotationStrokes() {
+      if (!annotationCanvas || !annotationCtx) return;
+      const rect = annotationCanvas.getBoundingClientRect();
+      annotationCtx.clearRect(0, 0, rect.width, rect.height);
+      annotationStrokes.forEach(s => {
+        for (let i = 0; i < s.points.length - 1; i++) drawSingleSegment(s, i, i + 1);
+      });
+    }
+
+    function undoAnnotationStroke() { annotationStrokes.pop(); redrawAllAnnotationStrokes(); }
+    function clearAnnotationCanvas() { annotationStrokes = []; redrawAllAnnotationStrokes(); }
+
+    /* RUBRIC UI */
+    function buildRubricChecklistUI() {
+      const langContainer = document.getElementById('languageChecklistRows');
+      const contContainer = document.getElementById('contentChecklistRows');
+      if (!langContainer || !contContainer) return;
+
+      RUBRIC_CRITERIA.language.forEach(crit => {
+        const row = document.createElement('div');
+        row.className = "p-3 flex items-center justify-between text-xs";
+        row.innerHTML = `<div><strong>${crit.label}</strong><p class="text-[11px] text-slate-500">${crit.desc}</p></div>
+          <div class="flex gap-1" id="btnGroup_${crit.id}">
+            <button onclick="setCriterionScore('${crit.id}', 2)" id="btn_${crit.id}_2" class="px-2 py-1 border rounded font-bold">2</button>
+            <button onclick="setCriterionScore('${crit.id}', 1)" id="btn_${crit.id}_1" class="px-2 py-1 border rounded font-bold">1</button>
+            <button onclick="setCriterionScore('${crit.id}', 0)" id="btn_${crit.id}_0" class="px-2 py-1 border rounded font-bold">0</button>
+          </div>`;
+        langContainer.appendChild(row);
+      });
+
+      RUBRIC_CRITERIA.content.forEach(crit => {
+        const row = document.createElement('div');
+        row.className = "p-3 flex items-center justify-between text-xs";
+        row.innerHTML = `<div><strong>${crit.label}</strong><p class="text-[11px] text-slate-500">${crit.desc}</p></div>
+          <div class="flex gap-1" id="btnGroup_${crit.id}">
+            <button onclick="setCriterionScore('${crit.id}', 2)" id="btn_${crit.id}_2" class="px-2 py-1 border rounded font-bold">2</button>
+            <button onclick="setCriterionScore('${crit.id}', 1)" id="btn_${crit.id}_1" class="px-2 py-1 border rounded font-bold">1</button>
+            <button onclick="setCriterionScore('${crit.id}', 0)" id="btn_${crit.id}_0" class="px-2 py-1 border rounded font-bold">0</button>
+          </div>`;
+        contContainer.appendChild(row);
+      });
+    }
+
+    function setCriterionScore(critId, score) {
+      const active = submissions.find(s => (s.docId === activeSubmissionId || s.id === activeSubmissionId));
+      if (!active) return;
+      if (!active.scores) active.scores = {};
+      active.scores[critId] = score;
+      updateCriterionButtonUI(critId, score);
+      calculateCurrentScores(active);
+    }
+
+    function updateCriterionButtonUI(critId, score) {
+      [2, 1, 0].forEach(val => {
+        const btn = document.getElementById(`btn_${critId}_${val}`);
+        if (!btn) return;
+        if (val === score) {
+          btn.className = val === 2 ? "px-2 py-1 rounded bg-emerald-600 text-white font-bold" :
+                          val === 1 ? "px-2 py-1 rounded bg-amber-500 text-white font-bold" :
+                                      "px-2 py-1 rounded bg-rose-600 text-white font-bold";
+        } else {
+          btn.className = "px-2 py-1 border border-slate-200 bg-white text-slate-700 font-bold rounded";
+        }
+      });
+    }
+
+    function calculateCurrentScores(sub) {
+      let langTotal = 0, contTotal = 0;
+      RUBRIC_CRITERIA.language.forEach(c => langTotal += (sub.scores?.[c.id] || 0));
+      RUBRIC_CRITERIA.content.forEach(c => contTotal += (sub.scores?.[c.id] || 0));
+
+      const rawTotal = langTotal + contTotal;
+      const converted = CONVERSION_26_TO_15[rawTotal] !== undefined ? CONVERSION_26_TO_15[rawTotal] : (rawTotal * (15/26)).toFixed(1);
+
+      sub.marks = { raw26: rawTotal, converted15: converted, language14: langTotal, content12: contTotal };
+
+      document.getElementById('languageSubtotalScore').innerText = `${langTotal} / 14`;
+      document.getElementById('contentSubtotalScore').innerText = `${contTotal} / 12`;
+      document.getElementById('activeRawScore').innerText = `${rawTotal} / 26`;
+      document.getElementById('activeConvertedScore').innerText = `${converted} / 15`;
+    }
+
+    /* REPORT PRINTING SYSTEM */
+    function printGradedPaperReport() {
+      const sub = submissions.find(s => (s.docId === activeSubmissionId || s.id === activeSubmissionId));
+      if (!sub) {
+        showNotification("No Paper Selected", "Please select a student submission from the queue on the left to print.", "error");
+        return;
+      }
+      preparePrintReportDOM(sub);
+      const printRoot = document.getElementById('printReportRoot');
+      printRoot?.classList.remove('hidden');
+      window.print();
+      printRoot?.classList.add('hidden');
+    }
+
+    function printStudentPersonalReport(subId) {
+      const match = submissions.find(s => (s.docId === subId || s.id === subId));
+      if (!match) {
+        showNotification("Report Not Found", "Could not load the printable report for this candidate.", "error");
+        return;
+      }
+      preparePrintReportDOM(match);
+      closeStudentResultModal();
+      const printRoot = document.getElementById('printReportRoot');
+      printRoot?.classList.remove('hidden');
+      setTimeout(() => {
+        window.print();
+        printRoot?.classList.add('hidden');
+      }, 150);
+    }
+
+    function preparePrintReportDOM(sub) {
+      const root = document.getElementById('printReportRoot');
+      if (!root) return;
+
+      document.getElementById('prDateText').innerText = `Date: ${sub.timestamp ? sub.timestamp.split(',')[0] : new Date().toLocaleDateString()}`;
+      document.getElementById('prStudentName').innerText = sub.name || 'Candidate';
+      document.getElementById('prCandidateId').innerText = sub.studentId || 'N/A';
+      document.getElementById('prClassAndTask').innerText = `${sub.className || 'General'} • ${sub.taskTitle ? sub.taskTitle.split(':')[0] : 'Task 1'}`;
+      document.getElementById('prWordCount').innerText = `${sub.wordCount || 0} Words (Target: 150-200)`;
+
+      document.getElementById('prArticleHeadline').innerText = sub.headline || 'Untitled Article';
+      document.getElementById('prArticleBody').innerText = sub.articleBody || '';
+
+      const langBox = document.getElementById('prLangChecklistSummary');
+      const contBox = document.getElementById('prContentChecklistSummary');
+      if (langBox) langBox.innerHTML = '';
+      if (contBox) contBox.innerHTML = '';
+
+      RUBRIC_CRITERIA.language.forEach(c => {
+        const val = sub.scores?.[c.id] !== undefined ? sub.scores[c.id] : 0;
+        const p = document.createElement('p');
+        p.className = "flex items-center justify-between";
+        p.innerHTML = `<span>${c.label}</span><strong class="font-mono ${val === 2 ? 'text-emerald-700' : val === 1 ? 'text-amber-700' : 'text-rose-700'}">${val}/2</strong>`;
+        langBox?.appendChild(p);
+      });
+
+      RUBRIC_CRITERIA.content.forEach(c => {
+        const val = sub.scores?.[c.id] !== undefined ? sub.scores[c.id] : 0;
+        const p = document.createElement('p');
+        p.className = "flex items-center justify-between";
+        p.innerHTML = `<span>${c.label}</span><strong class="font-mono ${val === 2 ? 'text-emerald-700' : val === 1 ? 'text-amber-700' : 'text-rose-700'}">${val}/2</strong>`;
+        contBox?.appendChild(p);
+      });
+
+      const langTot = sub.marks?.language14 || 0;
+      const contTot = sub.marks?.content12 || 0;
+      const rawTot = sub.marks?.raw26 || 0;
+      const convTot = sub.marks?.converted15 || '0.0';
+
+      document.getElementById('prLangScoreBadge').innerText = `${langTot} / 14`;
+      document.getElementById('prContentScoreBadge').innerText = `${contTot} / 12`;
+      document.getElementById('prRawScoreBadge').innerText = `${rawTot} / 26 Marks`;
+      document.getElementById('prConvertedScoreBadge').innerText = `${convTot} / 15 Marks`;
+
+      document.getElementById('prExaminerFeedback').innerText = sub.feedback || 'Well-argued response with solid paragraphing and relevant viewpoints.';
+    }
+
+    /* STUDENT RESULT MODAL & LOOKUP */
+    function openStudentResultModal() {
+      const inp = document.getElementById('studentSearchIdInput');
+      const candidateVal = document.getElementById('studentIdInput')?.value?.trim() || currentLoggedStudent?.candidateId || '';
+      if (inp && candidateVal) inp.value = candidateVal;
+      document.getElementById('studentSearchResultContent')?.classList.add('hidden');
+      document.getElementById('studentResultModal')?.classList.remove('hidden');
+      if (candidateVal) searchStudentPaperResult();
+    }
+
+    function closeStudentResultModal() {
+      document.getElementById('studentResultModal')?.classList.add('hidden');
+    }
+
+    async function searchStudentPaperResult() {
+      const q = document.getElementById('studentSearchIdInput')?.value?.trim().toUpperCase();
+      const container = document.getElementById('studentSearchResultContent');
+      if (!container) return;
+
+      if (!q) {
+        showNotification("Candidate ID Required", "Please enter your Candidate ID to look up results.", "info");
+        return;
+      }
+
+      container.classList.remove('hidden');
+      container.innerHTML = '<div class="p-4 text-center text-xs text-slate-500"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Searching Firebase records...</div>';
+
+      let match = submissions.find(s => (s.studentId || '').toUpperCase() === q);
+
+      if (!match && window.db && window.firestoreTools) {
+        try {
+          const { collection, getDocs, query, where } = window.firestoreTools;
+          const qSnap = await getDocs(query(collection(window.db, "submissions"), where("studentId", "==", q)));
+          if (!qSnap.empty) {
+            const docSnap = qSnap.docs[0];
+            match = { docId: docSnap.id, ...docSnap.data() };
+            submissions.unshift(match);
+          }
+        } catch (e) {
+          console.warn("Firestore query error:", e);
+        }
+      }
+
+      if (!match) {
+        container.innerHTML = `
+          <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl text-center text-slate-500 text-xs">
+            <i class="fa-solid fa-circle-question text-2xl text-slate-400 mb-1.5"></i>
+            <p class="font-bold text-slate-700">No Submission Found</p>
+            <p class="mt-0.5">We could not locate any paper under Candidate ID "${escapeHtml(q)}".</p>
+          </div>
+        `;
+        return;
+      }
+
+      if (!match.isGraded) {
+        container.innerHTML = `
+          <div class="p-4 bg-amber-50 border border-amber-200 rounded-xl text-center text-amber-800 text-xs space-y-1">
+            <i class="fa-solid fa-clock text-2xl text-amber-500 mb-1"></i>
+            <p class="font-bold text-sm">Paper Awaiting Evaluation</p>
+            <p class="text-xs">${escapeHtml(match.name)}, your article (<strong>${match.wordCount || 0} words</strong>) has been submitted to Firebase, but has not yet been graded by the examiner.</p>
+          </div>
+        `;
+        return;
+      }
+
+      const matchId = match.docId || match.id;
+      container.innerHTML = `
+        <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl space-y-3 text-xs text-emerald-950">
+          <div class="flex items-center justify-between border-b border-emerald-200/70 pb-2">
+            <div>
+              <h4 class="font-bold text-sm text-slate-900">${escapeHtml(match.name)}</h4>
+              <span class="text-[11px] font-mono text-emerald-800 font-bold">${escapeHtml(match.studentId)} • ${escapeHtml(match.className || 'General')}</span>
+            </div>
+            <div class="text-right">
+              <span class="text-[10px] uppercase font-bold text-emerald-700">Final Official Mark</span>
+              <div class="text-xl font-extrabold text-emerald-800">${match.marks?.converted15 || '0.0'} / 15</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 text-[11px]">
+            <div class="bg-white p-2.5 rounded-lg border border-emerald-100 shadow-sm">
+              <span class="text-slate-500 block">Language Mark:</span>
+              <strong class="text-indigo-900 text-sm">${match.marks?.language14 || 0} / 14</strong>
+            </div>
+            <div class="bg-white p-2.5 rounded-lg border border-emerald-100 shadow-sm">
+              <span class="text-slate-500 block">Content Mark:</span>
+              <strong class="text-emerald-900 text-sm">${match.marks?.content12 || 0} / 12</strong>
+            </div>
+          </div>
+
+          <div class="bg-white p-3 rounded-lg border border-emerald-100 shadow-sm">
+            <span class="block text-[10px] font-bold uppercase text-slate-500 mb-1">Examiner Remarks & Next Steps:</span>
+            <p class="italic text-slate-800 leading-relaxed">${escapeHtml(match.feedback || 'Well-organized response with clear arguments and good structure.')}</p>
+          </div>
+
+          <button 
+            type="button" 
+            onclick="printStudentPersonalReport('${matchId}')" 
+            class="w-full py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl shadow-md transition flex items-center justify-center text-xs"
+          >
+            <i class="fa-solid fa-print mr-2"></i>Print Official 1-Page Report
+          </button>
+        </div>
+      `;
+    }
+
+    function showNotification(title, message, type = "info") {
+      const modal = document.getElementById('notificationModal');
+      document.getElementById('notifTitle').innerText = title;
+      document.getElementById('notifMessage').innerText = message;
+      modal?.classList.remove('hidden');
+    }
+
+    function closeNotification() { document.getElementById('notificationModal')?.classList.add('hidden'); }
+    function escapeHtml(str) { return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  </script>
+</body>
+</html>
