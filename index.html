@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cambridge IGCSE ESL Exercise 6 - Article Writing & Assessment Portal</title>
+  <title>Cambridge IGCSE ESL Exercise 6 - Digital Exam & Assessment Portal</title>
   
-  <!-- Tailwind CSS -->
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -25,6 +25,11 @@
             examred: {
               50: '#FBEEEC', 100: '#F3D2CC', 300: '#D97D6E', 500: '#B23A2E',
               600: '#9A2F24', 700: '#7A2119'
+            },
+            gold: {
+              300: '#FDE68A',
+              400: '#FBBF24',
+              500: '#F59E0B'
             }
           },
           fontFamily: {
@@ -45,7 +50,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
   
-  <!-- PDF.js for PDF task extraction -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script>
     if (typeof pdfjsLib !== 'undefined') {
@@ -62,9 +66,9 @@
     .font-handwriting { font-family: 'Caveat', cursive; }
     .font-serif { font-family: 'Merriweather', serif; }
 
-    .exam-rule {
-      height: 3px;
-      background: linear-gradient(to right, #2C3E63 0%, #2C3E63 70%, #B23A2E 70%, #B23A2E 100%);
+    .exam-rule-bold {
+      height: 4px;
+      background: linear-gradient(to right, #2C3E63 0%, #2C3E63 65%, #F59E0B 65%, #F59E0B 75%, #B23A2E 75%, #B23A2E 100%);
     }
 
     .student-info-field[readonly] {
@@ -77,15 +81,28 @@
     .speech-bubble {
       position: relative;
       background: #FEFCF7;
-      border: 1.5px solid #382F26;
+      border: 1.5px solid #2C3E63;
       border-radius: 1rem;
       transition: all 0.2s ease;
     }
     .speech-bubble:hover {
-      box-shadow: 0 4px 12px -2px rgba(44, 62, 99, 0.12);
+      box-shadow: 0 4px 12px -2px rgba(44, 62, 99, 0.14);
       transform: translateY(-1px);
     }
 
+    /* High-contrast task selector styling */
+    #globalTaskSelect {
+      color: #FAF7F0 !important;
+      background-color: transparent !important;
+    }
+    #globalTaskSelect option {
+      background-color: #1A2740 !important;
+      color: #FAF7F0 !important;
+      font-weight: 600;
+      padding: 8px 12px;
+    }
+
+    /* Custom scrollbars */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: #F2EDE1; }
     ::-webkit-scrollbar-thumb { background: #D2C6AC; border-radius: 3px; }
@@ -103,7 +120,6 @@
     }
   </style>
 
-  <!-- FIREBASE INTEGRATION MODULE -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { 
@@ -133,7 +149,7 @@
     });
 
     function initFirebaseListeners() {
-      // 1. Submissions Listener
+      // 1. Real-time Submissions Listener
       onSnapshot(collection(db, "submissions"), (snapshot) => {
         const remoteSubs = [];
         snapshot.forEach((docSnap) => {
@@ -143,10 +159,10 @@
           window.syncSubmissionsFromFirebase(remoteSubs);
         }
       }, (error) => {
-        console.error("Firestore submissions listener error:", error);
+        console.warn("Firestore submissions listener warning:", error);
       });
 
-      // 2. Students Roster Listener
+      // 2. Real-time Students Roster Listener
       onSnapshot(collection(db, "students"), (snapshot) => {
         const remoteStudents = [];
         snapshot.forEach((docSnap) => {
@@ -156,10 +172,10 @@
           window.syncStudentsFromFirebase(remoteStudents);
         }
       }, (error) => {
-        console.error("Firestore students listener error:", error);
+        console.warn("Firestore students listener warning:", error);
       });
 
-      // 3. Tasks Listener
+      // 3. Real-time Tasks Listener
       onSnapshot(collection(db, "tasks"), (snapshot) => {
         const remoteTasks = [];
         snapshot.forEach((docSnap) => {
@@ -169,337 +185,351 @@
           window.syncTasksFromFirebase(remoteTasks);
         }
       }, (error) => {
-        console.error("Firestore tasks listener error:", error);
+        console.warn("Firestore tasks listener warning:", error);
       });
     }
   </script>
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-indigo-100 selection:text-indigo-800">
 
-  <header class="sticky top-0 z-40 bg-[#FEFCF7]/95 backdrop-blur-md shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+  <!-- STANDOUT DUAL-TIER EXAMINATION MASTHEAD (3X HEIGHT) -->
+  <header class="sticky top-0 z-40 bg-gradient-to-b from-[#141D30] to-[#1A2740] text-white shadow-lg border-b border-indigo-900">
+    <div class="max-w-[1600px] mx-auto px-4 sm:px-6">
       
-      <!-- Brand -->
-      <div class="flex items-center space-x-3">
-        <div class="w-9 h-9 flex items-center justify-center">
-          <img 
-            src="logo.png" 
-            alt="App Logo" 
-            class="max-h-9 max-w-9 object-contain"
-            onerror="this.style.display='none'; document.getElementById('logoFallback').classList.remove('hidden');"
-          >
-          <div id="logoFallback" class="hidden w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-base shadow-sm">
-            <i class="fa-solid fa-graduation-cap"></i>
+      <!-- TOP MASTHEAD ROW: Official Exam Branding & Borderless Logo Placeholder -->
+      <div class="py-3.5 sm:py-4 flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-white/10">
+        <div class="flex items-center space-x-3.5">
+          <!-- BORDERLESS LOGO PLACEHOLDER (Loads logo.png without borders) -->
+          <div class="w-12 h-12 flex items-center justify-center shrink-0">
+            <img 
+              src="logo.png" 
+              alt="Exam Logo" 
+              class="max-h-12 max-w-12 object-contain"
+              onerror="this.style.display='none'; document.getElementById('headerLogoFallback').classList.remove('hidden');"
+            >
+            <div id="headerLogoFallback" class="hidden w-12 h-12 rounded-xl bg-gradient-to-tr from-indigo-700 to-indigo-500 text-white flex items-center justify-center font-bold text-xl shadow-md">
+              <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-center space-x-2 leading-none mb-1">
+              <span class="text-[11px] font-extrabold tracking-widest text-gold-400 uppercase">Cambridge Assessment International Education</span>
+              <span class="px-1.5 py-0.5 text-[10px] font-mono font-bold bg-examred-600/90 text-white rounded">IGCSE 0510 / 0511</span>
+              <span class="hidden sm:inline-block px-1.5 py-0.5 text-[9px] font-bold bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 rounded-full">
+                <i class="fa-solid fa-cloud mr-1"></i>Live Cloud Connected
+              </span>
+            </div>
+            <h1 class="text-base sm:text-xl font-bold font-serif tracking-tight text-slate-50 flex items-center gap-2">
+              Exercise 6 Writing Examination & Assessment Portal
+              <span class="text-xs font-sans font-normal text-indigo-200 hidden lg:inline">| Standard 15-Mark Format</span>
+            </h1>
           </div>
         </div>
-        <div>
-          <div class="flex items-center space-x-2">
-            <span class="text-xs font-extrabold tracking-wider text-indigo-600 uppercase">Cambridge IGCSE ESL</span>
-            <span class="px-1.5 py-0.5 text-[10px] font-mono font-semibold border border-examred-500 text-examred-600 rounded-sm">0510/0511</span>
+
+        <!-- Quick Status Metrics Banner in Upper Masthead -->
+        <div class="flex items-center gap-2 sm:gap-3 text-xs self-start md:self-auto">
+          <div class="px-3 py-1 bg-white/5 border border-white/10 rounded-xl text-indigo-200 flex items-center gap-2">
+            <i class="fa-solid fa-bullseye text-amber-400"></i>
+            <span>Standard: <strong>120–160 Words</strong></span>
           </div>
-          <h1 class="text-sm sm:text-base font-bold text-slate-900 leading-tight font-serif">Writing & Assessment Portal</h1>
+          <div class="px-3 py-1 bg-white/5 border border-white/10 rounded-xl text-indigo-200 flex items-center gap-2">
+            <i class="fa-solid fa-scale-balanced text-emerald-400"></i>
+            <span>Content <strong>6</strong> • Language <strong>9</strong></span>
+          </div>
         </div>
       </div>
 
-      <!-- Controls -->
-      <div class="flex items-center space-x-2 sm:space-x-3">
-        <!-- Active Task Dropdown -->
-        <div class="flex items-center bg-slate-50 px-2.5 py-1.5 rounded-xl border border-slate-200 shadow-inner">
-          <i class="fa-solid fa-book-open text-indigo-600 text-xs mr-2"></i>
-          <select 
-            id="globalTaskSelect" 
-            onchange="switchActiveTask(this.value)" 
-            class="text-xs font-bold text-slate-800 bg-transparent outline-none cursor-pointer max-w-[140px] sm:max-w-[210px] truncate"
-          >
-          </select>
+      <div class="py-2.5 flex flex-wrap items-center justify-between gap-2.5">
+        
+        <!-- Left: Task Switcher with high-contrast readable options -->
+        <div class="flex items-center gap-2">
+          <label class="text-[11px] font-bold uppercase tracking-wider text-indigo-300 flex items-center">
+            <i class="fa-solid fa-book-open text-gold-400 mr-1.5"></i>Active Paper:
+          </label>
+          <div class="flex items-center bg-white/10 hover:bg-white/15 px-2.5 py-1.5 rounded-xl border border-white/15 transition shadow-inner">
+            <select 
+              id="globalTaskSelect" 
+              onchange="switchActiveTask(this.value)" 
+              class="text-xs font-bold text-white bg-transparent outline-none cursor-pointer max-w-[170px] sm:max-w-[260px] truncate"
+            >
+            </select>
+          </div>
         </div>
 
-        <!-- Student Login Button in Navbar -->
-        <button 
-          id="navStudentLoginBtn"
-          onclick="openStudentLoginModal()" 
-          class="px-3 py-1.5 text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-xl shadow-sm transition inline-flex items-center"
-        >
-          <i class="fa-solid fa-user-check mr-1.5 text-indigo-600"></i>Student Login
-        </button>
+        <!-- Center / Right: Exam Timer, Student Authentication, Teacher Portal Switch -->
+        <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+          
+          <!-- Large High-Visibility Exam Countdown Timer -->
+          <div class="flex items-center space-x-2 bg-slate-950/80 px-3 py-1.5 rounded-xl border border-amber-500/40 shadow-inner">
+            <i class="fa-solid fa-hourglass-half text-amber-400 text-xs animate-pulse"></i>
+            <span class="text-[10px] font-bold uppercase text-slate-400">Timer</span>
+            <span id="examTimerDisplay" class="font-mono text-sm font-extrabold text-amber-300 tracking-wider">30:00</span>
+            <button id="startTimerBtn" onclick="toggleTimer()" class="text-[10px] font-bold text-slate-900 px-2 py-0.5 bg-amber-400 hover:bg-amber-300 rounded shadow transition">Start</button>
+            <button onclick="resetTimer()" class="text-slate-400 hover:text-white text-xs px-1" title="Reset Timer"><i class="fa-solid fa-rotate-right"></i></button>
+          </div>
 
-        <!-- Navbar Student Logged-In Pill -->
-        <div id="navStudentLoggedPill" class="hidden items-center gap-1.5 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-xl shadow-sm">
-          <span class="text-[11px] font-bold text-emerald-800 flex items-center">
-            <i class="fa-solid fa-circle-user mr-1 text-emerald-600"></i><span id="navStudentBadgeName" class="max-w-[90px] sm:max-w-[120px] truncate">Student</span>
-          </span>
+          <!-- Student Sign In Button -->
           <button 
-            type="button" 
-            onclick="logoutStudent()" 
-            class="ml-1 px-1.5 py-0.5 text-[10px] font-bold text-rose-700 bg-rose-100 hover:bg-rose-200 rounded transition inline-flex items-center" 
-            title="Log Out"
+            id="navStudentLoginBtn"
+            onclick="openStudentLoginModal()" 
+            class="px-3 py-1.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 border border-indigo-400/40 rounded-xl shadow-sm transition inline-flex items-center"
           >
-            <i class="fa-solid fa-right-from-bracket mr-1"></i>Exit
+            <i class="fa-solid fa-user-check mr-1.5 text-indigo-200"></i>Student Sign In
           </button>
-        </div>
 
-        <!-- Check Result Button -->
-        <button 
-          onclick="openStudentResultModal()" 
-          class="px-3 py-1.5 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl shadow-sm transition inline-flex items-center"
-        >
-          <i class="fa-solid fa-award text-amber-500 mr-1.5"></i>Check Result
-        </button>
+          <!-- Navbar Student Logged-In Pill -->
+          <div id="navStudentLoggedPill" class="hidden items-center gap-2 bg-emerald-500/20 border border-emerald-400/40 px-3 py-1 rounded-xl shadow-sm">
+            <span class="text-xs font-bold text-emerald-300 flex items-center">
+              <i class="fa-solid fa-circle-user mr-1.5 text-emerald-400"></i><span id="navStudentBadgeName" class="max-w-[100px] sm:max-w-[150px] truncate">Candidate</span>
+            </span>
+            <button 
+              type="button" 
+              onclick="logoutStudent()" 
+              class="px-1.5 py-0.5 text-[10px] font-bold text-rose-200 bg-rose-900/60 hover:bg-rose-800 border border-rose-500/40 rounded transition" 
+              title="Log Out"
+            >
+              Exit
+            </button>
+          </div>
 
-        <!-- View Switch Buttons -->
-        <div class="bg-slate-100 p-1 rounded-xl flex items-center space-x-1">
+          <!-- Check Marks Button -->
           <button 
-            id="viewBtnStudent" 
-            onclick="switchView('student')" 
-            class="px-3 py-1.5 text-xs font-bold rounded-lg transition bg-white text-indigo-700 shadow-sm"
+            onclick="openStudentResultModal()" 
+            class="px-3 py-1.5 text-xs font-bold text-slate-200 bg-white/10 hover:bg-white/15 border border-white/15 rounded-xl shadow-sm transition inline-flex items-center"
           >
-            <i class="fa-solid fa-pen-nib mr-1.5"></i>Student
+            <i class="fa-solid fa-award text-gold-400 mr-1.5"></i>Check Marks
           </button>
-          <button 
-            id="viewBtnTeacher" 
-            onclick="requestTeacherAccess()" 
-            class="px-3 py-1.5 text-xs font-semibold rounded-lg transition text-slate-600 hover:text-slate-900"
-          >
-            <i class="fa-solid fa-lock text-xs mr-1.5"></i>Teacher Grid
-          </button>
+
+          <!-- View Switcher -->
+          <div class="bg-black/30 p-1 rounded-xl flex items-center border border-white/10">
+            <button 
+              id="viewBtnStudent" 
+              onclick="switchView('student')" 
+              class="px-3 py-1 text-xs font-bold rounded-lg transition bg-white text-indigo-950 shadow-sm"
+            >
+              Student
+            </button>
+            <button 
+              id="viewBtnTeacher" 
+              onclick="requestTeacherAccess()" 
+              class="px-3 py-1 text-xs font-semibold rounded-lg transition text-slate-300 hover:text-white"
+            >
+              <i class="fa-solid fa-lock text-[10px] mr-1"></i>Teacher
+            </button>
+          </div>
+
         </div>
 
       </div>
+
     </div>
-    <div class="exam-rule"></div>
+    <div class="exam-rule-bold"></div>
   </header>
 
-  <!-- STUDENT VIEW -->
-  <main id="studentView" class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-5 space-y-5">
+  <main id="studentView" class="flex-1 max-w-[1600px] mx-auto w-full px-3 sm:px-5 py-3.5 space-y-3.5">
     
-    <!-- Candidate Information & Sign In Card -->
-    <section class="bg-white rounded-2xl border border-indigo-900/40 shadow-sm relative overflow-hidden">
-      <div class="exam-rule"></div>
-      <div class="p-4 sm:p-5">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-100 pb-3 mb-3">
-          <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-xl bg-indigo-900 text-white flex items-center justify-center shrink-0 shadow-sm text-sm">
-              <i class="fa-solid fa-id-card"></i>
-            </div>
-            <div>
-              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-indigo-800 uppercase tracking-wide">
-                Candidate Information
-              </span>
-              <h2 class="text-sm sm:text-base font-bold font-serif text-slate-900">
-                Step 1: Confirm Details or Sign In
-              </h2>
-            </div>
-          </div>
-
-          <div id="studentAuthStatusBanner" class="flex items-center gap-2">
-            <div id="unverifiedPill" class="flex items-center gap-2 bg-amber-50 text-amber-900 border border-amber-200 px-3 py-1 rounded-xl text-xs font-medium">
-              <i class="fa-solid fa-circle-exclamation text-amber-600"></i>
-              <span>Not logged in</span>
-              <button onclick="openStudentLoginModal()" class="ml-1 font-bold text-indigo-700 underline">Log in</button>
-            </div>
-            <div id="verifiedPill" class="hidden flex items-center gap-2 bg-emerald-50 text-emerald-900 border border-emerald-200 px-3 py-1 rounded-xl text-xs font-bold shadow-sm">
-              <i class="fa-solid fa-circle-check text-emerald-600"></i>
-              <span><span id="verifiedCandidateBadge">Student</span></span>
-              <button onclick="switchStudentAccount()" class="ml-1.5 text-[11px] text-indigo-700 underline font-semibold">Switch</button>
-              <button onclick="logoutStudent()" class="ml-1.5 px-2 py-0.5 text-[10px] font-bold text-rose-700 bg-rose-100 hover:bg-rose-200 rounded transition inline-flex items-center">
-                Exit
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <div>
-            <label class="block text-[10px] text-slate-500 font-bold uppercase tracking-wide mb-1">Candidate ID *</label>
+    <!-- TOP BAR: CANDIDATE INFORMATION & INSTRUCTIONS -->
+    <section class="bg-white rounded-xl border border-slate-300 shadow-sm p-3 sm:px-4 sm:py-2.5">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-2.5">
+        
+        <!-- Student Details Form -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 flex-1 max-w-2xl">
+          <div class="flex items-center gap-1.5">
+            <span class="text-[10px] font-bold uppercase text-slate-500 shrink-0">ID *:</span>
             <input 
               type="text" 
               id="studentIdInput" 
-              placeholder="e.g. SA-2026-042" 
+              placeholder="SA-2026-000" 
               oninput="syncCandidateId(this.value)"
-              class="student-info-field w-full text-xs px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 outline-none font-mono font-bold uppercase"
+              class="student-info-field w-full text-xs px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 outline-none font-mono font-bold uppercase"
             >
           </div>
-          <div>
-            <label class="block text-[10px] text-slate-500 font-bold uppercase tracking-wide mb-1">Full Name *</label>
+          <div class="flex items-center gap-1.5">
+            <span class="text-[10px] font-bold uppercase text-slate-500 shrink-0">Name *:</span>
             <input 
               type="text" 
               id="studentNameInput" 
-              placeholder="e.g. Jane Doe" 
-              class="student-info-field w-full text-xs px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 outline-none font-semibold"
+              placeholder="Candidate Name" 
+              class="student-info-field w-full text-xs px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 outline-none font-semibold"
             >
           </div>
-          <div>
-            <label class="block text-[10px] text-slate-500 font-bold uppercase tracking-wide mb-1">Class / Section</label>
+          <div class="flex items-center gap-1.5">
+            <span class="text-[10px] font-bold uppercase text-slate-500 shrink-0">Class:</span>
             <input 
               type="text" 
               id="studentClassInput" 
-              placeholder="e.g. Year 11-A" 
-              class="student-info-field w-full text-xs px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 outline-none font-semibold"
+              placeholder="e.g. Year 11" 
+              class="student-info-field w-full text-xs px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 outline-none font-semibold"
             >
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- COMPACT TASK PROMPT SECTION (Left: Question, Right: Bubbles / Bullets) -->
-    <section id="taskPromptSection" class="bg-[#FEFCF7] rounded-2xl border-2 border-slate-800 shadow-sm p-5 sm:p-6 relative overflow-hidden">
-      <!-- Task Type Badge & Mark Scheme Ribbon -->
-      <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 pb-3 mb-4">
-        <div class="flex items-center gap-2">
-          <span id="taskBadgeLabel" class="bg-indigo-900 text-white text-[11px] font-bold px-3 py-1 rounded-lg uppercase tracking-wider">
-            Task 1 • Article
-          </span>
-          <span id="taskTypeDisplayBadge" class="text-[11px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2.5 py-0.5 rounded-lg">
-            Article
-          </span>
-        </div>
-
-        <div class="flex items-center gap-2">
-          <span class="text-xs font-serif font-extrabold text-examred-600 bg-examred-50 border border-examred-300 px-2.5 py-0.5 rounded-lg">
-            15 Marks Total
-          </span>
-          <span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-indigo-100 text-indigo-800">
-            Content 6
-          </span>
-          <span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-examred-100 text-examred-800">
-            Language 9
-          </span>
-        </div>
-      </div>
-
-      <!-- Compact 2-Column Grid: Question on Left, Speech Bubbles/Bullets on Right -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
-        
-        <!-- Left Side: Main Prompt & Directions (5 Cols) -->
-        <div class="lg:col-span-5 space-y-3">
-          <p class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Read the task instructions carefully</p>
-          <div id="taskMainHeading" class="text-sm font-serif font-bold text-slate-900 leading-relaxed bg-white p-3.5 rounded-xl border border-slate-200 shadow-inner">
-            Your school year group is doing a project on the advantages and disadvantages of the car as a means of transport.
-          </div>
-
-          <div class="flex items-center justify-between text-[11px] text-slate-500 italic pt-1">
-            <span id="taskSideInstructionText">Here are some comments on the subject:</span>
-            <span class="text-[10px] font-mono font-semibold text-slate-400">Target: 150-200 words</span>
-          </div>
-
-          <div id="customTaskPdfScanWrapper" class="hidden pt-2 border-t border-slate-200">
-            <button type="button" onclick="toggleTaskPdfScan()" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 inline-flex items-center">
-              <i class="fa-solid fa-file-pdf mr-1.5"></i><span id="togglePdfScanBtnText">View Original Exam Scan</span>
-            </button>
-            <div id="taskPdfScanImageContainer" class="hidden mt-2 bg-slate-100 p-2 rounded-xl border border-slate-200 flex justify-center">
-              <img id="customTaskImagePrompt" src="" alt="Question Paper Scan" class="max-w-full rounded-lg shadow-sm max-h-[350px] object-contain">
-            </div>
-          </div>
-        </div>
-
-        <!-- Right Side: Interactive Speech Bubbles (Article/Report/Review) OR 3 Bullet Points (Email) (7 Cols) -->
-        <div class="lg:col-span-7">
-          <div id="dynamicSpeechBubblesGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-            <!-- Dynamically populated -->
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- Student Writing & Planning Area -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start pb-6">
-      
-      <!-- Left Column: History & Planner (4 Cols) -->
-      <div class="lg:col-span-4 space-y-4">
-        
-        <!-- Timer -->
-        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Recommended Time</span>
-            <div id="examTimerDisplay" class="text-lg font-mono font-bold text-slate-800">30:00</div>
-          </div>
-          <div class="mt-2.5 flex items-center space-x-2">
-            <button 
-              id="startTimerBtn" 
-              onclick="toggleTimer()" 
-              class="flex-1 py-1.5 text-xs font-semibold bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-xl transition inline-flex items-center justify-center"
-            >
-              <i class="fa-solid fa-play mr-1.5 text-xs"></i>Start Timer
-            </button>
-            <button 
-              onclick="resetTimer()" 
-              class="px-3 py-1.5 text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 rounded-xl transition" 
-              title="Reset Timer"
-            >
-              <i class="fa-solid fa-rotate-right"></i>
-            </button>
-          </div>
-        </div>
-
-        <!-- My Past Submissions Sidebar Card -->
-        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-2.5">
-          <div class="flex items-center justify-between">
-            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center">
-              <i class="fa-solid fa-clock-rotate-left text-indigo-600 mr-1.5"></i>My Submissions
-            </h3>
-            <span id="studentSubmissionsCountBadge" class="text-[10px] font-bold px-2 py-0.5 bg-indigo-50 text-indigo-700 rounded-full">
-              0 Saved
+        <!-- Auth Status & My Assignments Drawer Toggle -->
+        <div class="flex items-center justify-between md:justify-end gap-2.5 text-xs">
+          <div id="studentAuthStatusBanner">
+            <span id="unverifiedPill" class="text-[11px] text-amber-800 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-lg">
+              Not Signed In • <button onclick="openStudentLoginModal()" class="font-bold underline text-indigo-700">Login</button>
+            </span>
+            <span id="verifiedPill" class="hidden text-[11px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-lg">
+              <i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i><span id="verifiedCandidateBadge">Student</span>
             </span>
           </div>
 
-          <div id="studentSubmissionsList" class="space-y-2 max-h-[220px] overflow-y-auto pr-1">
-            <p class="text-[11px] text-slate-400 italic text-center py-4">Sign in to view your previous submissions and graded papers.</p>
-          </div>
-        </div>
-
-        <!-- Article Planner -->
-        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-2.5">
-          <div class="flex items-center justify-between">
-            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center">
-              <i class="fa-solid fa-lightbulb text-amber-500 mr-2"></i>My Writing Plan
-            </h3>
-            <button onclick="clearPlanner()" class="text-[11px] font-semibold text-slate-400 hover:text-slate-600">
-              Clear
-            </button>
-          </div>
-          <p class="text-[11px] text-slate-500">Click <strong>"+ Add to plan"</strong> on prompts or jot your ideas:</p>
-          <textarea 
-            id="articlePlannerText" 
-            rows="5" 
-            placeholder="Plan notes here..." 
-            class="w-full text-xs p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none bg-slate-50/50 leading-relaxed font-sans"
-          ></textarea>
+          <!-- My Assignments Quick Drawer Toggle -->
+          <button 
+            type="button" 
+            onclick="toggleStudentSubmissionsDrawer()" 
+            class="px-3 py-1.5 text-xs font-bold text-indigo-900 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-xl transition inline-flex items-center shadow-sm"
+          >
+            <i class="fa-solid fa-folder-open mr-1.5 text-indigo-600"></i>My Assignments (<span id="studentSubmissionsCountBadge">0</span>)
+          </button>
         </div>
 
       </div>
+    </section>
 
-      <!-- Right Column: Student Article Editor (8 Cols) -->
-      <div class="lg:col-span-8 space-y-4">
-        <div class="bg-white rounded-2xl p-5 sm:p-6 border-2 border-slate-200 shadow-sm space-y-4">
+    <div id="studentSubmissionsDrawer" class="hidden bg-white rounded-xl border-2 border-indigo-200 shadow-md p-4 space-y-2.5">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center">
+          <i class="fa-solid fa-box-archive mr-2 text-indigo-600"></i>My Saved & Graded Assignments
+        </h3>
+        <button onclick="toggleStudentSubmissionsDrawer()" class="text-xs text-slate-400 hover:text-slate-600 p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div id="studentSubmissionsList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 max-h-[240px] overflow-y-auto pr-1">
+        <p class="text-[11px] text-slate-400 italic col-span-3 py-2 text-center">Sign in with your Candidate ID to view your submitted assignments and examiner marks.</p>
+      </div>
+    </div>
+
+    <!-- MAIN SIDE-BY-SIDE EXAMINATION WORKSPACE -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-start">
+      
+      <!-- LEFT: QUESTION PAPER (Always in view while typing) -->
+      <section class="lg:col-span-6 bg-[#FEFCF7] rounded-xl border-2 border-slate-800 shadow-sm p-4 sm:p-5 space-y-3.5 flex flex-col justify-between" style="min-height: calc(100vh - 220px);">
+        <div class="space-y-3">
           
-          <!-- Headline / Title Input -->
+          <!-- Exam Paper Ribbon -->
+          <div class="flex items-center justify-between border-b border-slate-200 pb-2.5">
+            <div class="flex items-center space-x-2">
+              <span id="taskBadgeLabel" class="bg-indigo-900 text-white text-[11px] font-bold px-2.5 py-0.5 rounded uppercase tracking-wide">
+                Exercise 6 • Task 1
+              </span>
+              <span id="taskTypeDisplayBadge" class="text-[11px] font-bold text-indigo-800 bg-indigo-100 border border-indigo-200 px-2 py-0.5 rounded">
+                Article
+              </span>
+            </div>
+            <div class="flex items-center space-x-1.5">
+              <span class="text-xs font-serif font-extrabold text-examred-600 bg-examred-50 border border-examred-300 px-2 py-0.5 rounded">
+                15 Marks Total
+              </span>
+              <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-100 text-indigo-800">C: 6</span>
+              <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-examred-100 text-examred-800">L: 9</span>
+            </div>
+          </div>
+
+          <!-- Main Question / Stimulus Prompt -->
           <div>
+            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Question & Stimulus Instructions</p>
+            <div id="taskMainHeading" class="text-xs sm:text-[13px] font-serif font-bold text-slate-900 leading-relaxed bg-white p-3 rounded-xl border border-slate-200 shadow-inner">
+              Your school year group is doing a project on the advantages and disadvantages of the car as a means of transport.
+            </div>
+          </div>
+
+          <!-- Comments / Bullet points prompt line -->
+          <div class="flex items-center justify-between text-[11px] text-slate-600 italic">
+            <span id="taskSideInstructionText">Here are some comments from your classmates:</span>
+            <span class="text-[10px] font-mono font-semibold text-slate-500">Target: 120–160 words</span>
+          </div>
+
+          <div id="dynamicSpeechBubblesGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <!-- Injected dynamically via applyActiveTaskView() -->
+          </div>
+
+          <!-- ORIGINAL EXAM SCAN DRAWER: VIEW & DOWNLOAD SCAN -->
+          <div id="customTaskPdfScanWrapper" class="hidden pt-2.5 border-t border-slate-200">
+            <div class="flex items-center justify-between">
+              <button type="button" onclick="toggleTaskPdfScan()" class="text-xs font-bold text-indigo-700 hover:text-indigo-900 inline-flex items-center">
+                <i class="fa-solid fa-file-pdf mr-1.5 text-examred-600"></i><span id="togglePdfScanBtnText">View Original Exam Scan</span>
+              </button>
+              
+              <!-- Download Original Exam Scan Button -->
+              <button 
+                type="button" 
+                onclick="downloadTaskPdfScan()" 
+                class="px-2.5 py-1 text-[11px] font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 rounded-lg transition inline-flex items-center shadow-sm"
+                title="Download the uploaded examination paper image"
+              >
+                <i class="fa-solid fa-download mr-1.5 text-emerald-600"></i>Download Exam Scan
+              </button>
+            </div>
+
+            <div id="taskPdfScanImageContainer" class="hidden mt-2 bg-slate-100 p-2.5 rounded-xl border border-slate-200 flex flex-col items-center">
+              <img id="customTaskImagePrompt" src="" alt="Question Paper Scan" class="max-w-full rounded-lg shadow-sm max-h-[320px] object-contain">
+              <button type="button" onclick="downloadTaskPdfScan()" class="mt-2 text-xs font-bold text-indigo-700 hover:underline inline-flex items-center">
+                <i class="fa-solid fa-arrow-down-to-bracket mr-1"></i>Save High-Res Image to Computer
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Quick Writing Planner / Notes Pad -->
+        <div class="pt-3 border-t border-slate-200 mt-2">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-[10px] font-bold uppercase text-slate-600 flex items-center">
+              <i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i>Rough Writing Plan / Scratchpad
+            </span>
+            <button onclick="clearPlanner()" class="text-[10px] text-slate-400 hover:text-slate-600">Clear</button>
+          </div>
+          <textarea 
+            id="articlePlannerText" 
+            rows="3" 
+            placeholder="Click '+ Add to plan' on comments or jot bullet points..." 
+            class="w-full text-xs p-2.5 border border-slate-200 rounded-lg outline-none bg-white font-sans placeholder-slate-400 leading-snug"
+          ></textarea>
+        </div>
+
+      </section>
+
+      <!-- RIGHT: STUDENT WRITING ANSWER BOOKLET -->
+      <section class="lg:col-span-6 bg-white rounded-xl border-2 border-slate-300 shadow-sm p-4 sm:p-5 space-y-3 flex flex-col justify-between" style="min-height: calc(100vh - 220px);">
+        
+        <div class="space-y-3">
+          
+          <!-- Headline / Title Input (CONDITIONALLY HIDDEN IF TASK IS EMAIL) -->
+          <div id="articleTitleInputGroup">
             <div class="flex items-center justify-between mb-1">
               <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                Title / Subject Line <span class="text-rose-500">*</span>
+                Title / Headline <span class="text-rose-500">*</span>
               </label>
-              <span class="text-[11px] text-slate-400">Appropriate for selected task</span>
+              <span class="text-[10px] text-slate-400">Punchy & engaging for readers</span>
             </div>
             <input 
               type="text" 
               id="articleHeadlineInput" 
-              placeholder="e.g. Steer Clear or Shift Gears? The Real Cost of the Modern Motorcar" 
-              class="w-full text-sm sm:text-base font-serif font-bold p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none placeholder-slate-400 bg-slate-50/30"
+              placeholder="e.g. Steer Clear or Shift Gears? The Future of Transport" 
+              class="w-full text-xs sm:text-sm font-serif font-bold p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none placeholder-slate-400 bg-slate-50/40"
             >
           </div>
 
-          <!-- Main Article Editor -->
+          <!-- Notice banner shown only if task is Email -->
+          <div id="emailNoTitleNotice" class="hidden p-2.5 bg-indigo-50/80 border border-indigo-200 rounded-lg text-indigo-950 text-xs flex items-center justify-between">
+            <span><i class="fa-solid fa-envelope mr-1.5 text-indigo-600"></i><strong>Email Task:</strong> No title is required. Begin directly with your informal greeting (e.g. <em>Dear Sam,</em> / <em>Hi Alex,</em>).</span>
+          </div>
+
+          <!-- Main Response Textarea -->
           <div>
-            <div class="flex items-center justify-between mb-1.5">
+            <div class="flex items-center justify-between mb-1">
               <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
                 Your Response Content <span class="text-rose-500">*</span>
               </label>
               <div class="flex items-center space-x-2">
-                <span id="paragraphCountBadge" class="text-xs font-semibold px-2 py-0.5 rounded-lg bg-slate-100 text-slate-700">
+                <span id="paragraphCountBadge" class="text-[11px] font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-700">
                   0 Paragraphs
                 </span>
-                <span id="wordCountBadge" class="text-xs font-bold px-2.5 py-0.5 rounded-lg bg-amber-100 text-amber-800 transition">
+                <span id="wordCountBadge" class="text-xs font-bold px-2.5 py-0.5 rounded bg-amber-100 text-amber-800">
                   0 Words
                 </span>
               </div>
@@ -507,63 +537,59 @@
 
             <textarea 
               id="articleBodyInput" 
-              rows="16" 
+              rows="18" 
               oninput="updateWordCount()" 
-              placeholder="Write your text here..." 
-              class="w-full p-4 text-sm font-serif leading-relaxed text-slate-800 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none bg-white placeholder-slate-400 shadow-inner"
+              placeholder="Type your response here..." 
+              class="w-full p-3.5 text-xs sm:text-sm font-serif leading-relaxed text-slate-800 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none bg-white placeholder-slate-400 shadow-inner"
+              style="min-height: 380px;"
             ></textarea>
           </div>
 
-          <!-- Over 180 Words Warning Banner -->
-          <div id="overWordLimitWarning" class="hidden p-3 bg-amber-50 border-l-4 border-amber-500 rounded-xl text-amber-900 text-xs flex items-start space-x-2.5 shadow-sm">
-            <i class="fa-solid fa-triangle-exclamation text-amber-600 text-sm mt-0.5 shrink-0"></i>
-            <div>
-              <p class="font-bold text-amber-950">Approaching Word Ceiling</p>
-              <p class="mt-0.5 text-amber-800">
-                You have exceeded <strong>180 words</strong>. Target range is <strong>150 to 200 words</strong>.
-              </p>
-            </div>
-          </div>
-
-          <!-- Action Buttons Bar -->
-          <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-slate-100">
-            <div class="flex items-center space-x-2 w-full sm:w-auto">
-              <button 
-                type="button" 
-                onclick="downloadStudentResponseJSON()" 
-                class="flex-1 sm:flex-none px-3 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition inline-flex items-center justify-center"
-              >
-                <i class="fa-solid fa-download mr-1.5 text-slate-500"></i>Save (.json)
-              </button>
-              <button 
-                type="button" 
-                onclick="copyStudentArticleFormatted()" 
-                class="flex-1 sm:flex-none px-3 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition inline-flex items-center justify-center"
-              >
-                <i class="fa-regular fa-copy mr-1.5 text-slate-500"></i>Copy
-              </button>
-            </div>
-
-            <!-- SUBMIT BUTTON: Text changed to 'Submit Your Work' -->
-            <button 
-              id="submitArticleBtn" 
-              type="button" 
-              onclick="validateAndSubmitArticle()" 
-              class="w-full sm:w-auto px-6 py-2.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-md shadow-indigo-200 transition inline-flex items-center justify-center"
-            >
-              <i class="fa-solid fa-paper-plane mr-2"></i>Submit Your Work
-            </button>
+          <!-- Word count threshold warning -->
+          <div id="overWordLimitWarning" class="hidden p-2.5 bg-amber-50 border-l-4 border-amber-500 rounded-lg text-amber-900 text-xs flex items-center space-x-2">
+            <i class="fa-solid fa-triangle-exclamation text-amber-600 text-sm shrink-0"></i>
+            <span>Approaching word limit. Recommended exam range is <strong>120 to 160 words</strong> (or 150-200).</span>
           </div>
 
         </div>
-      </div>
+
+        <!-- Action Buttons Bar -->
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-2.5 pt-3 border-t border-slate-100">
+          <div class="flex items-center space-x-2 w-full sm:w-auto">
+            <button 
+              type="button" 
+              onclick="downloadStudentResponseJSON()" 
+              class="flex-1 sm:flex-none px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition inline-flex items-center justify-center"
+            >
+              <i class="fa-solid fa-download mr-1.5 text-slate-500"></i>Save JSON
+            </button>
+            <button 
+              type="button" 
+              onclick="copyStudentArticleFormatted()" 
+              class="flex-1 sm:flex-none px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition inline-flex items-center justify-center"
+            >
+              <i class="fa-regular fa-copy mr-1.5 text-slate-500"></i>Copy Text
+            </button>
+          </div>
+
+          <button 
+            id="submitArticleBtn" 
+            type="button" 
+            onclick="validateAndSubmitArticle()" 
+            class="w-full sm:w-auto px-6 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow transition inline-flex items-center justify-center"
+          >
+            <i class="fa-solid fa-paper-plane mr-1.5"></i>Submit Your Work
+          </button>
+        </div>
+
+      </section>
 
     </div>
   </main>
 
   <!-- TEACHER VIEW -->
-  <main id="teacherView" class="hidden flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-5 space-y-5">
-    <section class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm space-y-4">
+  <main id="teacherView" class="hidden flex-1 max-w-[1600px] mx-auto w-full px-3 sm:px-5 py-4 space-y-4">
+    <section class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm space-y-4">
       <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-slate-100 pb-3">
         <div>
           <div class="flex items-center space-x-2 mb-0.5">
@@ -608,7 +634,6 @@
             <i class="fa-solid fa-file-csv text-emerald-600 mr-1.5"></i>CSV
           </button>
 
-          <!-- Lock / Exit Teacher View -->
           <button 
             onclick="lockTeacherView()" 
             class="px-3 py-2 text-xs font-bold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-xl transition inline-flex items-center" 
@@ -634,7 +659,7 @@
           <div id="statTotalSubmissions" class="text-lg font-bold text-slate-800 mt-0.5">0</div>
         </div>
         <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
-          <span class="text-[10px] font-bold uppercase text-slate-400">Target Words (150-200)</span>
+          <span class="text-[10px] font-bold uppercase text-slate-400">Target Range</span>
           <div id="statInRange" class="text-lg font-bold text-emerald-600 mt-0.5">0</div>
         </div>
         <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
@@ -649,7 +674,7 @@
     </section>
 
     <!-- Submissions Queue & Evaluation -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
       <div class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 shadow-sm p-4 space-y-3">
         <div class="flex items-center justify-between">
           <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800">
@@ -685,7 +710,7 @@
                 <span id="activeTaskBadge" class="text-xs font-bold bg-slate-200 text-slate-700 px-2 py-0.5 rounded">Task 1</span>
               </div>
               <h3 id="activeStudentNameHeading" class="text-base font-bold text-slate-900 mt-1">Jane Doe</h3>
-              <p id="activeStudentTimeText" class="text-[11px] text-slate-400">Submitted at: 2026-09-05 14:30</p>
+              <p id="activeStudentTimeText" class="text-[11px] text-slate-400">Submitted: 2026-09-05 14:30</p>
             </div>
 
             <div class="flex items-center space-x-2.5">
@@ -845,7 +870,7 @@
     </div>
   </main>
 
-  <!-- MODAL: ADD / EDIT TASK (Email, Article, Report, Review) -->
+  <!-- MODAL: ADD / EDIT TASK -->
   <div id="addTaskModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-100 space-y-4 max-h-[90vh] overflow-y-auto">
       <div class="flex items-center justify-between border-b border-slate-100 pb-3">
@@ -864,10 +889,8 @@
       </div>
 
       <div class="space-y-3">
-        
         <!-- Task Type & Task Title Row -->
         <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
-          <!-- Dropdown: Email, Article, Report, Review -->
           <div class="sm:col-span-4">
             <label class="block text-xs font-bold text-indigo-700 uppercase mb-1">Writing Type *</label>
             <select 
@@ -882,7 +905,6 @@
             </select>
           </div>
 
-          <!-- Task Title -->
           <div class="sm:col-span-8">
             <label class="block text-xs font-semibold text-slate-700 mb-1">Task Title *</label>
             <input 
@@ -894,9 +916,9 @@
           </div>
         </div>
 
-        <!-- Question Paper File / Scan Upload -->
+        <!-- Question Paper File / Scan Upload with Parser -->
         <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1">Question Paper Scan / PDF (Optional)</label>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Upload Question Paper Scan / PDF (Auto-Extracts Everything)</label>
           <input 
             type="file" 
             id="taskPdfFileInput" 
@@ -907,7 +929,7 @@
         </div>
 
         <div id="pdfExtractionStatus" class="hidden p-2.5 bg-indigo-50/70 border border-indigo-200 rounded-xl text-xs text-indigo-900 flex items-center justify-between">
-          <span id="pdfExtractionStatusText"><i class="fa-solid fa-spinner fa-spin mr-1.5"></i>Extracting prompt from PDF...</span>
+          <span id="pdfExtractionStatusText"><i class="fa-solid fa-spinner fa-spin mr-1.5"></i>Parsing Cambridge PDF...</span>
         </div>
 
         <!-- Main Prompt Statement -->
@@ -916,12 +938,12 @@
           <textarea 
             id="newTaskHeadingInput" 
             rows="3" 
-            placeholder="e.g. Your school year group is doing a project on the advantages and disadvantages of..." 
+            placeholder="e.g. In class, you have been discussing whether employees should be required to work for a maximum of four days a week..." 
             class="w-full text-xs p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none font-medium text-slate-800"
           ></textarea>
         </div>
 
-        <!-- Dynamic Inputs: 4 Speech Bubbles for Article/Report/Review OR 3 Bullet Points for Email -->
+        <!-- Dynamic Inputs: 4 Speech Bubbles or 3 Bullet Points -->
         <div>
           <div class="flex items-center justify-between mb-1.5">
             <label id="taskPromptsSectionLabel" class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
@@ -930,31 +952,29 @@
             <span id="taskPromptsSubLabel" class="text-[11px] text-slate-400">4 Speech bubbles</span>
           </div>
 
-          <!-- 4 Speech Bubbles Container (Article, Report, Review) -->
           <div id="fourBubblesInputsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
             <div class="p-2 rounded-xl border border-indigo-200 bg-indigo-50/30 space-y-1">
               <span class="text-[10px] font-bold text-indigo-700 uppercase">Bubble 1</span>
-              <textarea id="bubbleInput1" rows="2" placeholder="“First friend comment...”" class="w-full text-xs p-2 border border-slate-200 rounded-lg outline-none bg-white font-serif"></textarea>
+              <textarea id="bubbleInput1" rows="2" placeholder="“People would be happier!”" class="w-full text-xs p-2 border border-slate-200 rounded-lg outline-none bg-white font-serif"></textarea>
             </div>
             <div class="p-2 rounded-xl border border-rose-200 bg-rose-50/30 space-y-1">
               <span class="text-[10px] font-bold text-rose-700 uppercase">Bubble 2</span>
-              <textarea id="bubbleInput2" rows="2" placeholder="“Second friend comment...”" class="w-full text-xs p-2 border border-slate-200 rounded-lg outline-none bg-white font-serif"></textarea>
+              <textarea id="bubbleInput2" rows="2" placeholder="“Would they earn less?”" class="w-full text-xs p-2 border border-slate-200 rounded-lg outline-none bg-white font-serif"></textarea>
             </div>
             <div class="p-2 rounded-xl border border-emerald-200 bg-emerald-50/30 space-y-1">
               <span class="text-[10px] font-bold text-emerald-700 uppercase">Bubble 3</span>
-              <textarea id="bubbleInput3" rows="2" placeholder="“Third friend comment...”" class="w-full text-xs p-2 border border-slate-200 rounded-lg outline-none bg-white font-serif"></textarea>
+              <textarea id="bubbleInput3" rows="2" placeholder="“Everyone would get more done.”" class="w-full text-xs p-2 border border-slate-200 rounded-lg outline-none bg-white font-serif"></textarea>
             </div>
             <div class="p-2 rounded-xl border border-amber-200 bg-amber-50/30 space-y-1">
               <span class="text-[10px] font-bold text-amber-700 uppercase">Bubble 4</span>
-              <textarea id="bubbleInput4" rows="2" placeholder="“Fourth friend comment...”" class="w-full text-xs p-2 border border-slate-200 rounded-lg outline-none bg-white font-serif"></textarea>
+              <textarea id="bubbleInput4" rows="2" placeholder="“The company would need more staff.”" class="w-full text-xs p-2 border border-slate-200 rounded-lg outline-none bg-white font-serif"></textarea>
             </div>
           </div>
 
-          <!-- 3 Bullet Points Container (Email) -->
           <div id="threeBulletsInputsContainer" class="hidden space-y-2">
             <div class="p-2 rounded-xl border border-indigo-200 bg-indigo-50/30 space-y-1">
               <span class="text-[10px] font-bold text-indigo-700 uppercase">Bullet Point 1 *</span>
-              <input type="text" id="emailBulletInput1" placeholder="e.g. describe the exciting event that happened" class="w-full text-xs p-2 border border-slate-200 rounded-lg outline-none bg-white">
+              <input type="text" id="emailBulletInput1" placeholder="e.g. describe the exciting event that took place" class="w-full text-xs p-2 border border-slate-200 rounded-lg outline-none bg-white">
             </div>
             <div class="p-2 rounded-xl border border-indigo-200 bg-indigo-50/30 space-y-1">
               <span class="text-[10px] font-bold text-indigo-700 uppercase">Bullet Point 2 *</span>
@@ -1029,7 +1049,6 @@
         </button>
       </div>
 
-      <!-- Add Student Form -->
       <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2.5">
         <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Add Single Student</h4>
         <div class="grid grid-cols-1 sm:grid-cols-4 gap-2">
@@ -1043,7 +1062,6 @@
         </button>
       </div>
 
-      <!-- CSV Upload & Download Template -->
       <div class="bg-indigo-50/60 p-3 rounded-xl border border-indigo-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
         <div>
           <h4 class="text-xs font-bold text-indigo-950 uppercase tracking-wider">Bulk CSV Import</h4>
@@ -1060,7 +1078,6 @@
         </div>
       </div>
 
-      <!-- Roster List -->
       <div class="flex-1 overflow-y-auto space-y-1.5 border border-slate-200 rounded-xl p-3 bg-white">
         <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Current Roster (<span id="rosterCountText">0</span>)</h4>
         <div id="manageStudentsList" class="space-y-1.5"></div>
@@ -1289,7 +1306,7 @@
       </div>
       <div>
         <span class="block text-[10px] font-bold text-slate-400 uppercase">Word Count</span>
-        <span id="prWordCount" class="font-bold text-emerald-700 text-xs">178 Words</span>
+        <span id="prWordCount" class="font-bold text-emerald-700 text-xs">148 Words</span>
       </div>
     </div>
 
@@ -1301,7 +1318,6 @@
       <div id="prArticleBody" class="text-xs font-serif leading-relaxed text-slate-800 whitespace-pre-wrap">
         Student text...
       </div>
-      <!-- Stylus ink image overlay rendered in preparePrintReportDOM -->
       <img id="prStylusInkOverlay" class="absolute inset-0 w-full h-full object-contain pointer-events-none hidden" alt="Stylus Annotations">
     </div>
 
@@ -1336,7 +1352,7 @@
       </div>
     </div>
 
-    <!-- Feedback & Examiner Signature Block -->
+    <!-- Feedback Block -->
     <div class="border border-amber-200 bg-amber-50/30 rounded-xl p-3 flex flex-col justify-between mt-2">
       <div>
         <span class="block text-[10px] font-bold text-amber-900 uppercase">Examiner Remarks & Next Steps</span>
@@ -1359,7 +1375,7 @@
   </div>
 
   <footer class="sticky bottom-0 z-30 py-2 border-t border-slate-200 bg-white/95 backdrop-blur-md text-center text-xs text-slate-500 no-print">
-    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+    <div class="max-w-[1600px] mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
       <span class="font-bold text-slate-800">Cambridge IGCSE ESL Exercise 6 Workspace</span>
       <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-slate-600">
         <span class="font-semibold text-indigo-950"><i class="fa-solid fa-user-tie text-indigo-600 mr-1.5"></i>Amanullah Khan</span>
@@ -1381,14 +1397,14 @@
       {
         id: 'task_cars_default',
         type: 'Article',
-        title: 'Task 1: The Car Debate (Advantages vs Disadvantages)',
-        heading: 'Your school year group is doing a project on the advantages and disadvantages of the car as a means of transport.',
+        title: 'Task 1: Four-Day Working Week Debate',
+        heading: 'In class, you have been discussing whether employees should be required to work for a maximum of four days a week, giving them three days of free time.\n\nNow write an article for your school magazine, giving your views.',
         isDefault: true,
         bubbles: [
-          { text: '“It would take twice the time for me to travel by bus or train than by car.”', note: 'Bus vs train time difference' },
-          { text: '“Cars cause more accidents than any other forms of transport.”', note: 'Safety concerns' },
-          { text: '“It’s cheaper for a family to travel together in a car than by public transport.”', note: 'Family travel costs' },
-          { text: '“There are so many cars on the road, drivers become frustrated and angry.”', note: 'Traffic frustration' }
+          { text: '“People would be happier!”', note: 'People would be happier' },
+          { text: '“Would they earn less?”', note: 'Would they earn less' },
+          { text: '“Everyone would get more done.”', note: 'Everyone would get more done' },
+          { text: '“The company would need more staff.”', note: 'Company staffing needs' }
         ],
         imageData: null
       }
@@ -1415,7 +1431,7 @@
         { id: 'cont_fulfilled', label: 'Task is fulfilled / Addressed prompt aspects', desc: 'Addresses all required elements' },
         { id: 'cont_register', label: 'Consistently appropriate style and register', desc: 'Format and audience awareness' },
         { id: 'cont_purpose_audience', label: 'Excellent sense of purpose and audience', desc: 'Clear rhetorical perspective' },
-        { id: 'cont_development_length', label: 'Very well developed with appropriate length', desc: 'Target: 150-200 words' },
+        { id: 'cont_development_length', label: 'Very well developed with appropriate length', desc: 'Target: 120-160 words' },
         { id: 'cont_personalizing', label: 'Effective use of personalizing', desc: 'Relatable voice & engagement' },
         { id: 'cont_creative_interest', label: 'Very creative and interesting', desc: 'Engaging title, hook, and conclusion' }
       ]
@@ -1446,7 +1462,6 @@
       switchView('student');
     };
 
-    /* FIREBASE BIDIRECTIONAL SYNC BRIDGES */
     window.syncSubmissionsFromFirebase = function(remoteSubs) {
       submissions = remoteSubs;
       saveSubmissionsToStorage();
@@ -1538,7 +1553,6 @@
       });
     }
 
-    /* STUDENT AUTH / LOGIN MODAL */
     function openStudentLoginModal() {
       renderModalStudentDropdown();
       document.getElementById('modalStudentLoginError')?.classList.add('hidden');
@@ -1587,7 +1601,6 @@
         closeStudentLoginModal();
         showNotification("Welcome", `Logged in as ${match.name} (${match.candidateId || match.id}).`, "success");
       } else {
-        // Allow free login with entered ID if roster doesn't restrict
         setVerifiedStudent({ candidateId: typedId, name: typedId, className: 'General' });
         closeStudentLoginModal();
         showNotification("Candidate ID Set", `Ready for Candidate ${typedId}.`, "info");
@@ -1643,12 +1656,11 @@
       showNotification("Logged Out", "You have exited the student account.", "info");
     }
 
-    function switchStudentAccount() {
-      logoutStudent();
-      openStudentLoginModal();
+    function toggleStudentSubmissionsDrawer() {
+      const drawer = document.getElementById('studentSubmissionsDrawer');
+      if (drawer) drawer.classList.toggle('hidden');
     }
 
-    /* RENDER STUDENT SUBMISSIONS IN LEFT SIDEBAR */
     function renderStudentSubmissionsSidebar() {
       const container = document.getElementById('studentSubmissionsList');
       const countBadge = document.getElementById('studentSubmissionsCountBadge');
@@ -1657,16 +1669,16 @@
       const activeId = (document.getElementById('studentIdInput')?.value || localStorage.getItem('igcse_active_student_id') || '').trim().toUpperCase();
 
       if (!activeId) {
-        container.innerHTML = `<p class="text-[11px] text-slate-400 italic text-center py-4">Sign in to view your previous submissions and graded papers.</p>`;
-        if (countBadge) countBadge.innerText = `0 Saved`;
+        container.innerHTML = `<p class="text-[11px] text-slate-400 italic col-span-3 py-2 text-center">Sign in with your Candidate ID to view your submitted assignments and examiner marks.</p>`;
+        if (countBadge) countBadge.innerText = `0`;
         return;
       }
 
       const mySubs = submissions.filter(s => String(s.studentId).toUpperCase() === activeId);
-      if (countBadge) countBadge.innerText = `${mySubs.length} Saved`;
+      if (countBadge) countBadge.innerText = `${mySubs.length}`;
 
       if (mySubs.length === 0) {
-        container.innerHTML = `<p class="text-[11px] text-slate-400 italic text-center py-4">No submissions yet for ${activeId}.</p>`;
+        container.innerHTML = `<p class="text-[11px] text-slate-400 italic col-span-3 py-2 text-center">No assignments submitted yet for candidate ${activeId}.</p>`;
         return;
       }
 
@@ -1676,13 +1688,13 @@
         item.className = "p-2.5 rounded-xl border border-slate-200 bg-slate-50 space-y-1 text-xs";
         item.innerHTML = `
           <div class="flex items-center justify-between">
-            <span class="font-bold text-slate-800 truncate max-w-[140px]">${escapeHtml(sub.headline || 'Untitled')}</span>
+            <span class="font-bold text-slate-800 truncate max-w-[140px]">${escapeHtml(sub.headline || 'Untitled Paper')}</span>
             ${sub.isGraded 
               ? `<span class="px-1.5 py-0.5 text-[10px] font-bold rounded bg-emerald-100 text-emerald-800">${sub.marks?.converted15 || '0.0'}/15</span>` 
               : `<span class="px-1.5 py-0.5 text-[10px] font-bold rounded bg-amber-100 text-amber-800">Under Review</span>`}
           </div>
           <div class="flex items-center justify-between text-[10px] text-slate-400">
-            <span>${escapeHtml(sub.taskTitle ? sub.taskTitle.split(':')[0] : 'Task 1')} • ${sub.wordCount || 0}w</span>
+            <span>${escapeHtml(sub.taskTitle ? sub.taskTitle.split(':')[0] : 'Task')} • ${sub.wordCount || 0}w</span>
             <div class="flex items-center space-x-1">
               <button onclick="restoreStudentSubmission('${sub.id || sub.docId}')" class="px-1.5 py-0.5 font-bold text-indigo-700 hover:bg-indigo-100 rounded">Load</button>
               ${sub.isGraded ? `<button onclick="printStudentPersonalReport('${sub.id || sub.docId}')" class="px-1.5 py-0.5 font-bold text-emerald-700 hover:bg-emerald-100 rounded">Report</button>` : ''}
@@ -1700,10 +1712,10 @@
       document.getElementById('articleBodyInput').value = match.articleBody || '';
       if (match.taskId) switchActiveTask(match.taskId);
       updateWordCount();
-      showNotification("Work Restored", `Loaded "${match.headline}".`, "success");
+      toggleStudentSubmissionsDrawer();
+      showNotification("Work Restored", `Loaded "${match.headline || 'Assignment'}".`, "success");
     }
 
-    /* MANAGE STUDENTS MODAL & CSV TEMPLATE */
     function openManageStudentsModal() {
       renderManageStudentsList();
       document.getElementById('manageStudentsModal')?.classList.remove('hidden');
@@ -1825,7 +1837,6 @@
       }
     }
 
-    /* TASK TYPE SELECTION (Email -> 3 Bullets vs Article/Report/Review -> 4 Bubbles) */
     function onTaskTypeChange(type) {
       const fourContainer = document.getElementById('fourBubblesInputsContainer');
       const threeContainer = document.getElementById('threeBulletsInputsContainer');
@@ -1864,7 +1875,6 @@
       applyActiveTaskView();
     }
 
-    /* APPLY ACTIVE TASK VIEW (Side-by-side compact rendering) */
     function applyActiveTaskView() {
       const activeTask = availableTasks.find(t => t.id === currentActiveTaskId) || availableTasks[0];
       if (!activeTask) return;
@@ -1875,59 +1885,68 @@
       const bubblesGrid = document.getElementById('dynamicSpeechBubblesGrid');
       const sideText = document.getElementById('taskSideInstructionText');
 
+      const titleGroup = document.getElementById('articleTitleInputGroup');
+      const emailNotice = document.getElementById('emailNoTitleNotice');
+
       const taskType = activeTask.type || 'Article';
       const index = availableTasks.findIndex(t => t.id === activeTask.id);
 
-      if (badgeLabel) badgeLabel.innerText = `Task ${index + 1} • ${taskType}`;
+      if (badgeLabel) badgeLabel.innerText = `Exercise 6 • Task ${index + 1}`;
       if (typeBadge) typeBadge.innerText = taskType;
       if (headingEl) headingEl.innerHTML = parseFormattedHeading(activeTask.heading || activeTask.title);
+
+      if (taskType === 'Email') {
+        titleGroup?.classList.add('hidden');
+        emailNotice?.classList.remove('hidden');
+      } else {
+        titleGroup?.classList.remove('hidden');
+        emailNotice?.classList.add('hidden');
+      }
 
       if (sideText) {
         sideText.innerText = taskType === 'Email' 
           ? "Write an email addressing each of the following 3 points:" 
-          : "Here are some comments on the subject:";
+          : "Here are some comments from your classmates:";
       }
 
       if (bubblesGrid) {
         bubblesGrid.innerHTML = '';
 
         if (taskType === 'Email' && Array.isArray(activeTask.bullets) && activeTask.bullets.length > 0) {
-          // Email 3 Bullets Layout
-          bubblesGrid.className = "flex flex-col space-y-2.5";
+          bubblesGrid.className = "flex flex-col space-y-2";
           activeTask.bullets.forEach((bullet, bIdx) => {
             const div = document.createElement('div');
-            div.className = "flex items-start justify-between gap-3 p-3 bg-white rounded-xl border-2 border-indigo-200 shadow-sm";
+            div.className = "flex items-start justify-between gap-2.5 p-2.5 bg-white rounded-xl border-2 border-indigo-200 shadow-sm";
             div.innerHTML = `
-              <div class="flex items-start gap-2.5">
-                <span class="w-5 h-5 rounded-full bg-indigo-900 text-white font-mono font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">
+              <div class="flex items-start gap-2">
+                <span class="w-4 h-4 rounded-full bg-indigo-900 text-white font-mono font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
                   ${bIdx + 1}
                 </span>
-                <p class="text-xs sm:text-[13px] font-sans font-medium text-slate-900 leading-snug">
+                <p class="text-xs font-sans font-medium text-slate-900 leading-tight">
                   ${escapeHtml(bullet)}
                 </p>
               </div>
-              <button type="button" onclick="insertNote('${escapeHtml(bullet)}')" class="px-2 py-0.5 text-[10px] font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-md transition shrink-0">
+              <button type="button" onclick="insertNote('${escapeHtml(bullet)}')" class="px-2 py-0.5 text-[9px] font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded transition shrink-0">
                 + Plan
               </button>
             `;
             bubblesGrid.appendChild(div);
           });
         } else {
-          // Article, Report, Review 4 Speech Bubbles Layout
-          bubblesGrid.className = "grid grid-cols-1 sm:grid-cols-2 gap-2.5";
+          bubblesGrid.className = "grid grid-cols-1 sm:grid-cols-2 gap-2";
           (activeTask.bubbles || []).forEach((b) => {
             const bubbleDiv = document.createElement('div');
-            bubbleDiv.className = 'speech-bubble p-3 flex flex-col justify-between';
+            bubbleDiv.className = 'speech-bubble p-2.5 flex flex-col justify-between';
             bubbleDiv.innerHTML = `
-              <div class="flex items-start gap-2">
-                <i class="fa-solid fa-quote-left text-indigo-300 text-xs mt-0.5 shrink-0"></i>
-                <p class="text-xs font-serif italic text-slate-800 leading-snug select-none">
+              <div class="flex items-start gap-1.5">
+                <i class="fa-solid fa-quote-left text-indigo-300 text-[11px] mt-0.5 shrink-0"></i>
+                <p class="text-xs font-serif italic text-slate-800 leading-tight select-none">
                   ${escapeHtml(b.text)}
                 </p>
               </div>
-              <div class="mt-2 pt-1.5 flex items-center justify-end border-t border-dashed border-slate-200">
-                <button type="button" onclick="insertNote('${escapeHtml(b.note || b.text.replace(/["“”]/g, ''))}')" class="px-2 py-0.5 text-[10px] font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded transition inline-flex items-center">
-                  <i class="fa-solid fa-plus mr-1 text-[9px]"></i>Add to plan
+              <div class="mt-1.5 pt-1 flex items-center justify-end border-t border-dashed border-slate-200">
+                <button type="button" onclick="insertNote('${escapeHtml(b.note || b.text.replace(/["“”]/g, ''))}')" class="px-2 py-0.5 text-[9px] font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded transition inline-flex items-center">
+                  <i class="fa-solid fa-plus mr-1 text-[8px]"></i>Add to plan
                 </button>
               </div>
             `;
@@ -1952,21 +1971,36 @@
       if (!container) return;
       if (container.classList.contains('hidden')) {
         container.classList.remove('hidden');
-        if (btnText) btnText.innerText = 'Hide Original Scan';
+        if (btnText) btnText.innerText = 'Hide Original Exam Scan';
       } else {
         container.classList.add('hidden');
-        if (btnText) btnText.innerText = 'View Original Scan';
+        if (btnText) btnText.innerText = 'View Original Exam Scan';
       }
     }
 
-    /* ADD & EDIT TASK MODALS */
+    function downloadTaskPdfScan() {
+      const activeTask = availableTasks.find(t => t.id === currentActiveTaskId) || availableTasks[0];
+      if (!activeTask || !activeTask.imageData) {
+        showNotification("No Scan Attached", "This task does not have an uploaded exam paper scan to download.", "info");
+        return;
+      }
+
+      const a = document.createElement('a');
+      a.href = activeTask.imageData;
+      const cleanTitle = (activeTask.title || 'Exam_Scan').replace(/[^a-z0-9]/gi, '_');
+      a.download = `${cleanTitle}_Scan.jpg`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      showNotification("Scan Downloaded", "The original exam paper scan has been saved to your downloads.", "success");
+    }
+
     function openAddTaskModal() {
       editingTaskId = null;
       document.getElementById('taskModalHeaderTitle').innerText = "Add New Writing Task";
       document.getElementById('taskModalHeaderSubtitle').innerText = "Configure prompt and guidance points";
       document.getElementById('saveTaskBtnLabel').innerText = "Publish Task";
 
-      // Automatically pre-fill the next task number
       const nextNum = availableTasks.length + 1;
       document.getElementById('newTaskTypeSelect').value = 'Article';
       document.getElementById('newTaskTitleInput').value = `Task ${nextNum}: `;
@@ -2074,7 +2108,6 @@
       }
     }
 
-    /* MANAGE TASKS MODAL */
     function openManageTasksModal() {
       renderManageTasksList();
       document.getElementById('manageTasksModal')?.classList.remove('hidden');
@@ -2102,7 +2135,6 @@
             <p class="text-[11px] text-slate-500 truncate mt-0.5">${escapeHtml(task.heading || '')}</p>
           </div>
           <div class="flex items-center space-x-1.5">
-            <!-- EDIT TASK BUTTON -->
             <button type="button" onclick="openEditTaskModal('${task.id}')" class="px-2.5 py-1 text-xs font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition inline-flex items-center">
               <i class="fa-solid fa-pen-to-square mr-1"></i>Edit
             </button>
@@ -2156,7 +2188,7 @@
           const textContent = await page.getTextContent();
           const fullText = textContent.items.map(item => item.str.trim()).filter(Boolean).join(' ');
           parseAndFillExtractedTaskData(fullText);
-          if (statusText) statusText.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600 mr-1.5"></i>PDF loaded successfully.';
+          if (statusText) statusText.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600 mr-1.5"></i>Extracted Cambridge task & comments!';
         } else {
           const reader = new FileReader();
           reader.onload = function(e) {
@@ -2172,10 +2204,70 @@
 
     function parseAndFillExtractedTaskData(fullText) {
       if (!fullText) return;
+
+      const typeSelect = document.getElementById('newTaskTypeSelect');
+      const titleInp = document.getElementById('newTaskTitleInput');
       const headInp = document.getElementById('newTaskHeadingInput');
-      const projectMatch = fullText.match(/(Your school[\s\S]*?(?:transport|environment|issue|topic|subject|lifestyle|future|technology|health)[\.\?])/i) 
-                        || fullText.match(/(Your school[\s\S]*?\.)/i);
-      if (projectMatch && headInp) headInp.value = projectMatch[0].trim();
+
+      let detectedType = 'Article';
+      if (/write\s+an?\s+email/i.test(fullText)) detectedType = 'Email';
+      else if (/write\s+a\s+report/i.test(fullText)) detectedType = 'Report';
+      else if (/write\s+a\s+review/i.test(fullText)) detectedType = 'Review';
+      else if (/write\s+an?\s+article/i.test(fullText)) detectedType = 'Article';
+
+      if (typeSelect) {
+        typeSelect.value = detectedType;
+        onTaskTypeChange(detectedType);
+      }
+
+      let promptSnippet = '';
+      const promptMatch = fullText.match(/(?:Question\s*\d+[\s\S]*?)?((?:In class|Your school|A new|You recently|There is a plan|You have been)[\s\S]*?\.)(?=\s*(?:Here are|Now write))/i)
+                       || fullText.match(/((?:In class|Your school|A new|You recently)[\s\S]*?\.)/i);
+
+      if (promptMatch && promptMatch[1]) {
+        promptSnippet = promptMatch[1].trim();
+      }
+
+      const nowWriteMatch = fullText.match(/(Now write[\s\S]*?\.)/i);
+      if (nowWriteMatch && headInp) {
+        headInp.value = promptSnippet ? `${promptSnippet}\n\n${nowWriteMatch[1]}` : nowWriteMatch[1];
+      } else if (promptSnippet && headInp) {
+        headInp.value = promptSnippet;
+      }
+
+      if (titleInp) {
+        const topicSummary = promptSnippet.replace(/^(In class, you have been discussing whether|Your school year group is doing a project on the)\s*/i, '');
+        titleInp.value = `Task ${availableTasks.length + 1}: ${detectedType} - ${topicSummary.slice(0, 45)}...`;
+      }
+
+      if (detectedType === 'Email') {
+        const bulletSection = fullText.match(/In your email, you should:?([\s\S]*?)(?:Write about|You will receive)/i);
+        if (bulletSection) {
+          const rawBullets = bulletSection[1].split(/•|-|\d\./).map(b => b.trim()).filter(b => b.length > 5);
+          if (rawBullets[0]) document.getElementById('emailBulletInput1').value = rawBullets[0];
+          if (rawBullets[1]) document.getElementById('emailBulletInput2').value = rawBullets[1];
+          if (rawBullets[2]) document.getElementById('emailBulletInput3').value = rawBullets[2];
+        }
+      } else {
+        const commentsSection = fullText.match(/Here are (?:some|four) comments[^:]*:([\s\S]*?)(?:Now write|Write about)/i);
+        if (commentsSection) {
+          const sectionText = commentsSection[1];
+          const extractedComments = [];
+          const phraseRegex = /([A-Z][^.!?]*[.!?])/g;
+          let m;
+          while ((m = phraseRegex.exec(sectionText)) !== null) {
+            const clean = m[1].trim().replace(/^(DO NOT WRITE IN THIS MARGIN|UCLES|Exercise 6|Question \d+)/i, '').trim();
+            if (clean.length > 6 && !/DO NOT WRITE/i.test(clean)) {
+              extractedComments.push(clean);
+            }
+          }
+
+          if (extractedComments[0]) document.getElementById('bubbleInput1').value = `“${extractedComments[0]}”`;
+          if (extractedComments[1]) document.getElementById('bubbleInput2').value = `“${extractedComments[1]}”`;
+          if (extractedComments[2]) document.getElementById('bubbleInput3').value = `“${extractedComments[2]}”`;
+          if (extractedComments[3]) document.getElementById('bubbleInput4').value = `“${extractedComments[3]}”`;
+        }
+      }
     }
 
     function syncCandidateId(val) {
@@ -2195,17 +2287,17 @@
       if (paraBadge) paraBadge.innerText = `${paras} Paragraph${paras === 1 ? '' : 's'}`;
       if (wordBadge) {
         wordBadge.innerText = `${words} Words`;
-        if (words >= 150 && words <= 200) {
-          wordBadge.className = "text-xs font-bold px-2.5 py-0.5 rounded-lg bg-emerald-100 text-emerald-800";
-        } else if (words > 200) {
-          wordBadge.className = "text-xs font-bold px-2.5 py-0.5 rounded-lg bg-rose-100 text-rose-800";
+        if (words >= 120 && words <= 160) {
+          wordBadge.className = "text-xs font-bold px-2.5 py-0.5 rounded bg-emerald-100 text-emerald-800";
+        } else if (words > 170) {
+          wordBadge.className = "text-xs font-bold px-2.5 py-0.5 rounded bg-rose-100 text-rose-800";
         } else {
-          wordBadge.className = "text-xs font-bold px-2.5 py-0.5 rounded-lg bg-amber-100 text-amber-800";
+          wordBadge.className = "text-xs font-bold px-2.5 py-0.5 rounded bg-amber-100 text-amber-800";
         }
       }
 
       if (warningBanner) {
-        if (words > 180) warningBanner.classList.remove('hidden');
+        if (words > 165) warningBanner.classList.remove('hidden');
         else warningBanner.classList.add('hidden');
       }
     }
@@ -2226,7 +2318,7 @@
       if (timerRunning) {
         clearInterval(timerInterval);
         timerRunning = false;
-        if (btn) btn.innerHTML = '<i class="fa-solid fa-play mr-1.5 text-xs"></i>Resume Timer';
+        if (btn) btn.innerText = 'Resume';
       } else {
         timerInterval = setInterval(() => {
           if (timerSeconds > 0) {
@@ -2238,7 +2330,7 @@
           }
         }, 1000);
         timerRunning = true;
-        if (btn) btn.innerHTML = '<i class="fa-solid fa-pause mr-1.5 text-xs"></i>Pause Timer';
+        if (btn) btn.innerText = 'Pause';
       }
     }
 
@@ -2248,7 +2340,7 @@
       timerSeconds = 1800;
       renderTimer();
       const btn = document.getElementById('startTimerBtn');
-      if (btn) btn.innerHTML = '<i class="fa-solid fa-play mr-1.5 text-xs"></i>Start Timer';
+      if (btn) btn.innerText = 'Start';
     }
 
     function renderTimer() {
@@ -2265,12 +2357,15 @@
       const headline = document.getElementById('articleHeadlineInput')?.value?.trim();
       const body = document.getElementById('articleBodyInput')?.value?.trim();
 
+      const activeTask = availableTasks.find(t => t.id === currentActiveTaskId) || availableTasks[0];
+      const isEmail = (activeTask.type === 'Email');
+
       if (!studentId || !studentName) {
-        showNotification("Missing Credentials", "Please enter your Candidate ID and Name in Step 1 or Sign In.", "error");
+        showNotification("Missing Credentials", "Please enter your Candidate ID and Name in the top bar or Sign In.", "error");
         return;
       }
-      if (!headline) {
-        showNotification("Title Required", "Please enter a Title or Subject Line before submitting.", "error");
+      if (!isEmail && !headline) {
+        showNotification("Title Required", "Please enter a Title or Headline before submitting.", "error");
         return;
       }
       if (!body) {
@@ -2278,7 +2373,7 @@
         return;
       }
 
-      executeSubmission(studentId, studentName, studentClass, headline, body, body.split(/\s+/).length);
+      executeSubmission(studentId, studentName, studentClass, isEmail ? 'Email Response' : headline, body, body.split(/\s+/).length);
     }
 
     async function executeSubmission(studentId, studentName, studentClass, headline, body, words) {
@@ -2336,14 +2431,14 @@
         }
         studentMain.classList.add('hidden');
         teacherMain.classList.remove('hidden');
-        btnTeacher.className = "px-3 py-1.5 text-xs font-bold rounded-lg bg-white text-indigo-700 shadow-sm";
-        btnStudent.className = "px-3 py-1.5 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900";
+        btnTeacher.className = "px-3 py-1 text-xs font-bold rounded-lg bg-white text-indigo-950 shadow-sm";
+        btnStudent.className = "px-3 py-1 text-xs font-semibold rounded-lg text-slate-300 hover:text-white";
         setTimeout(resizeAnnotationCanvas, 100);
       } else {
         teacherMain.classList.add('hidden');
         studentMain.classList.remove('hidden');
-        btnStudent.className = "px-3 py-1.5 text-xs font-bold rounded-lg bg-white text-indigo-700 shadow-sm";
-        btnTeacher.className = "px-3 py-1.5 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900";
+        btnStudent.className = "px-3 py-1 text-xs font-bold rounded-lg bg-white text-indigo-950 shadow-sm";
+        btnTeacher.className = "px-3 py-1 text-xs font-semibold rounded-lg text-slate-300 hover:text-white";
       }
     }
 
@@ -2377,7 +2472,6 @@
       showNotification("Teacher Grid Locked", "Exited teacher evaluation portal.", "info");
     }
 
-    /* CANVAS DRAWING */
     function initAnnotationCanvas() {
       annotationCanvas = document.getElementById('annotationCanvas');
       if (!annotationCanvas) return;
@@ -2458,7 +2552,6 @@
     function undoAnnotationStroke() { annotationStrokes.pop(); redrawAllAnnotationStrokes(); }
     function clearAnnotationCanvas() { annotationStrokes = []; redrawAllAnnotationStrokes(); }
 
-    /* CHECKLIST CRITERIA UI & SCORE HIGHLIGHTING */
     function buildRubricChecklistUI() {
       const langContainer = document.getElementById('languageChecklistRows');
       const contContainer = document.getElementById('contentChecklistRows');
@@ -2541,11 +2634,9 @@
       document.getElementById('activeRawScore').innerText = `${rawTotal} / 26`;
       document.getElementById('activeConvertedScore').innerText = `${converted} / 15`;
 
-      // Highlight cell in conversion chart
       highlightConversionCell(rawTotal);
     }
 
-    /* HIGHLIGHT CONVERSION CELL IN 26 TO 15 SCALE */
     function highlightConversionCell(rawScore) {
       for (let i = 1; i <= 26; i++) {
         const hdr = document.getElementById(`m_hdr_${i}`);
@@ -2572,7 +2663,7 @@
 
       const hasLinking = /however|moreover|furthermore|conversely|in addition|on the other hand|in conclusion|consequently/i.test(body);
       const hasComplex = /although|whereas|despite|in order to|which|while/i.test(body);
-      const hasAdvancedVocab = /congested|convenient|sustainable|detrimental|alternative|subsequently|inevitable/i.test(body);
+      const hasAdvancedVocab = /productive|schedule|morale|flexible|balanced|sustainable|wellbeing|workforce|reduction/i.test(body);
 
       const newScores = {
         lang_common_vocab: 2,
@@ -2580,12 +2671,12 @@
         lang_simple_struct: 2,
         lang_complex_struct: hasComplex ? 2 : 1,
         lang_accuracy: 2,
-        lang_sequenced: words >= 140 ? 2 : 1,
+        lang_sequenced: words >= 110 ? 2 : 1,
         lang_linking: hasLinking ? 2 : 1,
-        cont_fulfilled: words >= 140 ? 2 : 1,
+        cont_fulfilled: words >= 110 ? 2 : 1,
         cont_register: 2,
         cont_purpose_audience: 2,
-        cont_development_length: (words >= 150 && words <= 200) ? 2 : 1,
+        cont_development_length: (words >= 120 && words <= 160) ? 2 : 1,
         cont_personalizing: 2,
         cont_creative_interest: 2
       };
@@ -2597,7 +2688,7 @@
 
       const feedbackEl = document.getElementById('activeTeacherFeedback');
       if (feedbackEl && !feedbackEl.value) {
-        feedbackEl.value = "Commendable balance of ideas. Linking phrases are effectively employed. Continue expanding range of sophisticated topic vocabulary.";
+        feedbackEl.value = "Commendable balance of ideas with clear rhetorical engagement. Cohesive linking words are appropriately handled. Continue cultivating rich lexical variation.";
       }
       showNotification("Checklist Auto-Filled", "Assigned checklist marks based on cohesion, length, and lexical variety.", "success");
     }
@@ -2616,7 +2707,6 @@ STUDENT DETAILS:
 Name: ${sub.name}
 Candidate ID: ${sub.studentId}
 Task: ${sub.taskTitle || 'Exercise 6 Task'}
-Title: ${sub.headline}
 Word Count: ${sub.wordCount} words
 
 STUDENT WRITING:
@@ -2694,7 +2784,7 @@ Assign 0, 1, or 2 marks for each criterion in JSON format:
 
     function updateSubmissionMetrics() {
       const total = submissions.length;
-      const inRange = submissions.filter(s => s.wordCount >= 150 && s.wordCount <= 200).length;
+      const inRange = submissions.filter(s => s.wordCount >= 120 && s.wordCount <= 160).length;
       const graded = submissions.filter(s => s.isGraded).length;
       const avg = total > 0 ? Math.round(submissions.reduce((acc, s) => acc + (s.wordCount || 0), 0) / total) : 0;
 
@@ -2735,7 +2825,7 @@ Assign 0, 1, or 2 marks for each criterion in JSON format:
           <p class="text-[11px] text-slate-500 truncate italic">"${escapeHtml(sub.headline || 'Untitled')}"</p>
           <div class="flex items-center justify-between text-[10px] text-slate-400 pt-1 border-t border-slate-100">
             <span>${sub.wordCount || 0} words</span>
-            <span>${escapeHtml(sub.taskTitle ? sub.taskTitle.split(':')[0] : 'Task 1')}</span>
+            <span>${escapeHtml(sub.taskTitle ? sub.taskTitle.split(':')[0] : 'Task')}</span>
           </div>
         `;
         container.appendChild(card);
@@ -2752,11 +2842,11 @@ Assign 0, 1, or 2 marks for each criterion in JSON format:
 
       document.getElementById('activeStudentIdBadge').innerText = `ID: ${sub.studentId || 'N/A'}`;
       document.getElementById('activeStudentClassBadge').innerText = sub.className || 'General';
-      document.getElementById('activeTaskBadge').innerText = sub.taskTitle ? sub.taskTitle.split(':')[0] : 'Task 1';
+      document.getElementById('activeTaskBadge').innerText = sub.taskTitle ? sub.taskTitle.split(':')[0] : 'Task';
       document.getElementById('activeStudentNameHeading').innerText = sub.name || 'Student';
       document.getElementById('activeStudentTimeText').innerText = `Submitted: ${sub.timestamp || 'N/A'} • ${sub.wordCount || 0} words`;
 
-      document.getElementById('activeArticleHeadline').innerText = sub.headline || 'Untitled';
+      document.getElementById('activeArticleHeadline').innerText = sub.headline || 'Untitled Paper';
       document.getElementById('activeArticleBody').innerText = sub.articleBody || '';
       document.getElementById('activeTeacherFeedback').value = sub.feedback || '';
 
@@ -2808,7 +2898,7 @@ Assign 0, 1, or 2 marks for each criterion in JSON format:
 
       showNotification(
         "Delete Submission?",
-        `Permanently remove the paper for ${sub.name} (${sub.studentId})?`,
+        `Permanently remove paper for ${sub.name} (${sub.studentId})?`,
         "confirm",
         async () => {
           try {
@@ -2834,7 +2924,7 @@ Assign 0, 1, or 2 marks for each criterion in JSON format:
     function confirmClearAllSubmissions() {
       showNotification(
         "Clear All Submissions?",
-        "Are you sure you want to delete all submissions?",
+        "Are you sure you want to reset all stored submissions?",
         "confirm",
         () => {
           submissions = [];
@@ -2850,7 +2940,6 @@ Assign 0, 1, or 2 marks for each criterion in JSON format:
       );
     }
 
-    /* PRINT 1-PAGE REPORT WITH STYLUS PEN ANNOTATIONS */
     function printGradedPaperReport() {
       const sub = submissions.find(s => (s.docId === activeSubmissionId || s.id === activeSubmissionId));
       if (!sub) {
@@ -2868,13 +2957,12 @@ Assign 0, 1, or 2 marks for each criterion in JSON format:
       document.getElementById('prDateText').innerText = `Date: ${sub.timestamp ? sub.timestamp.split(',')[0] : new Date().toLocaleDateString()}`;
       document.getElementById('prStudentName').innerText = sub.name || 'Student';
       document.getElementById('prCandidateId').innerText = sub.studentId || 'N/A';
-      document.getElementById('prClassAndTask').innerText = `${sub.className || 'General'} • ${sub.taskTitle ? sub.taskTitle.split(':')[0] : 'Task 1'}`;
+      document.getElementById('prClassAndTask').innerText = `${sub.className || 'General'} • ${sub.taskTitle ? sub.taskTitle.split(':')[0] : 'Task'}`;
       document.getElementById('prWordCount').innerText = `${sub.wordCount || 0} Words`;
 
-      document.getElementById('prArticleHeadline').innerText = sub.headline || 'Untitled Article';
+      document.getElementById('prArticleHeadline').innerText = sub.headline || 'Untitled Paper';
       document.getElementById('prArticleBody').innerText = sub.articleBody || '';
 
-      // Overlay stylus canvas annotations onto printed report if available
       const stylusImg = document.getElementById('prStylusInkOverlay');
       if (annotationCanvas && annotationStrokes && annotationStrokes.length > 0) {
         try {
@@ -2916,7 +3004,6 @@ Assign 0, 1, or 2 marks for each criterion in JSON format:
       document.getElementById('prExaminerFeedback').innerText = sub.feedback || 'Well-argued response with solid structure.';
     }
 
-    /* RESULT MODAL */
     function openStudentResultModal() {
       const inp = document.getElementById('studentSearchIdInput');
       const candidateVal = document.getElementById('studentIdInput')?.value?.trim();
