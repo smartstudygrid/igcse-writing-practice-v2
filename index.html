@@ -989,10 +989,20 @@
           <h4 class="text-xs font-bold text-indigo-950 uppercase tracking-wider">Bulk Upload CSV</h4>
           <p class="text-[11px] text-slate-500">Columns: <code>Candidate ID, Full Name, Class, Password</code></p>
         </div>
-        <label class="px-3.5 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition cursor-pointer shrink-0">
-          <i class="fa-solid fa-file-csv mr-1.5"></i>Upload CSV
-          <input type="file" id="studentsCsvFileInput" accept=".csv" onchange="uploadStudentsCSV(event)" class="hidden">
-        </label>
+        <div class="flex items-center gap-2 shrink-0">
+          <button 
+            type="button" 
+            onclick="downloadStudentCsvTemplate()" 
+            class="px-3 py-2 text-xs font-bold text-indigo-700 bg-white hover:bg-indigo-100 border border-indigo-200 rounded-xl transition inline-flex items-center shadow-sm"
+            title="Download a pre-formatted sample CSV file"
+          >
+            <i class="fa-solid fa-file-arrow-down mr-1.5 text-indigo-600"></i>Download Template
+          </button>
+          <label class="px-3.5 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition cursor-pointer shrink-0 shadow-sm inline-flex items-center">
+            <i class="fa-solid fa-file-csv mr-1.5"></i>Upload CSV
+            <input type="file" id="studentsCsvFileInput" accept=".csv" onchange="uploadStudentsCSV(event)" class="hidden">
+          </label>
+        </div>
       </div>
 
       <div class="flex-1 overflow-y-auto space-y-2 border border-slate-200 rounded-xl p-3 bg-white">
@@ -2029,13 +2039,35 @@ OUTPUT IN EXACT JSON FORMAT:
       }
     }
 
+    function downloadStudentCsvTemplate() {
+      const headers = "Candidate ID,Full Name,Class,Password\n";
+      const sampleRows = [
+        "SA-2026-001,Jane Doe,Year 11-A,1234",
+        "SA-2026-002,Ahmad Al-Mansoor,Year 11-A,5678",
+        "SA-2026-003,Zainab Fatima,Year 11-B,9012",
+        "SA-2026-004,David Chen,Year 11-B,3456"
+      ].join("\n") + "\n";
+
+      const blob = new Blob([headers + sampleRows], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = "student_roster_template.csv";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showNotification("Template Downloaded", "Sample CSV template downloaded. Open in Excel, add your students, and upload.", "info");
+    }
+
     async function uploadStudentsCSV(event) {
       const file = event.target.files?.[0];
       if (!file) return;
 
       const reader = new FileReader();
       reader.onload = async function(e) {
-        const lines = e.target.result.split('\n');
+        const text = e.target.result;
+        const lines = text.split(/\r\n|\n|\r/);
         let count = 0;
         const { doc, setDoc } = window.firestoreTools;
 
